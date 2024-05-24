@@ -14,7 +14,6 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 #define MIN_CHAR_COUNT   1
 #define MAX_CHAR_COUNT  32
@@ -37,11 +36,9 @@ int main(int argc, char *argv[]) {
       raise_err("btn: argv[1] out of range.");
 
    int ch;
-   int printed_char_count;
-   int left_multibyte_count;
+   int printed_char_count = 0;
+   int left_multibyte_count = 0;
 
-   printed_char_count = 0;
-   left_multibyte_count = 0;
    while ((ch = getchar()) != EOF) {
       if (isspace(ch))
          continue;
