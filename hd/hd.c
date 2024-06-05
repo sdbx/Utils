@@ -3,7 +3,7 @@
 
 int t(int s, int c);
 
-int main()
+int main(void)
 {
   int s = 0;
   int c;
