@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 int t(int s, int c);
 
@@ -9,7 +10,7 @@ int main(void)
   int c;
   while ((c = getchar()) != EOF) {
     s = t(s, c);
-    if (s < 0) return s;
+    if (s < 0) exit(EXIT_FAILURE);
     if (s == 5) {
       printf("# ");
     } else if (s == 9) {
