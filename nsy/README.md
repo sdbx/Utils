@@ -1,5 +1,5 @@
 ## Introduction
-This program generates a sentence with an exclamation mark placed between each characters.
+This program generates a sentence including an exclamation/question mark between each characters.
 
 ## Build
 ```
