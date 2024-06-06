@@ -2,14 +2,14 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-int t(int s, int c);
+int transition(int s, int c);
 
 int main(void)
 {
   int s = 0;
   int c;
   while ((c = getchar()) != EOF) {
-    s = t(s, c);
+    s = transition(s, c);
     if (s < 0) exit(EXIT_FAILURE);
     if (s == 5) {
       printf("# ");
@@ -21,7 +21,7 @@ int main(void)
   return 0;
 }
 
-int t(int s, int c) {
+int transition(int s, int c) {
   switch (s) {
     case 0: {
       switch (c) {
