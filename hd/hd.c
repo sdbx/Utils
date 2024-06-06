@@ -7,16 +7,16 @@ int transition(int s, int c);
 int main(void)
 {
   int state = 0;
-  int c;
-  while ((c = getchar()) != EOF) {
-    state = transition(state, c);
+  int current_char;
+  while ((current_char = getchar()) != EOF) {
+    state = transition(state, current_char);
     if (state < 0) exit(EXIT_FAILURE);
     if (state == 5) {
       printf("# ");
     } else if (state == 9) {
       printf(" #");
     }
-    printf("%c", c);
+    printf("%c", current_char);
   }
   return 0;
 }
