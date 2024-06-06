@@ -2,7 +2,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-int transition(int s, int input);
+int transition(int state, int input);
 
 int main(void)
 {
@@ -21,8 +21,8 @@ int main(void)
   return 0;
 }
 
-int transition(int s, int input) {
-  switch (s) {
+int transition(int state, int input) {
+  switch (state) {
     case 0: {
       switch (input) {
         case '#': return 1;
