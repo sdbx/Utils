@@ -6,14 +6,14 @@ int transition(int s, int c);
 
 int main(void)
 {
-  int s = 0;
+  int state = 0;
   int c;
   while ((c = getchar()) != EOF) {
-    s = transition(s, c);
-    if (s < 0) exit(EXIT_FAILURE);
-    if (s == 5) {
+    state = transition(state, c);
+    if (state < 0) exit(EXIT_FAILURE);
+    if (state == 5) {
       printf("# ");
-    } else if (s == 9) {
+    } else if (state == 9) {
       printf(" #");
     }
     printf("%c", c);
