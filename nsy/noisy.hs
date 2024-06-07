@@ -14,6 +14,7 @@ noisy mark =
   (mark ++) . (++ mark) . intercalate mark . map pure . filter (not . isSpace)
 
 main = do
-  (markType:text:_) <- getArgs
+  (markType:_) <- getArgs
   let mark = markFrom markType
+  text <- getContents
   putStrLn $ noisy mark text
