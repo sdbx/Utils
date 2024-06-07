@@ -9,6 +9,7 @@ chunks n xs =
   in ys : chunks n zs
 
 main = do
-  (rawCharCountUntilNewline:text:_) <- getArgs
+  (rawCharCountUntilNewline:_) <- getArgs
   let charCountUntilNewline = read rawCharCountUntilNewline :: Int
+  text <- getContents
   putStrLn $ intercalate "\n" . chunks charCountUntilNewline . filter (not . isSpace) $ text
