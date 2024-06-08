@@ -24,6 +24,18 @@ __global__ void kernel(const wchar_t *in, wchar_t *out, const size_t dim,
   }
 }
 
+wchar_t get_mark(char *s) {
+  const char a = s[0];
+  const char b = s[1];
+  const bool u = b != '\0' && b == 'u';
+  if (a == 'q') {
+    return u ? L'\x00BF' : L'\xFF1F';
+  } else if (a == 'e' && u) {
+    return L'\x00A1';
+  }
+  return L'\xFF01';
+}
+
 int main(int argc, char *argv[]) {
   std::setlocale(LC_ALL, "");
   std::vector<wchar_t> str;
@@ -34,19 +46,6 @@ int main(int argc, char *argv[]) {
       continue;
     }
     str.push_back(c);
-  }
-
-  wchar_t mark = L'\xFF01';
-  if (argc > 1) {
-    const char *arg = argv[1];
-    const char a = arg[0];
-    const char b = arg[1];
-    const bool u = b != '\0' && b == 'u';
-    if (a == 'q') {
-      mark = u ? L'\x00BF' : L'\xFF1F';
-    } else if (a == 'e' && u) {
-      mark = L'\x00A1';
-    }
   }
 
   wchar_t *input;
@@ -61,6 +60,7 @@ int main(int argc, char *argv[]) {
   HIP_CHECK(hipMemcpy(input, str.data(), sizeof(wchar_t) * length,
                       hipMemcpyHostToDevice));
 
+  const wchar_t mark = argc < 2 ? L'\xFF01' : get_mark(argv[1]);
   kernel<<<2, dim3(dim, dim), 0, 0>>>(input, output, dim, mark);
 
   auto result = new wchar_t[output_length + 2]; // mark ... \x0000
