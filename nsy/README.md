@@ -11,9 +11,27 @@ This program generates a sentence including an exclamation/question mark between
 
 ## Build
 
+### C
+
 ```
 make
 ```
+
+### HIP
+
+It can be cross-compiled.
+
+Any NVIDIA GPUs that support CUDA >=6.0 are supported.
+
+Any AMD GPUs that support ROCm >=4.2 are supported.
+
+In Linux,
+
+```
+make
+```
+
+In Windows, use Visual Studio 2022.
 
 ## Usage
 
