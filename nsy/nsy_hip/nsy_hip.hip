@@ -15,10 +15,8 @@
   }
 
 __global__ void kernel(const wchar_t *in, wchar_t *out, const size_t dim) {
-  const bool x = hipThreadIdx_x + hipBlockDim_x * hipBlockIdx_x;
-  const int idx = (hipThreadIdx_y + hipBlockDim_y * hipBlockIdx_y) * dim +
-                  hipThreadIdx_z + hipBlockDim_z * hipBlockIdx_z;
-  if (x) {
+  const int idx = hipThreadIdx_x * dim + hipThreadIdx_y;
+  if (hipBlockIdx_x) {
     out[idx * 2 + 1] = L'\xFF01';
   } else {
     out[idx * 2] = in[idx];
@@ -48,7 +46,7 @@ int main() {
   HIP_CHECK(hipMemcpy(input, str.data(), sizeof(wchar_t) * length,
                       hipMemcpyHostToDevice));
 
-  kernel<<<dim3(1), dim3(2, dim, dim), 0, 0>>>(input, output, dim);
+  kernel<<<2, dim3(dim, dim), 0, 0>>>(input, output, dim);
 
   wchar_t *result = new wchar_t[output_size];
   HIP_CHECK(hipMemcpy(result, output, output_size, hipMemcpyDeviceToHost));
