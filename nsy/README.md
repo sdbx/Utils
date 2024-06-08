@@ -28,7 +28,7 @@ Any AMD GPUs that support ROCm >=4.2 are supported.
 In Linux,
 
 ```
-make
+make all
 ```
 
 In Windows, use Visual Studio 2022.
