@@ -14,13 +14,14 @@
     exit(0);                                                                   \
   }
 
-__global__ void kernel(const wchar_t *in, wchar_t *out) {
-  const int x = hipThreadIdx_x + hipBlockDim_x * hipBlockIdx_x;
-  const int y = hipThreadIdx_y + hipBlockDim_y * hipBlockIdx_y;
+__global__ void kernel(const wchar_t *in, wchar_t *out, const size_t dim) {
+  const bool x = hipThreadIdx_x + hipBlockDim_x * hipBlockIdx_x;
+  const int idx = (hipThreadIdx_y + hipBlockDim_y * hipBlockIdx_y) * dim +
+                  hipThreadIdx_z + hipBlockDim_z * hipBlockIdx_z;
   if (x) {
-    out[y * 2 + 1] = L'\xFF01';
+    out[idx * 2 + 1] = L'\xFF01';
   } else {
-    out[y * 2] = in[y];
+    out[idx * 2] = in[idx];
   }
 }
 
@@ -39,13 +40,15 @@ int main() {
   wchar_t *input;
   wchar_t *output;
   const size_t length = str.size();
-  const size_t input_size = sizeof(wchar_t) * (length + 1);
-  const size_t output_size = sizeof(wchar_t) * (length * 2 + 1);
+  const size_t dim = ceil(sqrt(double(length)));
+  const size_t input_size = sizeof(wchar_t) * dim * dim;
+  const size_t output_size = sizeof(wchar_t) * dim * 2 * dim;
   HIP_CHECK(hipMalloc((void **)&input, input_size));
   HIP_CHECK(hipMalloc((void **)&output, output_size));
-  HIP_CHECK(hipMemcpy(input, str.data(), input_size, hipMemcpyHostToDevice));
+  HIP_CHECK(hipMemcpy(input, str.data(), sizeof(wchar_t) * length,
+                      hipMemcpyHostToDevice));
 
-  kernel<<<dim3(1), dim3(2, length), 0, 0>>>(input, output);
+  kernel<<<dim3(1), dim3(2, dim, dim), 0, 0>>>(input, output, dim);
 
   wchar_t *result = new wchar_t[output_size];
   HIP_CHECK(hipMemcpy(result, output, output_size, hipMemcpyDeviceToHost));
