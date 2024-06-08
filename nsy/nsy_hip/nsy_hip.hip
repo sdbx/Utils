@@ -40,7 +40,8 @@ int main() {
   const size_t length = str.size();
   const size_t dim = ceil(sqrt(double(length)));
   const size_t input_size = sizeof(wchar_t) * dim * dim;
-  const size_t output_size = sizeof(wchar_t) * dim * 2 * dim;
+  const size_t output_length = dim * 2 * dim;
+  const size_t output_size = sizeof(wchar_t) * output_length;
   HIP_CHECK(hipMalloc((void **)&input, input_size));
   HIP_CHECK(hipMalloc((void **)&output, output_size));
   HIP_CHECK(hipMemcpy(input, str.data(), sizeof(wchar_t) * length,
@@ -48,13 +49,14 @@ int main() {
 
   kernel<<<2, dim3(dim, dim), 0, 0>>>(input, output, dim);
 
-  wchar_t *result = new wchar_t[output_size];
-  HIP_CHECK(hipMemcpy(result, output, output_size, hipMemcpyDeviceToHost));
+  wchar_t *result = new wchar_t[output_length + 2]; // \xFF01 ... \x0000
+  *result = L'\xFF01';
+  HIP_CHECK(hipMemcpy(result + 1, output, output_size, hipMemcpyDeviceToHost));
+  result[length * 2 + 1] = 0;
 
   HIP_CHECK(hipFree(input));
   HIP_CHECK(hipFree(output));
 
-  result[length * 2 - 1] = 0;
   std::wcout << result << L'\n';
 
   delete[] result;
