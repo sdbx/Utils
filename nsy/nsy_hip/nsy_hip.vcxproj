@@ -93,7 +93,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="nsy_hip.hip" />
+    <ClCompile Include="nsy_hip.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="msvc_defines.h" />

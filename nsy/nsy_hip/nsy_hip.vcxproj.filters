@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="nsy_hip.hip">
+    <ClCompile Include="nsy_hip.cu">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
