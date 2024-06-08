@@ -14,16 +14,17 @@
     exit(0);                                                                   \
   }
 
-__global__ void kernel(const wchar_t *in, wchar_t *out, const size_t dim) {
+__global__ void kernel(const wchar_t *in, wchar_t *out, const size_t dim,
+                       const wchar_t mark) {
   const int idx = hipThreadIdx_x * dim + hipThreadIdx_y;
   if (hipBlockIdx_x) {
-    out[idx * 2 + 1] = L'\xFF01';
+    out[idx * 2 + 1] = mark;
   } else {
     out[idx * 2] = in[idx];
   }
 }
 
-int main() {
+int main(int argc, char *argv[]) {
   std::setlocale(LC_ALL, "");
   std::vector<wchar_t> str;
 
@@ -33,6 +34,19 @@ int main() {
       continue;
     }
     str.push_back(c);
+  }
+
+  wchar_t mark = L'\xFF01';
+  if (argc > 1) {
+    const char *arg = argv[1];
+    const char a = arg[0];
+    const char b = arg[1];
+    const bool u = b != '\0' && b == 'u';
+    if (a == 'q') {
+      mark = u ? L'\x00BF' : L'\xFF1F';
+    } else if (a == 'e' && u) {
+      mark = L'\x00A1';
+    }
   }
 
   wchar_t *input;
@@ -47,10 +61,10 @@ int main() {
   HIP_CHECK(hipMemcpy(input, str.data(), sizeof(wchar_t) * length,
                       hipMemcpyHostToDevice));
 
-  kernel<<<2, dim3(dim, dim), 0, 0>>>(input, output, dim);
+  kernel<<<2, dim3(dim, dim), 0, 0>>>(input, output, dim, mark);
 
-  wchar_t *result = new wchar_t[output_length + 2]; // \xFF01 ... \x0000
-  *result = L'\xFF01';
+  auto result = new wchar_t[output_length + 2]; // mark ... \x0000
+  *result = mark;
   HIP_CHECK(hipMemcpy(result + 1, output, output_size, hipMemcpyDeviceToHost));
   result[length * 2 + 1] = 0;
 
