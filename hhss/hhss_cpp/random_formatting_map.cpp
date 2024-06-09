@@ -2,8 +2,7 @@
 
 const std::regex random_formatting_map::exp(R"(\$\{([^{}]*)\})");
 
-const std::string random_formatting_map::operator()(const std::string &ref) {
-  std::string s(ref);
+const std::string random_formatting_map::operator()(std::string s) {
   for (auto &p : *this) {
     std::smatch match;
     auto begin = s.cbegin();

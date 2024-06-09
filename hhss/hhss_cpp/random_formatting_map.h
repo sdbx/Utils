@@ -12,5 +12,5 @@ public:
   void put(const std::string &key, const std::string &value) {
     (*this)[key].push(value);
   }
-  const std::string operator()(const std::string &ref);
+  const std::string operator()(std::string s);
 };
