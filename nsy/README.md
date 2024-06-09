@@ -22,7 +22,7 @@ make
 ### Python
 
 ```
-python nsy.py TEXT_FILE_NAME
+python nsy.py < TEXT_FILE_NAME
 ```
 
 ### Haskell
