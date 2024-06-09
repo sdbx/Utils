@@ -1,17 +1,18 @@
 ## Introduction
 
-This program adds `# ` to the beginning of the stdin and prints it.
+This program adds the string `"# "` to the beginning of the stdin and prints it, only if it doesn't start with the string.
+
+## Usage
+
+```
+./hd TEXT
+```
 
 ## Implementations
 
-- C (Does not support trim)
-- C++
-- JavaScript (Bun)
-- Rust
-
-## Build
-
 ### C
+
+This implementation does not support trim.
 
 ```sh
 clang hd.c -o hd
@@ -23,7 +24,7 @@ clang hd.c -o hd
 clang++ hd.cpp -Oz --std=c++23 -o hd
 ```
 
-### JavaScript
+### JavaScript (Bun)
 
 First, make sure that [the bun](https://bun.sh/docs/installation) is installed.
 
