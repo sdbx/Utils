@@ -11,7 +11,11 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
+#ifdef _WIN32
   locale::global(locale(".UTF-8"));
+#else
+  locale::global(locale("C.UTF-8"));
+#endif
 
   ifstream fs_sentences(argv[1]);
   if (!fs_sentences.is_open()) {
