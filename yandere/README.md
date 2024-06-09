@@ -1,8 +1,23 @@
 ## Introduction
-This folder has implementations of a so-called 'yandere' program in various languages.
 
-## Current Implementations
+This program prints a yandere-like string to stdout, *ad infinitum*.
+
+## Usage
+
 ```
-C
-Haskell
+./yandere
+```
+
+## Implementations
+
+### C
+
+```
+gcc -o yandere yandere.c
+```
+
+### Haskell
+
+```
+ghc yandere.hs
 ```
