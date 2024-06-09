@@ -24,7 +24,7 @@ make
 ### Python
 
 ```
-python btn.py
+python btn.py N TEXT_FILE_NAME
 ```
 
 ### Haskell
