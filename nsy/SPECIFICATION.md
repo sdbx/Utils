@@ -71,7 +71,7 @@ Meanwhile, as to non-standard delimiters, it's freely up to implementations how 
 
 ### Example: a non-standard delimiter
 
-One implementation may provide U+002E, namely `.`, as an additional delimiter. In such a case, the implementation may choose `p` as one of the possible `MARK_KIND` value so as to differentiate it among other standard ones. Therefore `MARK_KIND` may be defined as follows:
+One implementation may provide `U+002E`, namely `.`, as an additional delimiter. In such a case, the implementation may choose `p` as one of the possible `MARK_KIND` value so as to differentiate it among other standard ones. Therefore `MARK_KIND` may be defined as follows:
  
 > `MARK_KIND` -> `e` | `q` | `eu` | `qu` | `p`
 
