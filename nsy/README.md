@@ -5,9 +5,11 @@ This program generates a "noisy" sentence by including an exclamation/question m
 ## Usage
 
 ```
-./nsy < TEXT_FILE_NAME
+./nsy MARK_KIND < TEXT_FILE_NAME
 
 where
+   MARK_KIND = e | q   (exclamation or question)
+             = eu | qu (upside down)
    TEXT_FILE_NAME = the file name to be input-redirected.
 ```
 
