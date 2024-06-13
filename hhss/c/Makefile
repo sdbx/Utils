@@ -1,6 +1,15 @@
-hhss: hutsori.o
-	gcc -O -Wall -W -pedantic -o hhss \
-	hutsori.o
+CC = gcc
+CCFLAGS = -O -Wall -W -pedantic
 
-hutsori.o: hutsori.c
-	gcc -c hutsori.c
+TARGET = hhss
+
+SOURCES = $(wildcard ./*.c)
+OBJECTS = $(patsubst %.c, %.o, $(SOURCES))
+
+all: $(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(CC) $(CCFLAGS) -o $@ $^
+
+%.o: %.c
+	$(CC) $(CCFLAGS) -c -o $@ $<
