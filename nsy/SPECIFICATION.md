@@ -3,7 +3,9 @@
 The purpose of this specification is to describe overall components which a conforming `nsy` implementation is expected to have.
 
 ### Change Log
-24.06.10 :: Initial writing.
+
+- 24.06.10 :: Initial writing.
+- 24.06.13 :: Minor fix.
 
 ## Use Case
 
@@ -40,7 +42,7 @@ Then a conforming implementation must yield the result as follows: "！H！e！l
 
 ### Error Handling
 
-In case of an error occurred, a conforming implementation must write an relevant, descriptive error message to stderr and terminate immediately, returning an abnormal termination status code.
+In case of an error occurred, a conforming implementation must write a relevant, descriptive error message to stderr and terminate immediately, returning an abnormal termination status code.
 
 ### Edge Case
 
@@ -52,7 +54,7 @@ A conforming implementation must take its input from stdin and print the output 
 
 ## Command Line Argument
 
-A conforming implementation must have only one command line argument (except the program name), `MARK_KIND`.
+A conforming implementation must have only one command line argument (except for the program name), `MARK_KIND`.
 
 The implementation must follow the error handling behavior described in the Error Handling section in the following situations:
 
