@@ -3,11 +3,13 @@
 The purpose of this specification is to describe overall components which a conforming `yandere` implementation is expected to have.
 
 ### Change Log
-24.06.10 :: Initial writing.
+
+- 24.06.10 :: Initial writing.
+- 24.06.13 :: Minor fix.
 
 ## Use Case
 
-As its name implies, this program prints a yandere-like string to stdout, *ad infinitum*. Therefore one may find this program useful to experience(?) how it feels like to be targeted by a yandere.
+As its name implies, this program prints a yandere-like string to stdout, *ad infinitum*. Therefore, one may find this program useful to experience(?) how it feels like to be targeted by a yandere.
 
 ## Behavior
 
@@ -17,7 +19,7 @@ A conforming implementation must keep printing only a yandere-like string until 
 > a yandere-like string is a sentence which is likely to be said by a yandere. It might be helpful to provide some examples:
 > - "Look at only me"
 > - "Don't run away from me"
-> - "Did you think you can leave me?"
+> - "Did you think you could leave me?"
 
 Note: If a yandere-like string doesn't have a trailing space character, the output wouldn't look very neat.
 
