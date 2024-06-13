@@ -47,7 +47,7 @@ A conforming implementation must take its input from stdin and print the output 
 
 ## Command Line Argument
 
-A conforming implementation must have only one command line argument (except the program name), `N`.
+A conforming implementation must have only one command line argument (except for the program name), `N`.
 
 The implementation must follow the error handling behavior described in the Error Handling section in the following situations:
 
