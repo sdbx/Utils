@@ -3,11 +3,13 @@
 The purpose of this specification is to describe overall components which a conforming `btn` implementation is expected to have.
 
 ### Change Log
-24.06.10 :: Initial writing.
+
+- 24.06.10 :: Initial writing.
+- 24.06.13 :: Minor fix.
 
 ## Use Case
 
-This program, `btn`, produces a string with white-space characters removed, which make the string look so *condensed* that eventually it becomes highly distinguishable from other usual, normal strings. Therefore one may find this program useful in cases where one is in need of attention of other participants in a chat room.
+This program, `btn`, produces a string with white-space characters removed, which make the string look so *condensed* that eventually it becomes highly distinguishable from other usual, normal strings. Therefore, one may find this program useful in cases where one is in need of attention of other participants in a chat room.
 
 ## Behavior
 
@@ -32,7 +34,7 @@ Then a conforming implementation must yield the result as follows: "Iwanttosleep
 
 ### Error Handling
 
-In case of an error occurred, a conforming implementation must write an relevant, descriptive error message to stderr and terminate immediately, returning an abnormal termination status code.
+In case of an error occurred, a conforming implementation must write a relevant, descriptive error message to stderr and terminate immediately, returning an abnormal termination status code.
 
 ### Edge Case
 
