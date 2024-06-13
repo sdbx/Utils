@@ -1,6 +1,15 @@
-nsy: noisy.o
-	gcc -O -Wall -W -pedantic -o nsy \
-	noisy.o
+CC = gcc
+CCFLAGS = -O -Wall -W -pedantic
 
-noisy.o: noisy.c
-	gcc -c noisy.c
+TARGET = nsy
+
+SOURCES = $(wildcard ./*.c)
+OBJECTS = $(patsubst %.c, %.o, $(SOURCES))
+
+all: $(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(CC) $(CCFLAGS) -o $@ $^
+
+%.o: %.c
+	$(CC) $(CCFLAGS) -c -o $@ $<

@@ -1,25 +1,20 @@
-HIP_PATH?= $(wildcard /opt/rocm)
-HIPCC=$(HIP_PATH)/bin/hipcc
+HIP_PATH ?= $(wildcard /opt/rocm)
+CXX = $(HIP_PATH)/bin/hipcc
+CXXFLAGS = -O -Wall -W -pedantic
 
-SOURCES = nsy_hip.hip
-OBJECTS = $(SOURCES:.hip=.o)
+TARGET = nsy_hip
 
-EXECUTABLE=./nsy_hip
+ifeq ($(OS), Windows_NT)
+	TARGET = nsy_hip.exe
+endif
 
-all: $(EXECUTABLE)
+SOURCES = $(wildcard ./*.cu)
+OBJECTS = $(patsubst %.cu, %.o, $(SOURCES))
 
-CXXFLAGS =-g
-CXX=$(HIPCC)
+all: $(TARGET)
 
-$(EXECUTABLE): $(OBJECTS)
-	$(HIPCC) $(OBJECTS) -o $@
+$(TARGET): $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
-$(OBJECTS): $(SOURCES)
-	$(HIPCC) $(CXXFLAGS) -c $< -o $@
-
-test: $(EXECUTABLE)
-	$(EXECUTABLE)
-
-clean:
-	rm -f $(EXECUTABLE)
-	rm -f $(OBJECTS)
+%.o: %.cu
+	$(CXX) $(CXXFLAGS) -c -o $@ $<

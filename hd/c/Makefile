@@ -1,7 +1,7 @@
 CC = gcc
 CCFLAGS = -O -Wall -W -pedantic
 
-TARGET = btn
+TARGET = hd
 
 SOURCES = $(wildcard ./*.c)
 OBJECTS = $(patsubst %.c, %.o, $(SOURCES))
