@@ -162,7 +162,7 @@ int main(int argc, char *argv[]) {
 }
 ```
 
-Note: for the sake of convenience of implementation, this program relies on three macros. Therefore, the values outside of these limits break the assumptions of this program and will cause undefined behaviors.
+Note: for the sake of convenience of implementation, this program relies on three macros. The values outside of these limits break the assumptions that this program has and therefore will cause undefined behaviors.
 
 ```c
 // file: test_cases
