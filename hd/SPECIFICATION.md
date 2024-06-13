@@ -3,11 +3,13 @@
 The purpose of this specification is to describe overall components which a conforming `hd` implementation is expected to have.
 
 ### Change Log
-24.06.11 :: Initial writing.
+
+- 24.06.11 :: Initial writing.
+- 24.06.13 :: Minor fix.
 
 ## Use Case
 
-This program, `hd`, puts a string "# ", which signifies a \<h1\> heading, at the beginning of a line if the line does not start with that string. Thus one may find this program useful to draw attention to a high extent.
+This program, `hd`, puts a string "# ", which signifies a \<h1\> heading, at the beginning of a line if the line does not start with that string. Thus, one may find this program useful to draw attention to a high extent.
 
 ## Behavior
 
@@ -44,12 +46,11 @@ Then a conforming implementation must yield the following output:
 ### Implementation-defined behavior
 
 - A conforming implementation may trim the margins at the left and/or the right of a line, if exist(s).
-
 - A conforming implementation may retain the fashion of line break by which the input from stdin abides.
 
 ### Error Handling
 
-In case of an error occurred, a conforming implementation must write an relevant, descriptive error message to stderr and terminate immediately, returning an abnormal termination status code.
+In case of an error occurred, a conforming implementation must write a relevant, descriptive error message to stderr and terminate immediately, returning an abnormal termination status code.
 
 ### Edge Case
 
