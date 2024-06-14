@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include <sys/wait.h>
 
 #define LINE_LEN  1024
-#define TM_INCLUDE   "   test_maker::include\n"
+#define TM_INCLUDE   "   §TESTCASE§\n"
+#define SYSTEM_FAILED   -1
 
 void raise_err(char *err_msg);
 
@@ -20,26 +22,70 @@ int main(int argc, char **argv) {
    src = fopen("test.c", "r");
    if (src == NULL)
       raise_err("test_maker: failed to open test.c.");
-   dest = fopen("test.modified.c", "w+");
+   dest = fopen("test.modified.c", "w");
    if (dest == NULL)
       raise_err("test_maker: failed to open test.modified.c.");
    
    /* Write test.modified.c. */
+   const int directive_len = strlen(TM_INCLUDE);
    char *line;
+   int line_cur_idx, line_max_num;
 
-   line = malloc(LINE_LEN);
+   line_cur_idx = 0;
+   line_max_num = LINE_LEN;
+   line = malloc(line_max_num * sizeof(char));
    if (line == NULL)
       raise_err("test_maker: failed to malloc.");
-
-   int directive_len;
    
-   directive_len = strlen(TM_INCLUDE);
+   /*
+      A rough explanation of the below while statement:
+
+      1. Get a line using fgets.
+      2. If the line is ended with \n, i.e. that is the
+         whole line, do 2.1 or 2.2.
+         2.1. If the line is the same as TM_INCLUDE,
+               print "#include ..." instead.
+         2.2. Else, print the line itself.
+      3. Else, i.e. if the line is not complete,
+         3.1. If the line does not have enough space to hold
+               the result of the next fgets() call, realloc.
+         3.2. Prepare the next fgets() call.
+   */
+
    while (fgets(line, LINE_LEN, src) != NULL) {
-      if (strncmp(line, TM_INCLUDE, directive_len) == 0)
-         fprintf(dest, "   #include \"%s\"\n", argv[1]);
-      else
-         fputs(line, dest);
+      const int line_len = strlen(line);
+      int ch;
+      bool end_of_line, end_of_file;
+      bool overflow_expected, line_ended;
+
+      if ((ch = fgetc(src)) == EOF)
+         end_of_file = true;
+      else {
+         end_of_file = false;
+         ungetc(ch, src);
+      }
+      end_of_line = line[line_len - 1] == '\n';
+
+      overflow_expected = line_len + LINE_LEN > line_max_num;
+      line_ended = end_of_line || end_of_file;
+
+      if (line_ended) {
+         if (strncmp(line, TM_INCLUDE, directive_len) == 0)
+            fprintf(dest, "   #include \"%s\"\n", argv[1]);
+         else
+            fputs(line, dest);
+      }
+      else {
+         if (overflow_expected) {
+            line_max_num *= 2;
+            line = realloc(line, line_max_num);
+            if (line == NULL)
+               raise_err("test_maker: failed to malloc.");
+         }
+         line_cur_idx += LINE_LEN - 1;
+      }
    }
+   free(line);
 
    if (fclose(src) == EOF)
          raise_err("test_maker: failed to close test.c.");
@@ -47,13 +93,13 @@ int main(int argc, char **argv) {
          raise_err("test_maker: failed to close test.modified.c.");
 
    /* Build the executable. */
-   int statcode;
+   int status_code;
 
-   statcode = system("gcc -o test test.modified.c");
-   if (statcode == -1)
+   status_code = system("gcc -o test test.modified.c");
+   if (status_code == SYSTEM_FAILED)
          raise_err("test_maker: system() failed.");
-   if (WIFEXITED(statcode))
-      if (WEXITSTATUS(statcode) == EXIT_FAILURE)
+   if (WIFEXITED(status_code))
+      if (WEXITSTATUS(status_code) == EXIT_FAILURE)
          raise_err("test_maker: abnormal termination.");
 
    if (remove("test.modified.c") != 0)

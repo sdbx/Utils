@@ -4,9 +4,9 @@
 #include <stdbool.h>
 #include <sys/wait.h>
 
-#define COMMAND_LEN  512
 #define TESTCASE_LEN 32
 #define OUTPUT_LEN   1024
+#define SYSTEM_FAILED   -1
 
 typedef struct testcase_ {
    char *name;
@@ -22,50 +22,23 @@ int main(int argc, char **argv) {
       raise_err(
          "test: usage:\n"
          "\t./test\n"
-         "\t\tPATH_PROGRAM_SOURCE_CODE");
+         "\t\tPATH_EXECUTABLE");
    if (!system(NULL))
       raise_err("test: no command processor available.");
-
-   /* Build a program to be tested. */
-   int statcode, retval;
-   char *command;
-   
-   command = malloc(COMMAND_LEN);
-   if (command == NULL)
-      raise_err("test: failed to malloc.");
-
-   /* Note: compile differently as per implementation? */
-   retval = snprintf(command, COMMAND_LEN, "gcc -o object_program %s", argv[1]);
-   if (retval < 0)
-      raise_err("test: encoding error.");
-   if (command[strlen(command) - 1] != 'c')
-      raise_err("test: wrong command.");
-   
-   statcode = system(command);
-   if (statcode == 1)
-      raise_err("test: system() failed.");
-   if (WIFEXITED(statcode)
-         && WEXITSTATUS(statcode) == EXIT_FAILURE)
-      raise_err("test: abnormal termination.");
    
    /* Prepare to include test cases. */
    testcase *tests;
-   int tlen;
    
    tests = malloc(TESTCASE_LEN * sizeof(testcase));
    if (tests == NULL)
       raise_err("test: failed to malloc.");
+
+   int tlen;
    
    /* Include test cases. Ex: #include "nsy.test" */
-   test_maker::include
+   §TESTCASE§
 
    /* Perform tests. */
-   char *output;
-
-   output = malloc(OUTPUT_LEN);
-   if (output == NULL)
-      raise_err("test: failed to malloc.");
-   
    for (int i = 0; i < tlen; i++) {
       FILE *temp;
       
@@ -73,39 +46,133 @@ int main(int argc, char **argv) {
       if (temp == NULL)
          raise_err("test: failed to open .temp file.");
 
+      char *command;
+      int cmd_len;
+
+      cmd_len =
+         strlen("./  >.temp <<EOF\n\nEOF") +
+         strlen(argv[1]) +
+         strlen(tests[i].argv) +
+         strlen(tests[i].input) +
+         1;
+      command = malloc(cmd_len * sizeof(char));
+
+      int retval;
+      int status_code;
+
       retval = snprintf(
          command,
-         COMMAND_LEN,
-         "./object_program %s >.temp <<EOF\n%s\nEOF",
+         cmd_len,
+         "./%s %s >.temp <<EOF\n%s\nEOF",
+         argv[1],
          tests[i].argv,
          tests[i].input);
       if (retval < 0)
          raise_err("test: encoding error.");
 
-      statcode = system(command);
-      if (statcode == -1)
+      status_code = system(command);
+      free(command);
+      if (status_code == SYSTEM_FAILED)
          raise_err("test: system() failed.");
-      if (WIFEXITED(statcode))
-         if (WEXITSTATUS(statcode) == EXIT_FAILURE)
+      if (WIFEXITED(status_code))
+         if (WEXITSTATUS(status_code) == EXIT_FAILURE)
             raise_err("test: abnormal termination.");
       
+      char *output;
+      int output_cur_idx, output_max_num;
       int offset;
       bool str_not_equal;
 
+      output_cur_idx = 0;
+      output_max_num = OUTPUT_LEN;
+      output = malloc(output_max_num * sizeof(char));
+      if (output == NULL)
+         raise_err("test: failed to malloc.");
+
       offset = 0;
       str_not_equal = false;
-      while (fgets(output, OUTPUT_LEN, temp) != NULL) {
-         int output_len;
 
-         output_len = strlen(output);
-         if (strncmp(output, tests[i].output + offset, output_len) != 0) {
-            printf("test: \"%s\": failed.\n\texpected: %s\n\tactual: %s\n",
-               tests[i].name, tests[i].output + offset, output);
-            str_not_equal = true;
-            break;
+      /*
+         A rough explanation of the below while statement:
+
+         1. Get a line using fgets.
+         2. If the line is ended with \n, i.e. that is the whole line,
+            carry out a testcase.
+         3. Else, i.e. if the line is not complete,
+            3.1. If the line does not have enough space to hold
+                 the result of the next fgets() call, realloc.
+            3.2. Prepare the next fgets() call.
+      */
+
+      while (fgets(output + output_cur_idx, OUTPUT_LEN, temp) != NULL) {
+         const int output_len = strlen(output);
+         int ch;
+         bool end_of_line, end_of_file;
+         bool overflow_expected, line_ended;
+
+         /* In case the last character of a stream is not \n. */
+         if ((ch = fgetc(temp)) == EOF)
+            end_of_file = true;
+         else {
+            end_of_file = false;
+            ungetc(ch, temp);
          }
-         offset += output_len;
+         end_of_line = output[output_len - 1] == '\n';
+
+         /*
+            output will not have enough space to hold the
+            result of next fgets call if this condition holds:
+
+            num. of cur. elements (without \0)
+               + num. of chars to be written
+            > length of output
+
+            Note: refer to the comment in the below else clause
+                  for the reason \0 is not counted.
+         */
+         overflow_expected = output_len + OUTPUT_LEN > output_max_num;
+         line_ended = end_of_line || end_of_file;
+
+         if (line_ended) {
+            if (strncmp(output, tests[i].output + offset, output_len) != 0) {
+               printf(
+                  "test: \"%s\": failed.\n"
+                  "\texpected: %s\n"
+                  "\tactual: %s\n",
+                  tests[i].name, tests[i].output + offset, output);
+               str_not_equal = true;
+               break;
+            }
+            offset += output_len;
+         }
+         else {
+            if (overflow_expected) {
+               /*
+                  Since the current line which is read from .temp file is not
+                  complete, we need to realloc output to have more space.
+               */
+               output_max_num *= 2;
+               output = realloc(output, output_max_num);
+               if (output == NULL)
+                  raise_err("test: failed to realloc.");
+            }
+
+            output_cur_idx += OUTPUT_LEN - 1;
+            /* 
+               Suppose OUTPUT_LEN = 5. Considering the last character is \0,
+               in order to concat the previous string and the next string,
+               the \0 from the prev. string must be overwritten.
+
+                  abcd0
+               +      efgh0
+               ------------
+                  abcdefgh0
+
+               Therefore, we need to add (OUTPUT_LEN - 1), rather than OUTPUT_LEN.
+            */
+         }
       }
+      free(output);
       if (!str_not_equal)
          printf("test: \"%s\": passed.\n", tests[i].name);
       
@@ -113,10 +180,9 @@ int main(int argc, char **argv) {
          raise_err("test: failed to close .temp file.");
    }
 
+   free(tests);
    if (remove(".temp") != 0)
       raise_err("test: failed to remove .temp file.");
-   if (remove("object_program") != 0)
-      raise_err("test: failed to remove object_program file.");
 
    return 0;
 }

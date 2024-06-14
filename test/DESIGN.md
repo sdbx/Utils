@@ -4,7 +4,8 @@ The purpose of this document is to articulate the overall design of the `test` p
 
 ### Change Log
 
-24.06.11 :: Initial writing.
+- 24.06.11 :: Initial writing.
+- 24.06.14 :: Minor fix.
 
 ## Conceptual Design
 
@@ -17,7 +18,7 @@ As of the time this document is written, there are five programs in total. In th
 - Does this program conform to the its specification?
 - Does this program produce expected outputs for inputs that represent various situations?
 
-In other words, the very problem is inconvenience; therefore it is contemplated that this is a fairly nice timing when an automation tool is able to come into play. However, a question of how such a test can be automated still remains unsolved. Hence this question leads us to the next section.
+In other words, the very problem is inconvenience; therefore, it is contemplated that this is a fairly nice timing when an automation tool is able to come into play. However, a question of how such a test can be automated still remains unsolved. Hence this question leads us to the next section.
 
 ### Test Automation
 
@@ -41,7 +42,7 @@ From this analysis of the definition of *test*, therefore, now it is obvious tha
 > A test representation is an abstract idea that consists of two elements: a *predefined input* and an *expected output*.
 
 > Definition.  
-> A predefined input is an abstract idea that denotes what is to be fed to a n object program.
+> A predefined input is an abstract idea that denotes what is to be fed to an object program.
 
 > Definition.  
 > An expected output is an abstract idea that denotes what is to be produced by an object program.
@@ -108,7 +109,6 @@ This section shows a rough implementation of this program in C.
 ```c
 // file: test.c
 
-#define COMMAND_LEN  512
 #define TESTCASE_LEN 32
 #define OUTPUT_LEN   1024
 
@@ -121,11 +121,7 @@ typedef struct {
 
 int main(int argc, char *argv[]) {
    // Suppose that
-   //    argv[1] = a command to compile the
-   //    source code of a program to be tested.
-
-   // Build the program.
-   system(argv[1]);
+   //    argv[1] = a path to the executable of a program to be tested.
 
    // Prepare test cases.
    testcase arr[adequate_num];
@@ -139,7 +135,7 @@ int main(int argc, char *argv[]) {
       char command[adequate_num];
       FILE *cmd_result;
 
-      // Suppose the name of the program is btn.
+      // Suppose the name of the executable is btn.
       // Execute btn and save the result at .temp file.
       cmd_result = fopen(".temp", "w+");
       snprintf(
@@ -162,7 +158,7 @@ int main(int argc, char *argv[]) {
 }
 ```
 
-Note: for the sake of convenience of implementation, this program relies on three macros. The values outside of these limits break the assumptions that this program has and therefore will cause undefined behaviors.
+Note: for the sake of convenience of implementation, this program relies on two macros: TESTCASE_LEN and OUTPUT_LEN. The values outside of these limits break the assumptions that this program has and therefore will cause undefined behaviors.
 
 ```c
 // file: test_cases
