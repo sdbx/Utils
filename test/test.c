@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
       int cmd_len;
 
       cmd_len =
-         strlen("./  >.temp <<EOF\n\nEOF") +
+         strlen("  >.temp <<EOF\n\nEOF") +
          strlen(argv[1]) +
          strlen(tests[i].argv) +
          strlen(tests[i].input) +
