@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <errno.h>
 
 #define MIN_CHAR_COUNT   1
 #define MAX_CHAR_COUNT  32
@@ -28,7 +29,10 @@ int main(int argc, char *argv[]) {
    int num_char_until_newline;
    char *indicator;
 
+   errno = 0;
    num_char_until_newline = strtol(argv[1], &indicator, 10);
+   if (errno == ERANGE)
+      raise_err("btn: argv[1] out of range");
    if (indicator == argv[1])
       raise_err("btn: failed to process argv[1].");
    if (num_char_until_newline < MIN_CHAR_COUNT ||
