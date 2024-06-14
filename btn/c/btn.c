@@ -40,6 +40,12 @@ int main(int argc, char *argv[]) {
       raise_err("btn: argv[1] out of range.");
 
    int ch;
+
+   if ((ch = getchar()) == EOF)
+      raise_err("btn: EOF detected.");
+   else
+      ungetc(ch, stdin);
+
    int printed_char_count = 0;
    int left_multibyte_count = 0;
 
