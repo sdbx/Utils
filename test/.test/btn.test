@@ -1,0 +1,9 @@
+tests[0] = (testcase) { .name = "usual",
+                        .argv = "10",
+                        .input = "I hate programming in C so much.",
+                        .output = "Ihateprogr\namminginCs\nomuch.\n" };
+tests[1] = (testcase) { .name = "multiline",
+                        .argv = "10",
+                        .input = "I hate programming in C so much.\nI'm getting headache.",
+                        .output = "Ihateprogr\namminginCs\nomuch.I'mg\nettinghead\nache.\n" };
+tlen = 2;
