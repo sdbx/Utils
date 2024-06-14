@@ -52,6 +52,12 @@ int main(int argc, char *argv[]) {
    
    int ch;
    int left_multibyte_count = 0;
+   
+   /* Handling the edge case described in the spec. */
+   if ((ch = getchar()) == EOF)
+      raise_err("nsy: EOF detected.");
+   else
+      ungetc(ch, stdin);
 
    print_mark();
    while ((ch = getchar()) != EOF) {
