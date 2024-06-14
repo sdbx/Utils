@@ -1,0 +1,30 @@
+name: Test for heading JavaScript implementation
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Run test
+    runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: ./test
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Install Bun
+        run: curl -fsSL https://bun.sh/install | bash
+      - name: Build object program
+        run: ~/.bun/bin/bun build hd.js --compile --outfile hd
+        working-directory: ./hd/javascript
+      - name: Build test maker
+        run: gcc -o test_maker test_maker.c
+      - name: Build host program
+        run: ./test_maker .test/hd.test
+      - name: Run test
+        run: ./test ../hd/javascript/hd
+        timeout-minutes: 5
