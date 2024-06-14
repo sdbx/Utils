@@ -56,10 +56,11 @@ int main(int argc, char *argv[]) {
    /* Handling the edge case described in the spec. */
    if ((ch = getchar()) == EOF)
       raise_err("nsy: EOF detected.");
-   else
+   else if (!isspace(ch)) {
+      print_mark();
       ungetc(ch, stdin);
+   }
 
-   print_mark();
    while ((ch = getchar()) != EOF) {
       if (isspace(ch))
          continue;
