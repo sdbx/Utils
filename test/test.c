@@ -39,6 +39,9 @@ int main(int argc, char **argv) {
    §TESTCASE§
 
    /* Perform tests. */
+   bool test_failed;
+   
+   test_failed = false;
    for (int i = 0; i < tlen; i++) {
       FILE *temp;
       
@@ -175,6 +178,8 @@ int main(int argc, char **argv) {
       free(output);
       if (!str_not_equal)
          printf("test: \"%s\": passed.\n", tests[i].name);
+      else if (!test_failed)
+         test_failed = true;
       
       if (fclose(temp) == EOF)
          raise_err("test: failed to close .temp file.");
@@ -184,7 +189,9 @@ int main(int argc, char **argv) {
    if (remove(".temp") != 0)
       raise_err("test: failed to remove .temp file.");
 
-   return 0;
+   return !test_failed
+            ? EXIT_SUCCESS
+            : EXIT_FAILURE;
 }
 
 void raise_err(char *err_msg) {
