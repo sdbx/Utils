@@ -6,6 +6,7 @@ The purpose of this specification is to describe overall components which a conf
 
 - 24.06.10 :: Initial writing.
 - 24.06.13 :: Minor fix.
+- 24.06.14 :: Minor fix.
 
 ## Use Case
 
@@ -65,7 +66,7 @@ COR
 A SANE PERSON
 ```
 
-Then a conforming implementation must yield the following strings:
+The below is one scenario can be printed by a conforming implementation:
 
 ```
 COR: H3Y A SANE PERSON, C 15 R1LLY C00L!!!!!

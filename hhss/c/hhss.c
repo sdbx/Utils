@@ -138,11 +138,11 @@ int get_num_sentence_to_print(char *str, int max_limit) {
    return num;
 }
 
-char *create_new_line(int *last_char_idx_ptr, int *max_char_idx_ptr);
+char *create_new_line(int *last_char_idx_ptr, int *max_char_num_ptr);
 void store_current_line(
    char ***lines_ptr, char *line, int *lines_cur_len_ptr, int *lines_max_len_ptr);
 void store_current_char(
-   char **line_ptr, char ch, int *last_char_idx_ptr, int *max_char_idx_ptr);
+   char **line_ptr, char ch, int *last_char_idx_ptr, int *max_char_num_ptr);
 
 /* copies valid lines from a data file. */
 char **copy_valid_lines(FILE *fp, int *result_len_ptr) {
@@ -158,8 +158,8 @@ char **copy_valid_lines(FILE *fp, int *result_len_ptr) {
    bool on_comment = false;
    int ch;
    int last_char_idx = 0;
-   int max_char_idx = LINE_INC_UNIT;
-   char *line = create_new_line(&last_char_idx, &max_char_idx);
+   int max_char_num = LINE_INC_UNIT;
+   char *line = create_new_line(&last_char_idx, &max_char_num);
 
    while ((ch = getc(fp)) != EOF) {
       switch (ch) {
@@ -167,7 +167,7 @@ char **copy_valid_lines(FILE *fp, int *result_len_ptr) {
             store_current_line(
                &lines, line, &lines_cur_len, &lines_max_len);
             if (strlen(line) != 0)
-               line = create_new_line(&last_char_idx, &max_char_idx);
+               line = create_new_line(&last_char_idx, &max_char_num);
             if (!at_line_start) at_line_start = true;
             if (on_comment) on_comment = false;
             break;
@@ -183,7 +183,7 @@ char **copy_valid_lines(FILE *fp, int *result_len_ptr) {
             if (on_comment) break;
             if (at_line_start) at_line_start = false;
             store_current_char(
-               &line, ch, &last_char_idx, &max_char_idx);
+               &line, ch, &last_char_idx, &max_char_num);
       }
    }
    store_current_line(  /* for a file not to be ended with \n. */
@@ -195,7 +195,7 @@ char **copy_valid_lines(FILE *fp, int *result_len_ptr) {
 
 /* creates a new line and initializes
    two variables related to it. */
-char *create_new_line(int *last_char_idx_ptr, int *max_char_idx_ptr) {
+char *create_new_line(int *last_char_idx_ptr, int *max_char_num_ptr) {
    char *line;
    
    line = malloc(LINE_INC_UNIT);
@@ -203,7 +203,7 @@ char *create_new_line(int *last_char_idx_ptr, int *max_char_idx_ptr) {
       raise_err("hhss: failed to malloc.");
    line[0] = '\0';
    *last_char_idx_ptr = 0;
-   *max_char_idx_ptr = 0;
+   *max_char_num_ptr = 0;
 
    return line;
 }
@@ -236,27 +236,27 @@ char **lengthen_lines(char **lines, int lines_max_len) {
    return lines_reallocated;
 }
 
-char *lengthen_line(char *line, int max_char_idx);
+char *lengthen_line(char *line, int max_char_num);
 
 /* stores a current character (namely, char) to char * variable. */
 void store_current_char(
    char **line_ptr,
    char ch,
    int *last_char_idx_ptr,
-   int *max_char_idx_ptr
+   int *max_char_num_ptr
 ) {
-   if (*last_char_idx_ptr == *max_char_idx_ptr) {
-      *max_char_idx_ptr += LINE_INC_UNIT;
-      *line_ptr = lengthen_line(*line_ptr, *max_char_idx_ptr);
+   if (*last_char_idx_ptr == *max_char_num_ptr) {
+      *max_char_num_ptr += LINE_INC_UNIT;
+      *line_ptr = lengthen_line(*line_ptr, *max_char_num_ptr);
    }
    (*line_ptr)[(*last_char_idx_ptr)++] = ch;  
 }
 
 /* makes a char * variable have a longer space. */
-char *lengthen_line(char *line, int max_char_idx) {
+char *lengthen_line(char *line, int max_char_num) {
    char *line_reallocated;
 
-   line_reallocated = realloc(line, max_char_idx * sizeof(char));
+   line_reallocated = realloc(line, max_char_num * sizeof(char));
    if (line_reallocated == NULL)
       raise_err("hhss: failed to realloc.");
 
