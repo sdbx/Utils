@@ -57,17 +57,17 @@ int main(int argc, char **argv) {
          1;
       command = malloc(cmd_len * sizeof(char));
 
-      int retval;
+      int return_value;
       int status_code;
 
-      retval = snprintf(
+      return_value = snprintf(
          command,
          cmd_len,
-         "./%s %s >.temp <<EOF\n%s\nEOF",
+         "%s %s >.temp <<EOF\n%s\nEOF",
          argv[1],
          tests[i].argv,
          tests[i].input);
-      if (retval < 0)
+      if (return_value < 0)
          raise_err("test: encoding error.");
 
       status_code = system(command);
