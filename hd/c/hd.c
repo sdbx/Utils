@@ -8,6 +8,13 @@ int main(void)
 {
   int state = 0;
   int current_char;
+
+  if ((current_char = getchar()) == EOF) {
+    fprintf(stderr, "hd: EOF detected.");
+    exit(EXIT_FAILURE);
+  }
+  else ungetc(current_char, stdin);
+
   while ((current_char = getchar()) != EOF) {
     state = transition(state, current_char);
     if (state < 0) exit(EXIT_FAILURE);
@@ -87,6 +94,6 @@ int transition(int state, int input) {
       }
     }
   }
-  fprintf(stderr, "[WARN] unexpected case");
+  fprintf(stderr, "hd: [WARN] unexpected case");
   return -1;
 }
