@@ -1,12 +1,12 @@
 name: Test for C implementations
 on:
-  push:
+  pull_request:
     branches: [main]
 
 jobs:
-  test:
-    name: Run test
-    runs-on: ubuntu-22.04
+  prepare:
+    name: Prepare test
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: ./test
@@ -17,6 +17,14 @@ jobs:
       - name: Build test maker
         run: gcc -o test_maker test_maker.c
 
+  test-btn:
+    name: Run buntang test
+    runs-on: self-hosted
+    needs: prepare
+    defaults:
+      run:
+        working-directory: ./test
+    steps:
       - name: Build object program
         run: make all
         working-directory: ./btn/c
@@ -26,6 +34,14 @@ jobs:
         run: ./test ../btn/c/btn
         timeout-minutes: 5
 
+  test-hd:
+    name: Run heading test
+    runs-on: self-hosted
+    needs: prepare
+    defaults:
+      run:
+        working-directory: ./test
+    steps:
       - name: Build object program
         run: make all
         working-directory: ./hd/c
@@ -35,6 +51,14 @@ jobs:
         run: ./test ../hd/c/hd
         timeout-minutes: 5
 
+  test-nsy:
+    name: Run noisy test
+    runs-on: self-hosted
+    needs: prepare
+    defaults:
+      run:
+        working-directory: ./test
+    steps:
       - name: Build object program
         run: make all
         working-directory: ./nsy/c

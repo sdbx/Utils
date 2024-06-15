@@ -1,6 +1,6 @@
 name: Test for C++ implementations
 on:
-  pull_request:
+  push:
     branches: [main]
 
 jobs:

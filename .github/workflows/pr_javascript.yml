@@ -1,25 +1,30 @@
 name: Test for JavaScript implementations
 on:
-  push:
+  pull_request:
     branches: [main]
 
 jobs:
-  test:
-    name: Run test
-    runs-on: ubuntu-22.04
-    defaults:
-      run:
-        working-directory: ./test
+  prepare:
+    name: Prepare test
+    runs-on: self-hosted
     steps:
       - name: Install Bun
         run: curl -fsSL https://bun.sh/install | bash
-        working-directory: ./
       - uses: actions/checkout@v4
         with:
           submodules: true
       - name: Build test maker
         run: gcc -o test_maker test_maker.c
+        working-directory: ./test
 
+  test:
+    name: Run heading test
+    runs-on: self-hosted
+    needs: prepare
+    defaults:
+      run:
+        working-directory: ./test
+    steps:
       - name: Build object program
         run: ~/.bun/bin/bun build hd.js --compile --outfile hd
         working-directory: ./hd/javascript

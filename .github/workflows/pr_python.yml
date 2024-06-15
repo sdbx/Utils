@@ -1,12 +1,12 @@
 name: Test for Python implementations
 on:
-  push:
+  pull_request:
     branches: [main]
 
 jobs:
-  test:
-    name: Run test
-    runs-on: ubuntu-22.04
+  prepare:
+    name: Prepare test
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: ./test
@@ -17,12 +17,28 @@ jobs:
       - name: Build test maker
         run: gcc -o test_maker test_maker.c
 
+  test-btn:
+    name: Run buntang test
+    runs-on: self-hosted
+    needs: prepare
+    defaults:
+      run:
+        working-directory: ./test
+    steps:
       - name: Build host program
         run: ./test_maker .test/btn.test
       - name: Run test
         run: ./test "python3 ../btn/python/btn.py"
         timeout-minutes: 5
 
+  test-nsy:
+    name: Run noisy test
+    runs-on: self-hosted
+    needs: prepare
+    defaults:
+      run:
+        working-directory: ./test
+    steps:
       - name: Build host program
         run: ./test_maker .test/nsy.test
       - name: Run test
