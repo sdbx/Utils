@@ -62,16 +62,11 @@ int main(int argc, char *argv[]) {
    }
    else if (mark_kind_len == 1) {
       switch (argv[1][0]) {
-         case 'e': print_mark = print_excl_mark;
-                   break;
-         case 'q': print_mark = print_ques_mark;
-                   break;
-         case 'p': print_mark = print_period;
-                   break;
-         case 'c': print_mark = print_comma_twice;
-                   break;
-         case 'h': print_mark = print_heart;
-                   break;
+         case 'e': print_mark = print_excl_mark; break;
+         case 'q': print_mark = print_ques_mark; break;
+         case 'p': print_mark = print_period; break;
+         case 'c': print_mark = print_comma_twice; break;
+         case 'h': print_mark = print_heart; break;
          default:  raise_err("nsy: an unknown argument.");
       }
    }
