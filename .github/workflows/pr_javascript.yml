@@ -8,8 +8,6 @@ jobs:
     name: Prepare test
     runs-on: self-hosted
     steps:
-      - name: Install Bun
-        run: curl -fsSL https://bun.sh/install | bash
       - uses: actions/checkout@v4
         with:
           submodules: true

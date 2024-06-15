@@ -4,27 +4,22 @@ on:
     branches: [main]
 
 jobs:
-  prepare:
-    name: Prepare test
+  test:
+    name: Run test
     runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: ./test
     steps:
       - name: Install Bun
         run: curl -fsSL https://bun.sh/install | bash
+        working-directory: ./
       - uses: actions/checkout@v4
         with:
           submodules: true
       - name: Build test maker
         run: gcc -o test_maker test_maker.c
-        working-directory: ./test
 
-  test:
-    name: Run heading test
-    runs-on: ubuntu-22.04
-    needs: prepare
-    defaults:
-      run:
-        working-directory: ./test
-    steps:
       - name: Build object program
         run: ~/.bun/bin/bun build hd.js --compile --outfile hd
         working-directory: ./hd/javascript

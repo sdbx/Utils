@@ -4,8 +4,8 @@ on:
     branches: [main]
 
 jobs:
-  prepare:
-    name: Prepare test
+  test:
+    name: Run test
     runs-on: ubuntu-22.04
     defaults:
       run:
@@ -17,14 +17,6 @@ jobs:
       - name: Build test maker
         run: gcc -o test_maker test_maker.c
 
-  test-btn:
-    name: Run buntang test
-    runs-on: ubuntu-22.04
-    needs: prepare
-    defaults:
-      run:
-        working-directory: ./test
-    steps:
       - name: Build object program
         run: make all
         working-directory: ./btn/c
@@ -34,14 +26,6 @@ jobs:
         run: ./test ../btn/c/btn
         timeout-minutes: 5
 
-  test-hd:
-    name: Run heading test
-    runs-on: ubuntu-22.04
-    needs: prepare
-    defaults:
-      run:
-        working-directory: ./test
-    steps:
       - name: Build object program
         run: make all
         working-directory: ./hd/c
@@ -51,14 +35,6 @@ jobs:
         run: ./test ../hd/c/hd
         timeout-minutes: 5
 
-  test-nsy:
-    name: Run noisy test
-    runs-on: ubuntu-22.04
-    needs: prepare
-    defaults:
-      run:
-        working-directory: ./test
-    steps:
       - name: Build object program
         run: make all
         working-directory: ./nsy/c

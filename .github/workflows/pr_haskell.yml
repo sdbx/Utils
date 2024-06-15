@@ -26,7 +26,7 @@ jobs:
         working-directory: ./test
     steps:
       - name: Build object program
-        run: ~/.ghcup/bin/ghc buntang.hs
+        run: ghc buntang.hs
         working-directory: ./btn/haskell
       - name: Build host program
         run: ./test_maker .test/btn.test
@@ -43,7 +43,7 @@ jobs:
         working-directory: ./test
     steps:
       - name: Build object program
-        run: ~/.ghcup/bin/ghc hd.hs
+        run: ghc hd.hs
         working-directory: ./hd/haskell
       - name: Build host program
         run: ./test_maker .test/hd.test
