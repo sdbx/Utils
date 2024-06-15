@@ -27,10 +27,10 @@ jobs:
         timeout-minutes: 5
 
       - name: Build object program
-        run: ghc buntang.hs
+        run: ghc hd.hs
         working-directory: ./hd/haskell
       - name: Build host program
         run: ./test_maker .test/hd.test
       - name: Run test
-        run: ./test ../hd/haskell/buntang
+        run: ./test ../hd/haskell/hd
         timeout-minutes: 5
