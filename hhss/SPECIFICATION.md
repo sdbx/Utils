@@ -67,7 +67,7 @@ COR
 A SANE PERSON
 ```
 
-The below is one scenario which can be printed by a conforming implementation:
+The below is one possible result which can be produced by a conforming implementation:
 
 ```
 COR: H3Y A SANE PERSON, C 15 R1LLY C00L!!!!!
