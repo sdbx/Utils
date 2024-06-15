@@ -1,27 +1,34 @@
-name: Test for heading Rust implementation
+name: Test for Rust implementations
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 jobs:
-  test:
-    name: Run test
-    runs-on: self-hosted
+  prepare:
+    name: Prepare test
+    runs-on: ubuntu-22.04
     defaults:
       run:
         working-directory: ./test
     steps:
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
       - uses: actions/checkout@v4
         with:
           submodules: true
-      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - name: Build test maker
+        run: gcc -o test_maker test_maker.c
+
+  test:
+    name: Run heading test
+    runs-on: ubuntu-22.04
+    needs: prepare
+    defaults:
+      run:
+        working-directory: ./test
+    steps:
       - name: Build object program
         run: rustc hd.rs -C debuginfo=0 -C opt-level=z -C strip=symbols -o hd
         working-directory: ./hd/rust
-      - name: Build test maker
-        run: gcc -o test_maker test_maker.c
       - name: Build host program
         run: ./test_maker .test/hd.test
       - name: Run test
