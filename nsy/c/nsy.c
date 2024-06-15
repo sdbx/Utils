@@ -61,18 +61,19 @@ int main(int argc, char *argv[]) {
          raise_err("nsy: an unknown argument.");
    }
    else if (mark_kind_len == 1) {
-      if (strncmp(argv[1], "e", 1) == 0)
-         print_mark = print_excl_mark;
-      else if (strncmp(argv[1], "q", 1) == 0)
-         print_mark = print_ques_mark;
-      else if (strncmp(argv[1], "p", 1) == 0)
-         print_mark = print_period;
-      else if (strncmp(argv[1], "c", 1) == 0)
-         print_mark = print_comma_twice;
-      else if (strncmp(argv[1], "h", 1) == 0)
-         print_mark = print_heart;
-      else
-         raise_err("nsy: an unknown argument.");
+      switch (argv[1][0]) {
+         case 'e': print_mark = print_excl_mark;
+                   break;
+         case 'q': print_mark = print_ques_mark;
+                   break;
+         case 'p': print_mark = print_period;
+                   break;
+         case 'c': print_mark = print_comma_twice;
+                   break;
+         case 'h': print_mark = print_heart;
+                   break;
+         default:  raise_err("nsy: an unknown argument.");
+      }
    }
    else  raise_err("nsy: an unknown argument.");
    
