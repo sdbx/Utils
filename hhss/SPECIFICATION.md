@@ -6,6 +6,8 @@ The purpose of this specification is to describe overall components which a conf
 
 - 24.06.10 :: Initial writing.
 - 24.06.13 :: Minor fix.
+- 24.06.14 :: Minor fix.
+- 24.06.15 :: Removal of the irrelevant Edge Case section.
 
 ## Use Case
 
@@ -65,7 +67,7 @@ COR
 A SANE PERSON
 ```
 
-Then a conforming implementation must yield the following strings:
+The below is one possible result which can be produced by a conforming implementation:
 
 ```
 COR: H3Y A SANE PERSON, C 15 R1LLY C00L!!!!!
@@ -78,13 +80,9 @@ This example is illustrative in that the previous user name and the current user
 
 In case of an error occurred, a conforming implementation must write a relevant, descriptive error message to stderr and terminate immediately, returning an abnormal termination status code.
 
-### Edge Case
-
-It is very easy to imagine a case where there is no input at all from stdin. In this case, a conforming implementation, not having written anything yet to stdout, must follow the error handling behavior described in the Error Handling section.
-
 ## I/O
 
-A conforming implementation must take its input from stdin and print the output to stdout.
+A conforming implementation does not take any input from stdin, while the implementation must print the output to stdout.
 
 ## Command Line Argument
 
