@@ -1,0 +1,69 @@
+name: Test for C implementations
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  prepare:
+    name: Prepare test
+    runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: ./test
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Build test maker
+        run: gcc -o test_maker test_maker.c
+
+  test-btn:
+    name: Run buntang test
+    runs-on: self-hosted
+    needs: prepare
+    defaults:
+      run:
+        working-directory: ./test
+    steps:
+      - name: Build object program
+        run: make all
+        working-directory: ./btn/c
+      - name: Build host program
+        run: ./test_maker .test/btn.test
+      - name: Run test
+        run: ./test ../btn/c/btn
+        timeout-minutes: 5
+
+  test-hd:
+    name: Run heading test
+    runs-on: self-hosted
+    needs: prepare
+    defaults:
+      run:
+        working-directory: ./test
+    steps:
+      - name: Build object program
+        run: make all
+        working-directory: ./hd/c
+      - name: Build host program
+        run: ./test_maker .test/hd.test
+      - name: Run test
+        run: ./test ../hd/c/hd
+        timeout-minutes: 5
+
+  test-nsy:
+    name: Run noisy test
+    runs-on: self-hosted
+    needs: prepare
+    defaults:
+      run:
+        working-directory: ./test
+    steps:
+      - name: Build object program
+        run: make all
+        working-directory: ./nsy/c
+      - name: Build host program
+        run: ./test_maker .test/nsy.test
+      - name: Run test
+        run: ./test ../nsy/c/nsy
+        timeout-minutes: 5

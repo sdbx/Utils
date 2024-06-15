@@ -1,14 +1,12 @@
-name: Test for heading C++ implementation
+name: Test for C++ implementations
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 jobs:
-  test:
-    name: Run test
-    runs-on: self-hosted
+  prepare:
+    name: Prepare test
+    runs-on: ubuntu-22.04
     defaults:
       run:
         working-directory: ./test
@@ -16,13 +14,22 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
+      - name: Build test maker
+        run: gcc -o test_maker test_maker.c
+
+  test-hd:
+    name: Run heading test
+    runs-on: ubuntu-22.04
+    needs: prepare
+    defaults:
+      run:
+        working-directory: ./test
+    steps:
       - name: Build object program
         run: make all
         working-directory: ./hd/cpp
       - name: Build test maker
         run: gcc -o test_maker test_maker.c
-      - name: Build host program
-        run: ./test_maker .test/hd.test
       - name: Run test
         run: ./test ../hd/cpp/hd
         timeout-minutes: 5

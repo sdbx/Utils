@@ -1,0 +1,52 @@
+name: Test for Haskell implementations
+on:
+  push:
+    branches: [main]
+
+jobs:
+  prepare:
+    name: Prepare test
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: ./test
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Build test maker
+        run: gcc -o test_maker test_maker.c
+
+  test-btn:
+    name: Run buntang test
+    runs-on: ubuntu-22.04
+    needs: prepare
+    defaults:
+      run:
+        working-directory: ./test
+    steps:
+      - name: Build object program
+        run: ghc buntang.hs
+        working-directory: ./btn/haskell
+      - name: Build host program
+        run: ./test_maker .test/btn.test
+      - name: Run test
+        run: ./test ../btn/haskell/buntang
+        timeout-minutes: 5
+
+  test-hd:
+    name: Run heading test
+    runs-on: ubuntu-22.04
+    needs: prepare
+    defaults:
+      run:
+        working-directory: ./test
+    steps:
+      - name: Build object program
+        run: ghc buntang.hs
+        working-directory: ./hd/haskell
+      - name: Build host program
+        run: ./test_maker .test/hd.test
+      - name: Run test
+        run: ./test ../hd/haskell/buntang
+        timeout-minutes: 5
