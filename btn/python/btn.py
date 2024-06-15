@@ -4,7 +4,7 @@ def main(n):
     text = input().replace(" ", "")
     if len(text) == 0:
         print("nsy: EOF detected.")
-        return
+        sys.exit(1)
     for i in range(0, len(text), n):
         print(text[i : i + n])
 

@@ -4,7 +4,7 @@ def main(mark_kind):
     text = input().replace(" ", "")
     if len(text) == 0:
         print("nsy: EOF detected.")
-        return
+        sys.exit(1)
     match mark_kind:
         case "e":
             print('',*text,'',sep='！')
