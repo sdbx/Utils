@@ -28,27 +28,49 @@
 
 void raise_err(char *err_msg);
 int inspect_char(int ch);
+/* delimiters */
 void print_excl_mark(void);
 void print_ques_mark(void);
 void print_excl_mark_u(void);
 void print_ques_mark_u(void);
+void print_period(void);
+void print_ellipsis(void);
+void print_plus(void);
+void print_comma_twice(void);
+void print_heart(void);
 
 int main(int argc, char *argv[]) {
    if (argc != 2)
       raise_err("nsy: argument count not equal to 2.");
 
    void (*print_mark)(void);
+   int mark_kind_len;
 
-   if (strcmp(argv[1], "e") == 0)
-      print_mark = print_excl_mark;
-   else if (strcmp(argv[1], "q") == 0)
-      print_mark = print_ques_mark;
-   else if (strcmp(argv[1], "eu") == 0)
-      print_mark = print_excl_mark_u;
-   else if (strcmp(argv[1], "qu") == 0)
-      print_mark = print_ques_mark_u;
-   else
-      raise_err("nsy: an unknown argument.");
+   mark_kind_len = strlen(argv[1]);
+
+   if (mark_kind_len == 2) {
+      if (strncmp(argv[1], "eu", 2) == 0)
+         print_mark = print_excl_mark_u;
+      else if (strncmp(argv[1], "qu", 2) == 0)
+         print_mark = print_ques_mark_u;
+      else if (strncmp(argv[1], "pl", 2) == 0)
+         print_mark = print_plus;
+      else if (strncmp(argv[1], "el", 2) == 0)
+         print_mark = print_ellipsis;
+      else
+         raise_err("nsy: an unknown argument.");
+   }
+   else if (mark_kind_len == 1) {
+      switch (argv[1][0]) {
+         case 'e': print_mark = print_excl_mark; break;
+         case 'q': print_mark = print_ques_mark; break;
+         case 'p': print_mark = print_period; break;
+         case 'c': print_mark = print_comma_twice; break;
+         case 'h': print_mark = print_heart; break;
+         default:  raise_err("nsy: an unknown argument.");
+      }
+   }
+   else  raise_err("nsy: an unknown argument.");
    
    int ch;
    int left_multibyte_count = 0;
@@ -130,4 +152,29 @@ inline void print_excl_mark_u(void) {
 /* ?' */
 inline void print_ques_mark_u(void) {
    fputs(" \xC2\xBF ", stdout);    /* 0x00BF */
+}
+
+/* . */
+void print_period(void) {
+   putchar('.');  /* 0x002E */
+}
+
+/* ... */
+void print_ellipsis(void) {
+   fputs("\xE2\x80\xA6", stdout);   /* 0x2026 */
+}
+
+/* + */
+void print_plus(void) {
+   putchar('+');  /* 0x002B */
+}
+
+/* ,, */
+void print_comma_twice(void) {
+   fputs(",,", stdout);    /* 0x002C */
+}
+
+/* ♥ */
+void print_heart(void) {
+   fputs("\xE2\x99\xA5", stdout);    /* 0x2665 */
 }
