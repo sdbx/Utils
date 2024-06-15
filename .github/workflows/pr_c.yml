@@ -23,9 +23,7 @@ jobs:
     needs: prepare
     steps:
       - name: Build object program
-        run: |
-          cd ./btn/c
-          make all
+        run: ls
       - name: Build host program
         run: ./test_maker .test/btn.test
         working-directory: ./test
