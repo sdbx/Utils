@@ -6,6 +6,7 @@ The purpose of this specification is to describe overall components which a conf
 
 - 24.06.10 :: Initial writing.
 - 24.06.13 :: Minor fix.
+- 24.06.14 :: Minor fix.
 
 ## Use Case
 
@@ -28,9 +29,22 @@ A conforming implementation must produce a string, hereafter referred to as **th
 > `N` is of type `int` and has a value between 1 ~ 32 (inclusive).
 
 ### Example: the result
-Suppose the program is executed with the input from stdin being "I want to sleep... I didn't know documentation is very difficult..."
 
-Then a conforming implementation must yield the result as follows: "Iwanttosleep...Ididn'tknowdocumentationisverydifficult..."
+Suppose the program is executed with `N` being 10 and the input from stdin being "I want to sleep... I didn't know documentation is very difficult..."
+
+Then a conforming implementation must yield the result as follows:
+
+```
+// This numbers are for showing each line exactly has 10 characters and thus do not have to do with the output of the program.
+0123456789
+
+Iwanttosle
+ep...Ididn
+'tknowdocu
+mentationi
+sverydiffi
+cult...
+```
 
 ### Error Handling
 
