@@ -16,6 +16,7 @@ typedef struct testcase_ {
 } testcase;
 
 void raise_err(char *err_msg);
+char *convert_space(char *dest, char *replace_str);
 
 int main(int argc, char **argv) {
    if (argc != 2)
@@ -138,12 +139,21 @@ int main(int argc, char **argv) {
 
          if (line_ended) {
             if (strncmp(output, tests[i].output + offset, output_len) != 0) {
+               char *expected_output, *actual_output;
+
+               expected_output = convert_space(tests[i].output + offset, "_");
+               actual_output = convert_space(output, "_");
                printf(
                   "test: \"%s\": failed.\n"
-                  "\texpected: %s\n"
-                  "\tactual: %s\n",
-                  tests[i].name, tests[i].output + offset, output);
+                  "\texpected:   %s\n"
+                  "\tactual:     %s\n",
+                  tests[i].name,
+                  expected_output,
+                  actual_output);
                str_not_equal = true;
+
+               free(expected_output);
+               free(actual_output);
                break;
             }
             offset += output_len;
@@ -198,4 +208,45 @@ void raise_err(char *err_msg) {
    fputs(err_msg, stderr);
    putc('\n', stderr);
    exit(EXIT_FAILURE);
+}
+
+/* converts '\n' to replace_str */
+char *convert_space(char *src, char *replace_str) {
+   /* Scan the whole string, counting the occurrence of \n. */
+   int src_idx, count;
+
+   src_idx = 0;
+   count = 0;
+   while (src[src_idx] != '\0')
+      if (src[src_idx++] == '\n')
+         count++;
+
+   int replace_str_len;
+   int dest_len;
+   char *dest;
+
+   replace_str_len = strlen(replace_str);
+   dest_len = 1 + strlen(src) - count + count * replace_str_len;
+   dest = malloc(dest_len);
+   if (dest == NULL)
+      raise_err("test: failed to malloc.");
+   dest[dest_len - 1] = '\0';
+
+   int dest_idx;
+
+   src_idx = 0;
+   dest_idx = 0;
+   while (src[src_idx] != '\0')
+      if (src[src_idx] == '\n') {
+         strncat(dest + dest_idx, replace_str, replace_str_len);
+         src_idx++;
+         dest_idx += replace_str_len;
+      }
+      else {
+         dest[dest_idx] = src[src_idx];
+         dest_idx++;
+         src_idx++;
+      }
+
+   return dest;
 }
