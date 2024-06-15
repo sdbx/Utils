@@ -1,0 +1,29 @@
+name: Test for JavaScript implementations
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Run test
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: ./test
+    steps:
+      - name: Install Bun
+        run: curl -fsSL https://bun.sh/install | bash
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Build test maker
+        run: gcc -o test_maker test_maker.c
+
+      - name: Build object program
+        run: ~/.bun/bin/bun build hd.js --compile --outfile hd
+        working-directory: ./hd/javascript
+      - name: Build host program
+        run: ./test_maker .test/hd.test
+      - name: Run test
+        run: ./test ../hd/javascript/hd
+        timeout-minutes: 5
