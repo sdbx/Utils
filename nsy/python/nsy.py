@@ -1,32 +1,27 @@
 import sys
 
 def main(mark_kind):
-    try:
-        text = input().replace(" ", "")
-        if len(text) == 0:
-            raise Exception("nsy: EOF detected.")
-    
-        if mark_kind == "e":
+    text = input().replace(" ", "")
+    if len(text) == 0:
+        print("nsy: EOF detected.")
+        return
+    match mark_kind:
+        case "e":
             print('',*text,'',sep='！')
-        elif mark_kind == "q":
+        case "q":
             print('',*text,'',sep='？')
-        elif mark_kind == "eu":
+        case "eu":
             print('',*text,'',sep=' ¡ ')
-        elif mark_kind == "qu":
+        case "qu":
             print('',*text,'',sep=' ¿ ')
-        else:
-            raise Exception("nsy: unknown delimiter.")
-    except Exception as e:
-        print(e)
+        case _:
+            print("nsy: unknown delimiter.")
 
-try:
-    if len(sys.argv) == 1:
-        raise IndexError("nsy: argc != 2.")
-    mark_kind = sys.argv[1]
-    main(mark_kind)
-except Exception as e:
-    print(e)
-    if type(e).__name__ == "IndexError":
-        print("Usage : python nsy.py MARK_KIND")
-        print("  where\n\tMARK_KIND = e | q | eu | qu")
-    sys.exit()
+if len(sys.argv) == 1:
+    print("nsy: argc != 2.")
+    print("Usage : python nsy.py MARK_KIND")
+    print("  where\n\tMARK_KIND = e | q | eu | qu")
+    sys.exit(1)
+    
+mark_kind = sys.argv[1]
+main(mark_kind)
