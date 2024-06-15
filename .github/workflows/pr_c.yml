@@ -27,7 +27,7 @@ jobs:
     steps:
       - name: Build object program
         run: make all
-        working-directory: btn/c
+        working-directory: ../btn/c
       - name: Build host program
         run: ./test_maker .test/btn.test
       - name: Run test
