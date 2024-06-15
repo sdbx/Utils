@@ -1,7 +1,5 @@
 # Utils
 
-Last Update: 24.06.15
-
 ## Introduction
 
 This repository consists of helper programs which assist you to make a sentence looking somewhat fun, somewhat ridiculous.
