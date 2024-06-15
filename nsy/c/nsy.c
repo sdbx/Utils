@@ -44,27 +44,37 @@ int main(int argc, char *argv[]) {
       raise_err("nsy: argument count not equal to 2.");
 
    void (*print_mark)(void);
+   int mark_kind_len;
 
-   if (strncmp(argv[1], "eu", 2) == 0)
-      print_mark = print_excl_mark_u;
-   else if (strncmp(argv[1], "qu", 2) == 0)
-      print_mark = print_ques_mark_u;
-   else if (strncmp(argv[1], "pl", 2) == 0)
-      print_mark = print_plus;
-   else if (strncmp(argv[1], "el", 2) == 0)
-      print_mark = print_ellipsis;
-   else if (strncmp(argv[1], "e", 1) == 0)
-      print_mark = print_excl_mark;
-   else if (strncmp(argv[1], "q", 1) == 0)
-      print_mark = print_ques_mark;
-   else if (strncmp(argv[1], "p", 1) == 0)
-      print_mark = print_period;
-   else if (strncmp(argv[1], "c", 1) == 0)
-      print_mark = print_comma_twice;
-   else if (strncmp(argv[1], "h", 1) == 0)
-      print_mark = print_heart;
-   else
-      raise_err("nsy: an unknown argument.");
+   mark_kind_len = strlen(argv[1]);
+
+   if (mark_kind_len == 2) {
+      if (strncmp(argv[1], "eu", 2) == 0)
+         print_mark = print_excl_mark_u;
+      else if (strncmp(argv[1], "qu", 2) == 0)
+         print_mark = print_ques_mark_u;
+      else if (strncmp(argv[1], "pl", 2) == 0)
+         print_mark = print_plus;
+      else if (strncmp(argv[1], "el", 2) == 0)
+         print_mark = print_ellipsis;
+      else
+         raise_err("nsy: an unknown argument.");
+   }
+   else if (mark_kind_len == 1) {
+      if (strncmp(argv[1], "e", 1) == 0)
+         print_mark = print_excl_mark;
+      else if (strncmp(argv[1], "q", 1) == 0)
+         print_mark = print_ques_mark;
+      else if (strncmp(argv[1], "p", 1) == 0)
+         print_mark = print_period;
+      else if (strncmp(argv[1], "c", 1) == 0)
+         print_mark = print_comma_twice;
+      else if (strncmp(argv[1], "h", 1) == 0)
+         print_mark = print_heart;
+      else
+         raise_err("nsy: an unknown argument.");
+   }
+   else  raise_err("nsy: an unknown argument.");
    
    int ch;
    int left_multibyte_count = 0;
