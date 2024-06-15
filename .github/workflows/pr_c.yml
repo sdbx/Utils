@@ -21,9 +21,6 @@ jobs:
     name: Run buntang test
     runs-on: ubuntu-22.04
     needs: prepare
-    defaults:
-      run:
-        working-directory: ./test
     steps:
       - name: Build object program
         run: |
@@ -31,6 +28,8 @@ jobs:
           make all
       - name: Build host program
         run: ./test_maker .test/btn.test
+        working-directory: ./test
       - name: Run test
         run: ./test ../btn/c/btn
+        working-directory: ./test
         timeout-minutes: 5
