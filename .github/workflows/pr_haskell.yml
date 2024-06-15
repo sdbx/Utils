@@ -11,7 +11,6 @@ jobs:
       run:
         working-directory: ./test
     steps:
-      - uses: haskell-actions/setup@v2
       - uses: actions/checkout@v4
         with:
           submodules: true
