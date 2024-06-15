@@ -78,9 +78,19 @@ int main(int argc, char **argv) {
       free(command);
       if (status_code == SYSTEM_FAILED)
          raise_err("test: system() failed.");
-      if (WIFEXITED(status_code))
-         if (WEXITSTATUS(status_code) == EXIT_FAILURE)
-            raise_err("test: abnormal termination.");
+      if (WIFEXITED(status_code)) {
+         status_code = WEXITSTATUS(status_code);
+         if (status_code != EXIT_SUCCESS) {
+            fprintf(stderr,
+               "test: system() returned with exit status %d.\n",
+               status_code);
+            if (fclose(temp) == EOF)
+               raise_err("test: failed to close .temp file.");
+            if (remove(".temp") != 0)
+               raise_err("test: failed to remove .temp file.");
+            exit(EXIT_FAILURE);
+         }
+      }
       
       char *output;
       int output_cur_idx, output_max_num;
