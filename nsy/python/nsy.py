@@ -1,26 +1,28 @@
 import sys
+import string
 
 def main(mark_kind):
-    text = input().replace(" ", "")
+    text = sys.stdin.read()
     if len(text) == 0:
-        print("nsy: EOF detected.")
+        print('nsy: EOF detected.')
         sys.exit(1)
+    text = text.translate(str.maketrans('', '', string.whitespace))
     match mark_kind:
-        case "e":
+        case 'e':
             print('',*text,'',sep='！')
-        case "q":
+        case 'q':
             print('',*text,'',sep='？')
-        case "eu":
+        case 'eu':
             print('',*text,'',sep=' ¡ ')
-        case "qu":
+        case 'qu':
             print('',*text,'',sep=' ¿ ')
         case _:
-            print("nsy: unknown delimiter.")
+            print('nsy: unknown delimiter.')
 
 if len(sys.argv) == 1:
-    print("nsy: argc != 2.")
-    print("Usage : python nsy.py MARK_KIND")
-    print("  where\n\tMARK_KIND = e | q | eu | qu")
+    print('nsy: argc != 2.')
+    print('Usage : python nsy.py MARK_KIND')
+    print('  where\n\tMARK_KIND = e | q | eu | qu')
     sys.exit(1)
     
 mark_kind = sys.argv[1]
