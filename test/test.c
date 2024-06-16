@@ -16,7 +16,7 @@ typedef struct testcase_ {
 } testcase;
 
 void raise_err(char *err_msg);
-char *convert_space(char *dest, char *replace_str);
+char *convert_space(char *dest, char *replace_str, int len);
 
 int main(int argc, char **argv) {
    if (argc != 2)
@@ -92,18 +92,21 @@ int main(int argc, char **argv) {
          }
       }
       
-      char *output;
-      int output_cur_idx, output_max_num;
-      int offset;
-      bool str_not_equal;
+      char *actual_output;
+      int ao_cur_idx, ao_max_num;   /* ao = actual output */
+      int eo_offset;                /* eo = expected output */
+      bool str_not_equal;     /* 
+                                 Without abbreviations, identifiers
+                                 would become so verbose UwU~~
+                              */
 
-      output_cur_idx = 0;
-      output_max_num = OUTPUT_LEN;
-      output = malloc(output_max_num * sizeof(char));
-      if (output == NULL)
+      ao_cur_idx = 0;
+      ao_max_num = OUTPUT_LEN;
+      actual_output = malloc(ao_max_num * sizeof(char));
+      if (actual_output == NULL)
          raise_err("test: failed to malloc.");
 
-      offset = 0;
+      eo_offset = 0;
       str_not_equal = false;
 
       /*
@@ -118,8 +121,8 @@ int main(int argc, char **argv) {
             3.2. Prepare the next fgets() call.
       */
 
-      while (fgets(output + output_cur_idx, OUTPUT_LEN, temp) != NULL) {
-         const int output_len = strlen(output);
+      while (fgets(actual_output + ao_cur_idx, OUTPUT_LEN, temp) != NULL) {
+         const int ao_len = strlen(actual_output);
          int ch;
          bool end_of_line, end_of_file;
          bool overflow_expected, line_ended;
@@ -131,7 +134,7 @@ int main(int argc, char **argv) {
             end_of_file = false;
             ungetc(ch, temp);
          }
-         end_of_line = output[output_len - 1] == '\n';
+         end_of_line = actual_output[ao_len - 1] == '\n';
 
          /*
             output will not have enough space to hold the
@@ -144,29 +147,32 @@ int main(int argc, char **argv) {
             Note: refer to the comment in the below else clause
                   for the reason \0 is not counted.
          */
-         overflow_expected = output_len + OUTPUT_LEN > output_max_num;
+         overflow_expected = ao_len + OUTPUT_LEN > ao_max_num;
          line_ended = end_of_line || end_of_file;
 
          if (line_ended) {
-            if (strncmp(output, tests[i].output + offset, output_len) != 0) {
-               char *expected_output, *actual_output;
+            char *const eo_line_start = tests[i].output + eo_offset;
 
-               expected_output = convert_space(tests[i].output + offset, "\n\t\t\t");
-               actual_output = convert_space(output, "\n\t\t\t");
+            if (strncmp(actual_output, eo_line_start, ao_len) != 0) {
+               char *eo_for_print, *ao_for_print;
+               const int temp_str_1_len = strcspn(eo_line_start, "\n");
+
+               eo_for_print = convert_space(eo_line_start, "\n\t\t\t", temp_str_1_len);
+               ao_for_print = convert_space(actual_output, "\n\t\t\t", ao_len);
                printf(
                   "test: \"%s\": failed.\n"
                   "\texpected:\t%s\n"
                   "\tactual:\t\t%s\n",
                   tests[i].name,
-                  expected_output,
-                  actual_output);
-               free(expected_output);
-               free(actual_output);
+                  eo_for_print,
+                  ao_for_print);
+               free(eo_for_print);
+               free(ao_for_print);
 
                str_not_equal = true;
                break;
             }
-            offset += output_len;
+            eo_offset += ao_len;
          }
          else {
             if (overflow_expected) {
@@ -174,13 +180,13 @@ int main(int argc, char **argv) {
                   Since the current line which is read from .temp file is not
                   complete, we need to realloc output to have more space.
                */
-               output_max_num *= 2;
-               output = realloc(output, output_max_num);
-               if (output == NULL)
+               ao_max_num *= 2;
+               actual_output = realloc(actual_output, ao_max_num);
+               if (actual_output == NULL)
                   raise_err("test: failed to realloc.");
             }
 
-            output_cur_idx += OUTPUT_LEN - 1;
+            ao_cur_idx += OUTPUT_LEN - 1;
             /* 
                Suppose OUTPUT_LEN = 5. Considering the last character is \0,
                in order to concat the previous string and the next string,
@@ -195,7 +201,7 @@ int main(int argc, char **argv) {
             */
          }
       }
-      free(output);
+      free(actual_output);
       if (!str_not_equal)
          printf("test: \"%s\": passed.\n", tests[i].name);
       else if (!test_failed)
@@ -221,13 +227,16 @@ void raise_err(char *err_msg) {
 }
 
 /* converts '\n' to replace_str */
-char *convert_space(char *src, char *replace_str) {
+char *convert_space(char *src, char *replace_str, int len) {
+   if (len < 0)
+      raise_err("test: len < 0.");
+   
    /* Scan the whole string, counting the occurrence of \n. */
    int src_idx, count;
 
    src_idx = 0;
    count = 0;
-   while (src[src_idx] != '\0')
+   while (src[src_idx] != '\0' && src_idx < len)
       if (src[src_idx++] == '\n')
          count++;
 
@@ -236,27 +245,27 @@ char *convert_space(char *src, char *replace_str) {
    char *dest;
 
    replace_str_len = strlen(replace_str);
-   dest_len = 1 + strlen(src) - count + count * replace_str_len;
+   dest_len = 1 + src_idx - count + count * replace_str_len;
 
    dest = malloc(dest_len * sizeof(char));
    if (dest == NULL)
       raise_err("test: failed to malloc.");
    dest[dest_len - 1] = '\0';
 
-   int dest_idx;
+   int dest_idx, i;
 
-   src_idx = 0;
+   i = 0;
    dest_idx = 0;
-   while (src[src_idx] != '\0') {
-      if (src[src_idx] == '\n') {
+   while (i < src_idx) {
+      if (src[i] == '\n') {
          strncpy(dest + dest_idx, replace_str, replace_str_len);
          dest_idx += replace_str_len;
       }
       else {
-         dest[dest_idx] = src[src_idx];
+         dest[dest_idx] = src[i];
          dest_idx++;
       }
-      src_idx++;
+      i++;
    }
 
    return dest;
