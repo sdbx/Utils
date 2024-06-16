@@ -216,10 +216,15 @@ bool perform_test(testcase *testcases, int testcases_len, char *executable_name)
 
             if (strncmp(actual_output, eo_line_start, ao_len) != 0) {
                char *eo_for_print, *ao_for_print;
-               const int eo_for_print_len = strcspn(eo_line_start, "\n");
+               int eo_for_print_len;
+
+               eo_for_print_len = strcspn(eo_line_start, "\n");
+               if (eo_line_start[eo_for_print_len] == '\n')  /* since it could be '\0' */
+                  eo_for_print_len++;  /* in order to print \n too */
 
                eo_for_print = convert_linefeed(eo_line_start, "\n\t\t\t", eo_for_print_len);
                ao_for_print = convert_linefeed(actual_output, "\n\t\t\t", ao_len);
+
                printf(
                   "test: \"%s\": failed.\n"
                   "\texpected:\t%s\n"
@@ -227,6 +232,7 @@ bool perform_test(testcase *testcases, int testcases_len, char *executable_name)
                   testcases[i].name,
                   eo_for_print,
                   ao_for_print);
+               
                free(eo_for_print);
                free(ao_for_print);
 
