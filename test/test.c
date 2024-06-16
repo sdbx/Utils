@@ -16,7 +16,8 @@ typedef struct testcase_ {
 } testcase;
 
 void raise_err(char *err_msg);
-char *convert_space(char *dest, char *replace_str, int len);
+testcase *acquire_testcases(int *testcases_len_ptr);
+bool perform_test(testcase *testcases, int testcases_len, char *executable_name);
 
 int main(int argc, char **argv) {
    if (argc != 2)
@@ -27,55 +28,111 @@ int main(int argc, char **argv) {
    if (!system(NULL))
       raise_err("test: no command processor available.");
    
-   /* Prepare to include test cases. */
+   testcase *testcases;
+   int testcases_len;
+   bool test_failed;
+
+   testcases = acquire_testcases(&testcases_len);
+   test_failed = perform_test(testcases, testcases_len, argv[1]);
+   free(testcases);
+
+   return !test_failed
+            ? EXIT_SUCCESS
+            : EXIT_FAILURE;
+}
+
+/*
+ * raise_err
+ * prints an error message to stderr.
+ */
+void raise_err(char *err_msg) {
+   fputs(err_msg, stderr);
+   putc('\n', stderr);
+   exit(EXIT_FAILURE);
+}
+
+/*
+ * acquire_testcases
+ * writes the length of testcases to the first argument
+ * and returns a pointer to a memory block where test-
+ * cases are.
+ */
+testcase *acquire_testcases(int *testcases_len_ptr) {
    testcase *tests;
-   
+   int tlen;
+
    tests = malloc(TESTCASE_LEN * sizeof(testcase));
    if (tests == NULL)
       raise_err("test: failed to malloc.");
-
-   int tlen;
    
-   /* Include test cases. Ex: #include "nsy.test" */
+   /*
+    * Include test cases. This line will be replaced
+    * to something like #include "nsy.test".
+    */
    §TESTCASE§
 
-   /* Perform tests. */
+   *testcases_len_ptr = tlen;
+   return tests;
+}
+
+char *convert_linefeed(char *dest, char *replace_str, int len);
+
+/*
+ * perform_test
+ * conducts tests with testcases.
+ */
+bool perform_test(testcase *testcases, int testcases_len, char *executable_name) {
    bool test_failed;
    
-   test_failed = false;
-   for (int i = 0; i < tlen; i++) {
+   test_failed = false; /* will change to true when a testcase fails. */
+
+   /* Iterate testcases and perform each testcase. */
+   for (int i = 0; i < testcases_len; i++) {
+      /*
+       * [Step 1] Opens .temp file in order to save
+       * the output from the program to be tested.
+       */
       FILE *temp;
       
       temp = fopen(".temp", "w+");  /* truncates the file content. */
       if (temp == NULL)
          raise_err("test: failed to open .temp file.");
 
+      /*
+       * [Step 2] Prepares a command which will be used to
+       * execute the program to be tested.
+       */
       char *command;
       int cmd_len;
+      int return_value;
 
       cmd_len =
          strlen("  >.temp <<EOF\n\nEOF") +
-         strlen(argv[1]) +
-         strlen(tests[i].argv) +
-         strlen(tests[i].input) +
-         1;
-      command = malloc(cmd_len * sizeof(char));
+         strlen(executable_name) +
+         strlen(testcases[i].argv) +
+         strlen(testcases[i].input) +
+         1;  /* for \0 */
 
-      int return_value;
-      int status_code;
+      command = malloc(cmd_len * sizeof(char));
+      if (command == NULL)
+         raise_err("test: failed to malloc.");
 
       return_value = snprintf(
          command,
          cmd_len,
          "%s %s >.temp <<EOF\n%s\nEOF",
-         argv[1],
-         tests[i].argv,
-         tests[i].input);
+         executable_name,
+         testcases[i].argv,
+         testcases[i].input);
       if (return_value < 0)
          raise_err("test: encoding error.");
 
+      /*
+       * [Step 3] Execute the command.
+       */
+      int status_code;
+
       status_code = system(command);
-      free(command);
       if (status_code == SYSTEM_FAILED)
          raise_err("test: system() failed.");
       if (WIFEXITED(status_code)) {
@@ -91,43 +148,45 @@ int main(int argc, char **argv) {
             exit(EXIT_FAILURE);
          }
       }
-      
+      free(command);
+
+      /*
+       * [Step 4] Performs a test.
+       */
       char *actual_output;
       int ao_cur_idx, ao_max_num;   /* ao = actual output */
       int eo_offset;                /* eo = expected output */
-      bool str_not_equal;     /* 
-                                 Without abbreviations, identifiers
-                                 would become so verbose UwU~~
-                              */
+      bool str_not_equal;     /*
+                               * Without abbreviations, identifiers
+                               * would become so verbose UwU~~
+                               */
 
-      ao_cur_idx = 0;
       ao_max_num = OUTPUT_LEN;
       actual_output = malloc(ao_max_num * sizeof(char));
       if (actual_output == NULL)
          raise_err("test: failed to malloc.");
-
+      ao_cur_idx = 0;
       eo_offset = 0;
       str_not_equal = false;
 
       /*
-         A rough explanation of the below while statement:
-
-         1. Get a line using fgets.
-         2. If the line is ended with \n, i.e. that is the whole line,
-            carry out a testcase.
-         3. Else, i.e. if the line is not complete,
-            3.1. If the line does not have enough space to hold
-                 the result of the next fgets() call, realloc.
-            3.2. Prepare the next fgets() call.
-      */
-
+       * A rough explanation about the below while statement:
+       *
+       * 1. Get a line from .temp file by using fgets().
+       * 2. If the line is ended with \n, i.e. that is the whole line,
+       *    carry out a testcase.
+       * 3. Else, i.e. if the line is not complete,
+       *    3.1. If the line does not have enough space to hold
+       *         the result of the next fgets() call, realloc.
+       *    3.2. Prepare the next fgets() call.
+       */
       while (fgets(actual_output + ao_cur_idx, OUTPUT_LEN, temp) != NULL) {
          const int ao_len = strlen(actual_output);
          int ch;
          bool end_of_line, end_of_file;
          bool overflow_expected, line_ended;
 
-         /* In case the last character of a stream is not \n. */
+         /* in case the last character of a stream is not \n. */
          if ((ch = fgetc(temp)) == EOF)
             end_of_file = true;
          else {
@@ -137,33 +196,33 @@ int main(int argc, char **argv) {
          end_of_line = actual_output[ao_len - 1] == '\n';
 
          /*
-            output will not have enough space to hold the
-            result of next fgets call if this condition holds:
-
-            num. of cur. elements (without \0)
-               + num. of chars to be written
-            > length of output
-
-            Note: refer to the comment in the below else clause
-                  for the reason \0 is not counted.
-         */
+          * actual_output will not have enough space to hold the
+          * result of next fgets call if this condition holds:
+          *
+          * num. of cur. elements (without \0)
+          *       + num. of chars to be written
+          *  > length of output
+          * 
+          * Note: refer to the comment in the below else clause
+          *       for the reason \0 is not counted.
+          */
          overflow_expected = ao_len + OUTPUT_LEN > ao_max_num;
          line_ended = end_of_line || end_of_file;
 
          if (line_ended) {
-            char *const eo_line_start = tests[i].output + eo_offset;
+            char *const eo_line_start = testcases[i].output + eo_offset;
 
             if (strncmp(actual_output, eo_line_start, ao_len) != 0) {
                char *eo_for_print, *ao_for_print;
-               const int temp_str_1_len = strcspn(eo_line_start, "\n");
+               const int eo_for_print_len = strcspn(eo_line_start, "\n");
 
-               eo_for_print = convert_space(eo_line_start, "\n\t\t\t", temp_str_1_len);
-               ao_for_print = convert_space(actual_output, "\n\t\t\t", ao_len);
+               eo_for_print = convert_linefeed(eo_line_start, "\n\t\t\t", eo_for_print_len);
+               ao_for_print = convert_linefeed(actual_output, "\n\t\t\t", ao_len);
                printf(
                   "test: \"%s\": failed.\n"
                   "\texpected:\t%s\n"
                   "\tactual:\t\t%s\n",
-                  tests[i].name,
+                  testcases[i].name,
                   eo_for_print,
                   ao_for_print);
                free(eo_for_print);
@@ -177,57 +236,52 @@ int main(int argc, char **argv) {
          else {
             if (overflow_expected) {
                /*
-                  Since the current line which is read from .temp file is not
-                  complete, we need to realloc output to have more space.
-               */
+                * Since the current line which is read from .temp file is not
+                * complete, we need to realloc output to have more space.
+                */
                ao_max_num *= 2;
-               actual_output = realloc(actual_output, ao_max_num);
+               actual_output = realloc(actual_output, ao_max_num * sizeof(char));
                if (actual_output == NULL)
                   raise_err("test: failed to realloc.");
             }
 
             ao_cur_idx += OUTPUT_LEN - 1;
             /* 
-               Suppose OUTPUT_LEN = 5. Considering the last character is \0,
-               in order to concat the previous string and the next string,
-               the \0 from the prev. string must be overwritten.
-
-                  abcd0
-               +      efgh0
-               ------------
-                  abcdefgh0
-
-               Therefore, we need to add (OUTPUT_LEN - 1), rather than OUTPUT_LEN.
-            */
+             * Suppose OUTPUT_LEN = 5. Considering the last character is \0,
+             * in order to concat the previous string and the next string,
+             * the \0 from the prev. string must be overwritten.
+             * 
+             *    abcd0
+             * +      efgh0
+             * ------------
+             *    abcdefgh0
+             * 
+             * Therefore, we need to add (OUTPUT_LEN - 1), rather than OUTPUT_LEN.
+             */
          }
       }
+      /* the end of the while statement */
+
       free(actual_output);
-      if (!str_not_equal)
-         printf("test: \"%s\": passed.\n", tests[i].name);
-      else if (!test_failed)
-         test_failed = true;
-      
       if (fclose(temp) == EOF)
          raise_err("test: failed to close .temp file.");
+      
+      if (!str_not_equal)
+         printf("test: \"%s\": passed.\n", testcases[i].name);
+      else if (!test_failed)
+         test_failed = true;
    }
-
-   free(tests);
    if (remove(".temp") != 0)
       raise_err("test: failed to remove .temp file.");
 
-   return !test_failed
-            ? EXIT_SUCCESS
-            : EXIT_FAILURE;
+   return test_failed;
 }
 
-void raise_err(char *err_msg) {
-   fputs(err_msg, stderr);
-   putc('\n', stderr);
-   exit(EXIT_FAILURE);
-}
-
-/* converts '\n' to replace_str */
-char *convert_space(char *src, char *replace_str, int len) {
+/*
+ * convert_linefeed
+ * converts '\n' to replace_str.
+ */
+char *convert_linefeed(char *src, char *replace_str, int len) {
    if (len < 0)
       raise_err("test: len < 0.");
    
