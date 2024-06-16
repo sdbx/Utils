@@ -148,6 +148,8 @@ bool perform_test(testcase *testcases, int testcases_len, char *executable_name)
             exit(EXIT_FAILURE);
          }
       }
+      else
+         raise_err("test: WIFEXITED = false.\n");
       free(command);
 
       /*
