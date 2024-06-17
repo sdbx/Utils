@@ -9,13 +9,13 @@ def main(mark_kind):
     text = text.translate(str.maketrans('', '', string.whitespace))
     match mark_kind:
         case 'e':
-            print('',*text,'',sep='！')
+            print('', *text, '', sep='！')
         case 'q':
-            print('',*text,'',sep='？')
+            print('', *text, '', sep='？')
         case 'eu':
-            print('',*text,'',sep=' ¡ ')
+            print('', *text, '', sep=' ¡ ')
         case 'qu':
-            print('',*text,'',sep=' ¿ ')
+            print('', *text, '', sep=' ¿ ')
         case _:
             raise_err('nsy: an unknown delimiter.')
 
