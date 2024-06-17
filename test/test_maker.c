@@ -98,18 +98,9 @@ int main(int argc, char **argv) {
    status_code = system("gcc -o test test.modified.c");
    if (status_code == SYSTEM_FAILED)
          raise_err("test_maker: system() failed.");
-   if (WIFEXITED(status_code)) {
-      status_code = WEXITSTATUS(status_code);
-      if (status_code != EXIT_SUCCESS) {
-         fprintf(stderr,
-            "test_maker: system() returned with exit status %d.\n",
-            status_code);
-         
-         exit(EXIT_FAILURE);
-      }
-   }
-   else
-      raise_err("test: WIFEXITED = false.\n");
+   if (WIFEXITED(status_code))
+      if (WEXITSTATUS(status_code) == EXIT_FAILURE)
+         raise_err("test_maker: abnormal termination.");
 
    if (remove("test.modified.c") != 0)
       raise_err("test_maker: failed to remove test.modified.c file.");
