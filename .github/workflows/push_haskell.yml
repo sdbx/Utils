@@ -18,12 +18,12 @@ jobs:
         run: gcc -o test_maker test_maker.c
 
       - name: Build object program
-        run: ghc buntang.hs
+        run: ghc btn.hs
         working-directory: ./btn/haskell
       - name: Build host program
         run: ./test_maker .test/btn.test
       - name: Run test
-        run: ./test ../btn/haskell/buntang
+        run: ./test ../btn/haskell/btn
         timeout-minutes: 5
 
       - name: Build object program
@@ -33,4 +33,13 @@ jobs:
         run: ./test_maker .test/hd.test
       - name: Run test
         run: ./test ../hd/haskell/hd
+        timeout-minutes: 5
+
+      - name: Build object program
+        run: ghc nsy.hs
+        working-directory: ./nsy/haskell
+      - name: Build host program
+        run: ./test_maker .test/nsy.test
+      - name: Run test
+        run: ./test ../nsy/haskell/nsy
         timeout-minutes: 5
