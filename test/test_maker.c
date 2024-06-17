@@ -104,7 +104,8 @@ int main(int argc, char **argv) {
          fprintf(stderr,
             "test_maker: system() returned with exit status %d.\n",
             status_code);
-         
+         if (remove("test.modified.c") != 0)
+            raise_err("test_maker: failed to remove test.modified.c file.");
          exit(EXIT_FAILURE);
       }
    }
