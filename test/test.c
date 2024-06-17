@@ -314,11 +314,7 @@ char *convert_linefeed(char *src, char *replace_str, int len) {
       raise_err("test: failed to malloc.");
    dest[dest_len - 1] = '\0';
 
-   int dest_idx, i;
-
-   i = 0;
-   dest_idx = 0;
-   while (i < src_idx) {
+   for (int dest_idx = 0, i = 0; i < src_idx; i++)
       if (src[i] == '\n') {
          strncpy(dest + dest_idx, replace_str, replace_str_len);
          dest_idx += replace_str_len;
@@ -327,8 +323,6 @@ char *convert_linefeed(char *src, char *replace_str, int len) {
          dest[dest_idx] = src[i];
          dest_idx++;
       }
-      i++;
-   }
 
    return dest;
 }
