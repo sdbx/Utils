@@ -7,6 +7,7 @@ The purpose of this specification is to describe overall components which a conf
 - 24.06.10 :: Initial writing.
 - 24.06.13 :: Minor fix.
 - 24.06.14 :: Minor fix.
+- 24.06.18 :: Minor fix.
 
 ## Use Case
 
@@ -20,10 +21,13 @@ A conforming implementation must produce a string, hereafter referred to as **th
 
 > Definition.  
 > A valid character is a character which is not any of white-space characters.
+>
+> Note: white-space characters = { space ( ; 32), horizontal tab (\t; 9), line feed (\n; 10), vertical tab (\v; 11), form feed (\f; 12), carriage return (\r; 13) }
 
 - Any number of multibyte characters can be included in.
   - As such, a conforming implementation should handle multibyte characters in a proper manner.
 - The string must have a line feed character `\n` after every `N` numbers of valid multibyte characters.
+- A line feed character must be placed at the end of the result string, unless one have been already put (because of the above condition).
 
 > Definition.  
 > `N` is of type `int` and has a value between 1 ~ 32 (inclusive).
@@ -35,7 +39,9 @@ Suppose the program is executed with `N` being 10 and the input from stdin being
 Then a conforming implementation must yield the result as follows:
 
 ```
-// This numbers are for showing each line exactly has 10 characters and thus do not have to do with the output of the program.
+// This numbers are for showing each line exactly
+// has 10 characters and thus do not have to do
+// with the output of the program.
 0123456789
 
 Iwanttosle
