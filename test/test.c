@@ -7,6 +7,14 @@
 #define TESTCASE_LEN 32
 #define OUTPUT_LEN   1024
 #define SYSTEM_FAILED   -1
+#
+#define TEST(_name, _argv, _input, _output) \
+   add(tests, &tlen, (testcase) { \
+      .name = _name, \
+      .argv = _argv, \
+      .input = _input, \
+      .output = _output \
+   });
 
 typedef struct testcase_ {
    char *name;

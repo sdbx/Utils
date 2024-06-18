@@ -1,13 +1,15 @@
-add(tests, &tlen, (testcase) {
-   .name = "usual",
-   .argv = "10",
-   .input = "I hate programming in C so much.",
-   .output = "Ihateprogr\namminginCs\nomuch.\n"
-});
+TEST
+(
+   "usual",
+   "10",
+   "I hate programming in C so much.",
+   "Ihateprogr\namminginCs\nomuch.\n"
+)
 
-add(tests, &tlen, (testcase) {
-   .name = "multiline",
-   .argv = "10",
-   .input = "I hate programming in C so much.\nI'm getting headache.",
-   .output = "Ihateprogr\namminginCs\nomuch.I'mg\nettinghead\nache.\n"
-});
+TEST
+(
+   "multiline",
+   "10",
+   "I hate programming in C so much.\nI'm getting headache.",
+   "Ihateprogr\namminginCs\nomuch.I'mg\nettinghead\nache.\n"
+)

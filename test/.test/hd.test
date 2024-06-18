@@ -1,27 +1,31 @@
-add(tests, &tlen, (testcase) {
-   .name = "no-heading",
-   .argv = "",
-   .input = "test",
-   .output = "# test\n"
-});
+TEST
+(
+   "no-heading",
+   "",
+   "test",
+   "# test\n"
+)
 
-add(tests, &tlen, (testcase) {
-   .name = "heading",
-   .argv = "",
-   .input = "# test",
-   .output = "# test\n"
-});
+TEST
+(
+   "heading",
+   "",
+   "# test",
+   "# test\n"
+)
 
-add(tests, &tlen, (testcase) {
-   .name = "no_heading_multiline",
-   .argv = "",
-   .input = "test\ntest2\n",
-   .output = "# test\n# test2\n\n"
-});
+TEST
+(
+   "no_heading_multiline",
+   "",
+   "test\ntest2\n",
+   "# test\n# test2\n\n"
+)
 
-add(tests, &tlen, (testcase) {
-   .name = "heading_multiline",
-   .argv = "",
-   .input = "# test\n# test2\n",
-   .output = "# test\n# test2\n\n"
-});
+TEST
+(
+   "heading_multiline",
+   "",
+   "# test\n# test2\n",
+   "# test\n# test2\n\n"
+)
