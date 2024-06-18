@@ -6,6 +6,7 @@ The purpose of this specification is to describe overall components which a conf
 
 - 24.06.11 :: Initial writing.
 - 24.06.13 :: Minor fix.
+- 24.06.18 :: Minor fix.
 
 ## Use Case
 
@@ -26,6 +27,9 @@ A conforming implementation must produce its output according to the following c
 > A h1 string is a string "# ".
 
 - Unless either Condition 1 or Condition 2 is satisfied, a conforming implementation must put a h1 string in front of a line.
+- Any number of multibyte characters can be included in.
+  - As such, a conforming implementation should handle multibyte characters in a proper manner.
+- A newline character(s) must be placed at the end of the output; refer to the 「Newline」 clause in the Implementation-defined Behavior section.
 
 ### Example
 
@@ -43,10 +47,13 @@ Then a conforming implementation must yield the following output:
 # Hi my name is Cor.
 ```
 
-### Implementation-defined behavior
+### Implementation-defined Behavior
 
-- A conforming implementation may trim the margins at the left and/or the right of a line, if exist(s).
-- A conforming implementation may retain the fashion of line break by which the input from stdin abides.
+- **「Trim」** A conforming implementation may trim the margins at the left and/or the right of a line, if exist(s).
+
+> Note: white-space characters = { space ( ; 32), horizontal tab (\t; 9), line feed (\n; 10), vertical tab (\v; 11), form feed (\f; 12), carriage return (\r; 13) }
+
+- **「Newline」** A conforming implementation may retain the fashion of line break by which the input from stdin abides.
 
 ### Error Handling
 

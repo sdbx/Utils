@@ -6,6 +6,7 @@ The purpose of this specification is to describe overall components which a conf
 
 - 24.06.10 :: Initial writing.
 - 24.06.13 :: Minor fix.
+- 24.06.18 :: Minor fix.
 
 ## Use Case
 
@@ -23,6 +24,8 @@ A conforming implementation must produce a string, hereafter referred to as **th
 
 > Definition.  
 > A valid character is a character which is not any of white-space characters.
+>
+> Note: white-space characters = { space ( ; 32), horizontal tab (\t; 9), line feed (\n; 10), vertical tab (\v; 11), form feed (\f; 12), carriage return (\r; 13) }
 
 - Any number of multibyte characters can be included in.
   - As such, a conforming implementation should handle multibyte characters in a proper manner.
@@ -34,6 +37,7 @@ A conforming implementation must produce a string, hereafter referred to as **th
 > Note: those values are initialisms of the delimiter characters for which the values represent; each values stand for exclamation mark, question mark, upside-down exclamation mark, and upside-down question mark, respectively.
 
 - As a special case, one specific delimiter character must exist at the beginning and the end of the result.
+- A line feed character must be placed at the end of the result string.
 
 ### Example: the result
 Suppose the program is executed with `MARK_KIND` being `e` and the input from stdin being "Hello, world!"
@@ -63,11 +67,13 @@ The implementation must follow the error handling behavior described in the Erro
 
 ## Delimiters
 
-A conforming implementation must support the following delimiters: `U+FF01`, `U+FF1F`, `U+00A1`, `U+00BF`. It is within each implementation's discretion to provide other delimiters and such delimiters must have different `MARK_KIND` values against the above standard delimiters.
+A conforming implementation must support the following delimiters: `U+FF01`, `U+FF1F`, `U+00A1`, and `U+00BF`. It is within each implementation's discretion to provide other delimiters and such delimiters must have different `MARK_KIND` values against the above standard delimiters.
 
-It would be worth noticing that `U+FF01` and `U+FF1F` is fullwidth characters and thus different with the usual `!` and `?` characters, which are halfwidth characters. There are two reasons why such fullwidth characters have been chosen: The first reason is for readability. Without them, the result string would be quite hard to read. Second, with them, it wouldn't be sufficient for the result string to be noisier, which is highly opposite to what this program attempts to pursue.
+It would be worth noticing that `U+FF01` and `U+FF1F` is fullwidth characters and thus different with the usual `!` and `?` characters, which are halfwidth characters. There are two reasons why such fullwidth characters have been chosen. The first reason is, well, perhaps I would like to use them. The second reason is for readability. Without the fullwidth, the result string would be so dense that it'd be quite hard to read it. Even if we put a space character to the both sides of the halfwidth, this time the result string would look so sparse. In other words, with the halfwidth, it wouldn't be sufficient for the result string to be noisier, which is highly opposite to what this program attempts to pursue.
 
-However, `U+00A1` and `U+00BF` are halfwidth characters and therefore would be going to harm the readability as is. Considering this issue, a conforming implementation must place a space character in front and behind of these characters.
+`U+00A1` and `U+00BF` are, however, halfwidth characters and as far as I know there are no fullwidth versions of them. Therefore, they would be going to harm the readability as is. Considering this issue, a conforming implementation must place a space character in front and behind of these characters.
+
+As for the emoji versions of exclamation/question marks, what makes me worry is compatibility. However, since I do not have a command of character sets and encodings, this concern may be irrelevant.
 
 Meanwhile, as to non-standard delimiters, it's freely up to implementations how they are to print such characters.
 
