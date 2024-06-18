@@ -51,6 +51,8 @@ void raise_err(char *err_msg) {
    exit(EXIT_FAILURE);
 }
 
+void add(testcase *testcases, int *testcases_len_ptr, testcase testcase);
+
 /*
  * acquire_testcases
  * writes the length of testcases to the first argument
@@ -64,6 +66,7 @@ testcase *acquire_testcases(int *testcases_len_ptr) {
    tests = malloc(TESTCASE_LEN * sizeof(testcase));
    if (tests == NULL)
       raise_err("test: failed to malloc.");
+   tlen = 0;
    
    /*
     * Include test cases. This line will be replaced
@@ -73,6 +76,12 @@ testcase *acquire_testcases(int *testcases_len_ptr) {
 
    *testcases_len_ptr = tlen;
    return tests;
+}
+
+void add(testcase *testcases, int *testcases_len_ptr, testcase testcase) {
+   if (*testcases_len_ptr == TESTCASE_LEN)
+      raise_err("test: reached TESTCASE_LEN.");
+   testcases[(*testcases_len_ptr)++] = testcase;
 }
 
 char *convert_linefeed(char *dest, char *replace_str, int len);

@@ -1,16 +1,20 @@
-tests[0] = (testcase) {
+add(tests, &tlen, (testcase) {
    .name = "e-mark",
    .argv = "e",
    .input = "asdf",
-   .output = "！a！s！d！f！\n"};
-tests[1] = (testcase) {
+   .output = "！a！s！d！f！\n"
+});
+
+add(tests, &tlen, (testcase) {
    .name = "q-mark",
    .argv = "q",
    .input = "asdf",
-   .output = "？a？s？d？f？\n" };
-tests[2] = (testcase) {
+   .output = "？a？s？d？f？\n"
+});
+
+add(tests, &tlen, (testcase) {
    .name = "multiline",
    .argv = "e",
    .input = "asdf\nqwer",
-   .output = "！a！s！d！f！q！w！e！r！\n" };
-tlen = 3;
+   .output = "！a！s！d！f！q！w！e！r！\n"
+});
