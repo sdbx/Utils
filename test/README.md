@@ -9,11 +9,10 @@ These programs require two things in order to run: (1) an executable of a progra
 A testcase file has test cases to be used during a test. It must have the following shape, since this file is to be included in a `test.c` source code file, which will be compiled soon.
 
 ```
-test[0] = (testcase) { .name = "", .argv = "", .input = "", .output = "" };
-test[1] = (testcase) { .name = "", .argv = "", .input = "", .output = "" };
+add(tests, &tlen, (testcase) { .name = "test 1", .argv = "...", .input = "...", .output = "..." });
+add(tests, &tlen, (testcase) { .name = "test 2", .argv = "...", .input = "...", .output = "..." });
 ...
-test[n] = (testcase) { .name = "", .argv = "", .input = "", .output = "" };
-tlen = n + 1;
+add(tests, &tlen, (testcase) { .name = "test n", .argv = "...", .input = "...", .output = "..." });
 ```
 
 - name = the name of a test case.
