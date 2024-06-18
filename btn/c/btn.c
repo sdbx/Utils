@@ -70,7 +70,8 @@ int main(int argc, char *argv[]) {
          }
       }
    }
-   putchar('\n');
+   if (printed_char_count != 0)
+      putchar('\n');
 
    return 0;
 }
