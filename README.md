@@ -9,7 +9,8 @@ This repository consists of helper programs which assist you to make a sentence 
 There are currently 5 programs:
 
 - `btn`, a remover for white-space characters.
-- `nsy`, a generator for a noisy sentence.
+- `nsy`, a generator for a noisy sentence, where a delimiter is placed between each letter.
+- `nsy2`, a generator for a noisy sentence, where a delimiter is placed between each word.
 - `hhss`, a generator for ridiculous sentences.
 - `hd`, a generator for a header sentence.
 - `yandere`, a generator for a yandere-like sentence.
