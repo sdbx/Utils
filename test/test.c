@@ -9,7 +9,9 @@
 #define SYSTEM_FAILED   -1
 #
 #define TEST(_name, _argv, _input, _output) \
-   add(tests, &tlen, (testcase) { \
+   if (tlen == TESTCASE_LEN) \
+      raise_err("test: reached TESTCASE_LEN."); \
+   add(tests + (tlen++), (testcase) { \
       .name = _name, \
       .argv = _argv, \
       .input = _input, \
@@ -59,7 +61,7 @@ void raise_err(char *err_msg) {
    exit(EXIT_FAILURE);
 }
 
-void add(testcase *testcases, int *testcases_len_ptr, testcase testcase);
+void add(testcase *testcases, testcase testcase);
 
 /*
  * acquire_testcases
@@ -86,10 +88,8 @@ testcase *acquire_testcases(int *testcases_len_ptr) {
    return tests;
 }
 
-void add(testcase *testcases, int *testcases_len_ptr, testcase testcase) {
-   if (*testcases_len_ptr == TESTCASE_LEN)
-      raise_err("test: reached TESTCASE_LEN.");
-   testcases[(*testcases_len_ptr)++] = testcase;
+void add(testcase *testcases, testcase testcase) {
+   *testcases = testcase;
 }
 
 char *convert_linefeed(char *dest, char *replace_str, int len);
