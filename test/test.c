@@ -11,12 +11,12 @@
 #define TEST(_name, _argv, _input, _output) \
    if (tlen == TESTCASE_LEN) \
       raise_err("test: reached TESTCASE_LEN."); \
-   add(tests + (tlen++), (testcase) { \
+   tests[tlen++] = (testcase) { \
       .name = _name, \
       .argv = _argv, \
       .input = _input, \
       .output = _output \
-   });
+   };
 
 typedef struct testcase_ {
    char *name;
@@ -86,10 +86,6 @@ testcase *acquire_testcases(int *testcases_len_ptr) {
 
    *testcases_len_ptr = tlen;
    return tests;
-}
-
-void add(testcase *testcases, testcase testcase) {
-   *testcases = testcase;
 }
 
 char *convert_linefeed(char *dest, char *replace_str, int len);
