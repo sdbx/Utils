@@ -61,8 +61,6 @@ void raise_err(char *err_msg) {
    exit(EXIT_FAILURE);
 }
 
-void add(testcase *testcases, testcase testcase);
-
 /*
  * acquire_testcases
  * writes the length of testcases to the first argument
