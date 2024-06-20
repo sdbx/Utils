@@ -82,11 +82,14 @@ testcase *acquire_testcases(int *testcases_len_ptr) {
     */
    §TESTCASE§
 
+   if (tlen == 0)
+      raise_err("test: testcase length of 0; terminating.");
+
    *testcases_len_ptr = tlen;
    return tests;
 }
 
-char *convert_linefeed(char *dest, char *replace_str, int len);
+char *convert_linefeed(const char *src, char *replace_str, int len);
 
 /*
  * perform_test
@@ -166,20 +169,20 @@ bool perform_test(testcase *testcases, int testcases_len, char *executable_name)
       /*
        * [Step 4] Performs a test.
        */
-      char *actual_output;
-      int ao_cur_idx, ao_max_num;   /* ao = actual output */
-      int eo_offset;                /* eo = expected output */
-      bool str_not_equal;     /*
-                               * Without abbreviations, identifiers
-                               * would become so verbose UwU~~
-                               */
+      char *actual_output;          // ao,
+      const char *expected_output;  // eo, hereafter.
+      int ao_cur_idx, ao_max_num;
+      bool str_not_equal;        /*
+                                  * Without abbreviations, identifiers
+                                  * would become so verbose UwU~~
+                                  */
 
       ao_max_num = OUTPUT_LEN;
       actual_output = malloc(ao_max_num * sizeof(char));
       if (actual_output == NULL)
          raise_err("test: failed to malloc.");
       ao_cur_idx = 0;
-      eo_offset = 0;
+      expected_output = testcases[i].output;
       str_not_equal = false;
 
       /*
@@ -195,17 +198,11 @@ bool perform_test(testcase *testcases, int testcases_len, char *executable_name)
        */
       while (fgets(actual_output + ao_cur_idx, OUTPUT_LEN, temp) != NULL) {
          const int ao_len = strlen(actual_output);
-         int ch;
          bool end_of_line, end_of_file;
          bool overflow_expected, line_ended;
 
          /* in case the last character of a stream is not \n. */
-         if ((ch = fgetc(temp)) == EOF)
-            end_of_file = true;
-         else {
-            end_of_file = false;
-            ungetc(ch, temp);
-         }
+         end_of_file = feof(temp) ? true : false;
          end_of_line = actual_output[ao_len - 1] == '\n';
 
          /*
@@ -223,18 +220,16 @@ bool perform_test(testcase *testcases, int testcases_len, char *executable_name)
          line_ended = end_of_line || end_of_file;
 
          if (line_ended) {
-            char *const eo_line_start = testcases[i].output + eo_offset;
-
-            if (strncmp(actual_output, eo_line_start, ao_len) != 0) {
+            if (strncmp(actual_output, expected_output, ao_len)) {
                char *eo_for_print, *ao_for_print;
                int eo_for_print_len;
 
-               eo_for_print_len = strcspn(eo_line_start, "\n");
-               if (eo_line_start[eo_for_print_len] == '\n')  /* since it could be '\0' */
+               eo_for_print_len = strcspn(expected_output, "\n");
+               if (expected_output[eo_for_print_len] == '\n')  /* since it could be '\0' */
                   eo_for_print_len++;  /* in order to print \n too */
 
-               eo_for_print = convert_linefeed(eo_line_start, "\n\t\t\t", eo_for_print_len);
-               ao_for_print = convert_linefeed(actual_output, "\n\t\t\t", ao_len);
+               eo_for_print = convert_linefeed(expected_output, "\n\t\t\t", eo_for_print_len);
+               ao_for_print = convert_linefeed(actual_output,   "\n\t\t\t", ao_len);
 
                printf(
                   "test: \"%s\": failed.\n"
@@ -250,7 +245,7 @@ bool perform_test(testcase *testcases, int testcases_len, char *executable_name)
                str_not_equal = true;
                break;
             }
-            eo_offset += ao_len;
+            expected_output += ao_len; // eo = eo + offset.
          }
          else {
             if (overflow_expected) {
@@ -277,19 +272,26 @@ bool perform_test(testcase *testcases, int testcases_len, char *executable_name)
              * 
              * Therefore, we need to add (OUTPUT_LEN - 1), rather than OUTPUT_LEN.
              */
-         }
+         } // <== the end of the if statement
+      } // <== the end of the while statement
+      if (!str_not_equal) {
+         if (*expected_output != '\0')
+            fprintf(stderr,
+               "test: \"%s\": failed; the reason being that "
+               "the actual output has been exhausted, "
+               "but the expected output remains:\n\t%s\n",
+               testcases[i].name,
+               expected_output);
+         else
+            printf("test: \"%s\": passed.\n", testcases[i].name);
       }
-      /* the end of the while statement */
+      else if (!test_failed)
+         test_failed = true;      
 
       free(actual_output);
       if (fclose(temp) == EOF)
          raise_err("test: failed to close .temp file.");
-      
-      if (!str_not_equal)
-         printf("test: \"%s\": passed.\n", testcases[i].name);
-      else if (!test_failed)
-         test_failed = true;
-   }
+   } // <== the end of the for statement
    if (remove(".temp") != 0)
       raise_err("test: failed to remove .temp file.");
 
@@ -300,7 +302,7 @@ bool perform_test(testcase *testcases, int testcases_len, char *executable_name)
  * convert_linefeed
  * converts '\n' to replace_str.
  */
-char *convert_linefeed(char *src, char *replace_str, int len) {
+char *convert_linefeed(const char *src, char *replace_str, int len) {
    if (len < 0)
       raise_err("test: len < 0.");
    
