@@ -6,7 +6,7 @@ This repository consists of helper programs which assist you to make a sentence 
 
 ### Repository Structure
 
-There are currently 5 programs:
+There are currently 6 programs:
 
 - `btn`, a remover for white-space characters.
 - `nsy`, a generator for a noisy sentence, where a delimiter is placed between each letter.
