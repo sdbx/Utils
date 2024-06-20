@@ -7,6 +7,16 @@
 #define TESTCASE_LEN 32
 #define OUTPUT_LEN   1024
 #define SYSTEM_FAILED   -1
+#
+#define TEST(_name, _argv, _input, _output) \
+   if (tlen == TESTCASE_LEN) \
+      raise_err("test: reached TESTCASE_LEN."); \
+   tests[tlen++] = (testcase) { \
+      .name = _name, \
+      .argv = _argv, \
+      .input = _input, \
+      .output = _output \
+   };
 
 typedef struct testcase_ {
    char *name;
@@ -64,6 +74,7 @@ testcase *acquire_testcases(int *testcases_len_ptr) {
    tests = malloc(TESTCASE_LEN * sizeof(testcase));
    if (tests == NULL)
       raise_err("test: failed to malloc.");
+   tlen = 0;
    
    /*
     * Include test cases. This line will be replaced

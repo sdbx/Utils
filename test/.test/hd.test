@@ -1,29 +1,31 @@
-tests[0] = (testcase)
-{
-   .name = "no-heading",
-   .argv = "",
-   .input = "test",
-   .output = "# test\n"
-};
-tests[1] = (testcase)
-{
-   .name = "heading",
-   .argv = "",
-   .input = "# test",
-   .output = "# test\n"
-};
-tests[2] = (testcase)
-{
-   .name = "no_heading_multiline",
-   .argv = "",
-   .input = "test\ntest2\n",
-   .output = "# test\n# test2\n\n"
-};
-tests[3] = (testcase)
-{
-   .name = "heading_multiline",
-   .argv = "",
-   .input = "# test\n# test2\n",
-   .output = "# test\n# test2\n\n"
-};
-tlen = 4;
+TEST
+(
+   "no-heading",
+   "",
+   "test",
+   "# test\n"
+)
+
+TEST
+(
+   "heading",
+   "",
+   "# test",
+   "# test\n"
+)
+
+TEST
+(
+   "no_heading_multiline",
+   "",
+   "test\ntest2\n",
+   "# test\n# test2\n\n"
+)
+
+TEST
+(
+   "heading_multiline",
+   "",
+   "# test\n# test2\n",
+   "# test\n# test2\n\n"
+)
