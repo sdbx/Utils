@@ -96,6 +96,6 @@ inline void print_ques_mark_u(void) {
 }
 
 /* ♥ */
-void print_heart(void) {
+inline void print_heart(void) {
    fputs("\xE2\x99\xA5", stdout);    /* 0x2665 */
 }

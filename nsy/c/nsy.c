@@ -155,26 +155,26 @@ inline void print_ques_mark_u(void) {
 }
 
 /* . */
-void print_period(void) {
+inline void print_period(void) {
    putchar('.');  /* 0x002E */
 }
 
 /* ... */
-void print_ellipsis(void) {
+inline void print_ellipsis(void) {
    fputs("\xE2\x80\xA6", stdout);   /* 0x2026 */
 }
 
 /* + */
-void print_plus(void) {
+inline void print_plus(void) {
    putchar('+');  /* 0x002B */
 }
 
 /* ,, */
-void print_comma_twice(void) {
+inline void print_comma_twice(void) {
    fputs(",,", stdout);    /* 0x002C */
 }
 
 /* ♥ */
-void print_heart(void) {
+inline void print_heart(void) {
    fputs("\xE2\x99\xA5", stdout);    /* 0x2665 */
 }
