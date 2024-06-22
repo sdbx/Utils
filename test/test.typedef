@@ -11,7 +11,7 @@ typedef struct testresult_ {
    int  idx;
 } testresult;
 
-typedef struct eval_tc_params_ {
+typedef struct evaluate_testcase_params_ {
    const testcase   *tc_ptr;
    const char *actual_output;
    const int   ops_len;
