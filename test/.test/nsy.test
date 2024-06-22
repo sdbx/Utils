@@ -3,7 +3,7 @@ TEST
    "e-mark",
    "e",
    "asdf",
-   "！a！s！d！f！\n"
+   { "！a！s！d！f！\n" }
 )
 
 TEST
@@ -11,7 +11,7 @@ TEST
    "q-mark",
    "q",
    "asdf",
-   "？a？s？d？f？\n"
+   { "？a？s？d？f？\n" }
 )
 
 TEST
@@ -19,5 +19,5 @@ TEST
    "multiline",
    "e",
    "asdf\nqwer",
-   "！a！s！d！f！q！w！e！r！\n"
+   { "！a！s！d！f！q！w！e！r！\n" }
 )

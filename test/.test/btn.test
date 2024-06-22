@@ -3,7 +3,7 @@ TEST
    "usual",
    "10",
    "I hate programming in C so much.",
-   "Ihateprogr\namminginCs\nomuch.\n"
+   { "Ihateprogr\namminginCs\nomuch.\n" }
 )
 
 TEST
@@ -11,5 +11,5 @@ TEST
    "multiline",
    "10",
    "I hate programming in C so much.\nI'm getting headache.",
-   "Ihateprogr\namminginCs\nomuch.I'mg\nettinghead\nache.\n"
+   { "Ihateprogr\namminginCs\nomuch.I'mg\nettinghead\nache.\n" }
 )
