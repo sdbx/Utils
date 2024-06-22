@@ -206,7 +206,7 @@ bool evaluate_testcase(const eval_tc_params *params_ptr) {
       if (eo_len != ao_len) {
          res[k].result = TEST_FAILURE;
          if (eo_len > ao_len)
-            res[k].idx = ao_len;
+            res[k].idx = ao_len + 1;
          else
             res[k].idx = eo_len;
       }
@@ -271,7 +271,10 @@ void display_testcase_result(const disp_tc_res_params *params_ptr) {
          char *formatted
             = convert_linefeed(tc.outputs[i], format, res[i].idx);
 
-         return_value = printf("\texpected[%d] =\t%s\n", i, formatted);
+         return_value = printf(
+            "\texpected[%d] =\t%s "
+            "<- different at position %d\n",
+            i, formatted, res[i].idx - 1);
          if (return_value < 0)
             raise_err("test: an error occurred.");
          free(formatted);
