@@ -207,8 +207,6 @@ void write_modified_file(const char *testcase_modified_filename) {
 void build_executable(void) {
    int status_code;
 
-   status_code = system("gcc -E test.modified.c >test.modified.pp");
-
    status_code = system("gcc -o test test.modified.c");
    if (status_code == SYSTEM_FAILED)
          raise_err("test_maker: system() failed.");
