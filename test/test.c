@@ -6,10 +6,10 @@ int main(int argc, char **argv) {
    int testcases_len;
 
    testcase *testcases = acquire_testcases(&testcases_len);
-   const bool test_failed = perform_test(testcases, testcases_len, argv[1]);
+   const bool test_status = perform_test(testcases, testcases_len, argv[1]);
    
    free(testcases);
-   return !test_failed
+   return test_status
             ? EXIT_SUCCESS
             : EXIT_FAILURE;
 }
@@ -179,12 +179,12 @@ char *acquire_output(FILE *tempfile) {
          }
          ao_cur_idx += READLINE_UNIT - 1; // so as to overwrite the trailing \0.
       }
-      else
-         ao_cur_idx = 0;
+      else if (!end_of_file)
+         ao_cur_idx += strlen(actual_output + ao_cur_idx);
    }
    if (ferror(tempfile))
       raise_err("test: an error occurred while fgets().");
-
+   
    return actual_output;
 }
 
