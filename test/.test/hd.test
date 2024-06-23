@@ -19,7 +19,7 @@ TEST
    "no_heading_multiline",
    "",
    "test\ntest2\n",
-   { "# test\n# test2\n\n" }
+   { "# test\n# test2\n\n", "# test\n# test2\n" }
 )
 
 TEST
@@ -27,5 +27,5 @@ TEST
    "heading_multiline",
    "",
    "# test\n# test2\n",
-   { "# test\n# test2\n\n" }
+   { "# test\n# test2\n\n", "# test\n# test2\n" }
 )
