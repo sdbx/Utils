@@ -1,3 +1,6 @@
+#ifndef TEST_MACRO_H
+#define TEST_MACRO_H
+
 #define TESTCASE_LEN    32
 #define READLINE_UNIT   64
 #define SYSTEM_FAILED   -1
@@ -22,4 +25,5 @@
       (tc->outputs_len = (_outputs_len)); \
       tc->outputs = temp; \
    }
-   
+
+#endif

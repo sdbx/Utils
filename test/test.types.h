@@ -1,3 +1,6 @@
+#ifndef TEST_TYPES_H
+#define TEST_TYPES_H
+
 typedef struct testcase_ {
    char *name;
    char *argv;
@@ -26,3 +29,5 @@ typedef struct display_testcase_result_params_ {
    const bool  eval_status;
    const int   res_len;
 } disp_tc_res_params;
+
+#endif
