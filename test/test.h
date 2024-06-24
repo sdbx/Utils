@@ -8,8 +8,8 @@
 #include <stdbool.h>
 #include <sys/wait.h>
 
-#include "test.macro"
-#include "test.typedef"
+#include "test.macros.h"
+#include "test.types.h"
 
 /**
  * @brief prints an error message to stderr.
