@@ -51,7 +51,7 @@ void preprocess_testcase(const char *src_name, const char *dest_name);
 /**
  * @brief counts the length of the 'outputs' array that each testcase has and writes it to lengths[i].
  * 
- * @param lengths a pointer to an array which will contain how many expected outputs each testcase has
+ * @param lengths an array of integers which will contain how many expected outputs each testcase has
  * @param src an original testcase file
  */
 void count_outputs_len(int lengths[], FILE *src);
@@ -59,7 +59,7 @@ void count_outputs_len(int lengths[], FILE *src);
 /**
  * @brief writes a modified testcase file.
  * 
- * @param lengths a pointer to an array containing how many expected outputs each testcase has
+ * @param lengths an array of integers containing how many expected outputs each testcase has
  * @param src an original testcase file
  * @param dest a modified testcase file
  */

@@ -30,7 +30,7 @@ void check_correct_execution(int argc);
  * @brief gets testcases, write the length of testcases via *testcases_len_ptr, and returns the pointer to the first testcase.
  * 
  * @param testcase_len_ptr a pointer to testcases_len
- * @return a pointer to an array of testcases
+ * @return a pointer to the first testcase
  * 
  * @details The return value of this function must be `free`d once it's no longer needed.
  */
@@ -39,8 +39,8 @@ testcase *acquire_testcases(int *testcases_len_ptr);
 /**
  * @brief conducts tests with testcases.
  * 
- * @param testcases a pointer to an array of testcases
- * @param testcases_len the length of the testcases array
+ * @param testcases a pointer to the first testcase to test
+ * @param testcases_len the number of testcases to test
  * @param executable_name the name of the program to be tested
  * @return true if every testcases were successful; otherwise false.
  */

@@ -61,7 +61,7 @@ void preprocess_testcase(const char *src_name, const char *dest_name) {
 
    int lengths[TESTCASE_LEN];
    
-   count_outputs_len(lengths,src);
+   count_outputs_len(lengths, src);
    rewind(src);
    write_modified_testcase(lengths, src, dest);
 
