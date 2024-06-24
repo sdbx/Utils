@@ -64,7 +64,7 @@ bool perform_test(testcase *testcases, int testcases_len, const char *executable
 
       char *command
          = make_command(&testcases[i], executable_name);
-      execute_command(command, temp);
+      execute_command(command);
       free(command);
 
       char *actual_output = acquire_output(temp);
@@ -132,7 +132,7 @@ char *make_command(const testcase *tc_ptr, const char *executable_name) {
    return command;
 }
 
-void execute_command(const char *cmd, FILE *tempfile) {
+void execute_command(const char *cmd) {
    int status_code;
 
    status_code = system(cmd);

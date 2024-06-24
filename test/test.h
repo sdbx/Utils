@@ -61,9 +61,8 @@ char *make_command(const testcase *tc_ptr, const char *executable_name);
  * @brief runs the command acquired from the call of make_command().
  * 
  * @param cmd a command to execute
- * @param tempfile a temporary file to hold the result of the execution of the command
  */
-void execute_command(const char *cmd, FILE *tempfile);
+void execute_command(const char *cmd);
 
 /**
  * @brief reads lines in the tempfile, writes them in a string, and returns it.
