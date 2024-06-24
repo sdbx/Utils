@@ -1,5 +1,5 @@
-#ifndef TEST_MACRO_H
-#define TEST_MACRO_H
+#ifndef TEST_MACROS_H
+#define TEST_MACROS_H
 
 #define TESTCASE_LEN    32
 #define READLINE_UNIT   64
