@@ -107,16 +107,16 @@ $(test_path)/test_maker: $(test_path)/test_maker.o
 
 .PHONY: uninstall
 uninstall:
-	-rm -rf $(install_path)
+	rm -rf $(install_path)
 
 .PHONY: clean
 clean:
-	-rm -f $(all_objects)
-	-rm -f $(_programs)
+	rm -f $(all_objects)
+	rm -f $(_programs)
 
 .PHONY: cleanall
 cleanall: uninstall clean
-	-rm -f $(foreach file,test_maker.o test test_maker,$(test_path)/$(file))
+	rm -f $(foreach file,test_maker.o test test_maker,$(test_path)/$(file))
 
 .PHONY: help
 cmd_group = $(call cstr,48;5;148;30, $1 )
