@@ -1,0 +1,11 @@
+[package]
+name = "hhss"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "hhss"
+path = "hhss.rs"
+
+[dependencies]
+rand = "0.8"

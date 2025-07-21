@@ -1,0 +1,8 @@
+# Rust build artifacts
+target/
+
+# Built binary
+hhss
+
+# Backup files created by rustfmt
+**/*.rs.bk
