@@ -24,7 +24,7 @@ jobs:
         working-directory: ./test
     steps:
       - name: Build object program
-        run: ~/.bun/bin/bun build hd.js --compile --outfile hd
+        run: $BUN_INSTALL/bin/bun build hd.js --compile --outfile hd
         working-directory: ./hd/javascript
       - name: Build host program
         run: ./test_maker .test/hd.test
