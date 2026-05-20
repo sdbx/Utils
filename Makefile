@@ -65,14 +65,20 @@ all_objects =
 
 $(foreach program,$(programs),$(eval $(call program_template,$(program))))
 
+### THIS IS A VERY QUICK FIX AND NEEDS A LATER CARE ###
+install_path := $(CURDIR)/bin
+datadir := $(install_path)/data
+hhss/c/hhss.o: hhss/c/hhss.c
+	gcc -DINSTPATH='"$(datadir)/"' -c hhss/c/hhss.c -o hhss/c/hhss.o
+### THIS IS A VERY QUICK FIX AND NEEDS A LATER CARE ###
+
 ## Auxiliary Tasks
 .PHONY: install
 INSTALL := install
 INSTALL_PROGRAM := $(INSTALL)
 INSTALL_DATA := $(INSTALL) -m 644
-install_path := ./bin
+
 bindir := $(install_path)
-datadir := $(install_path)/data
 hhss_data := hsr usr
 program_installation_cmd := $(INSTALL_PROGRAM) ./$$i/c/$$i $(bindir)
 data_installation_cmd := $(INSTALL_DATA) ./hhss/$$i $(datadir)
