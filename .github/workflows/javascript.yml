@@ -25,7 +25,7 @@ jobs:
         run: gcc -o test_maker test_maker.c
 
       - name: Build object program
-        run: $BUN_INSTALL/bin/bun build hd.js --compile --outfile hd
+        run: ~/bin/bun build hd.js --compile --outfile hd
         working-directory: ./hd/javascript
       - name: Build host program
         run: ./test_maker .test/hd.test
