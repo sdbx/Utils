@@ -68,8 +68,8 @@ $(foreach program,$(programs),$(eval $(call program_template,$(program))))
 ### THIS IS A VERY QUICK FIX AND NEEDS A LATER CARE ###
 install_path := $(CURDIR)/bin
 datadir := $(install_path)/data
-hhss/c/hhss.o: hhss/c/hhss.c
-	$(CC) $(CFLAGS) -DINSTPATH='"$(datadir)/"' -c hhss/c/hhss.c -o hhss/c/hhss.o
+$(hhss_path)/hhss.o: $(hhss_path)/hhss.c
+	$(CC) $(CFLAGS) -DINSTPATH='"$(datadir)/"' -o $@ -c $<
 ### THIS IS A VERY QUICK FIX AND NEEDS A LATER CARE ###
 
 ## Auxiliary Tasks
