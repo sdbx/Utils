@@ -8,6 +8,7 @@ The purpose of this specification is to describe overall components which a conf
 - 24.06.13 :: Minor fix.
 - 24.06.14 :: Minor fix.
 - 24.06.18 :: Minor fix.
+- 26.05.20 :: Added N = 0 behavior (no line feed insertion).
 
 ## Use Case
 
@@ -26,11 +27,12 @@ A conforming implementation must produce a string, hereafter referred to as **th
 
 - Any number of multibyte characters can be included in.
   - As such, a conforming implementation should handle multibyte characters in a proper manner.
-- The string must have a line feed character `\n` after every `N` numbers of valid multibyte characters.
-- A line feed character must be placed at the end of the result string, unless one have been already put (because of the above condition).
+- If `N` is greater than 0, the string must have a line feed character `\n` after every `N` numbers of valid multibyte characters.
+- If `N` is greater than 0, a line feed character must be placed at the end of the result string, unless one have been already put (because of the above condition).
+- If `N` is 0, no line feed character must be inserted.
 
 > Definition.  
-> `N` is of type `int` and has a value between 1 ~ 32 (inclusive).
+> `N` is of type `int` and has a value between 0 ~ 32 (inclusive).
 
 ### Example: the result
 
@@ -73,7 +75,7 @@ The implementation must follow the error handling behavior described in the Erro
 
 - The number of command line arguments is not equal to 1.
 - Failure to get the command line argument.
-- `N` not in the range of [1, 32].
+- `N` not in the range of [0, 32].
 
 ## Program Name
 

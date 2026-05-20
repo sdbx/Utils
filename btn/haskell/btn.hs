@@ -12,4 +12,7 @@ main = do
   (rawCharCountUntilNewline:_) <- getArgs
   let charCountUntilNewline = read rawCharCountUntilNewline :: Int
   text <- getContents
-  putStrLn $ intercalate "\n" . chunks charCountUntilNewline . filter (not . isSpace) $ text
+  let filteredText = filter (not . isSpace) text
+  if charCountUntilNewline == 0
+    then putStr filteredText
+    else putStrLn $ intercalate "\n" $ chunks charCountUntilNewline filteredText

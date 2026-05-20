@@ -7,7 +7,8 @@
  * Usage: ./btn N < TEXT_FILE_NAME
  * where
  *    N = the number of characters before a new-line character;
- *        its range: 1 ~ 32,
+ *        if N = 0, no new-line character is inserted,
+ *        its range: 0 ~ 32,
  *    TEXT_FILE_NAME = the file name to be input-redirected.
  ***/
 
@@ -16,7 +17,7 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#define MIN_CHAR_COUNT   1
+#define MIN_CHAR_COUNT   0
 #define MAX_CHAR_COUNT  32
 
 void raise_err(char *err_msg);
@@ -64,13 +65,14 @@ int main(int argc, char *argv[]) {
 
       if (left_multibyte_count == 0) {
          printed_char_count++;
-         if (printed_char_count == num_char_until_newline) {
+         if (num_char_until_newline > 0 &&
+               printed_char_count == num_char_until_newline) {
             putchar('\n');
             printed_char_count = 0;
          }
       }
    }
-   if (printed_char_count != 0)
+   if (num_char_until_newline > 0 && printed_char_count != 0)
       putchar('\n');
 
    return 0;
