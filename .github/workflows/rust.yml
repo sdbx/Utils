@@ -2,11 +2,15 @@ name: Test for Rust implementations
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   test:
     name: Run test
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
+    container:
+      image: buildpack-deps:jammy
     defaults:
       run:
         working-directory: ./test

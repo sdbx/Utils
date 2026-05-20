@@ -1,30 +1,32 @@
 name: Test for JavaScript implementations
 on:
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
 
 jobs:
-  prepare:
-    name: Prepare test
+  test:
+    name: Run test
     runs-on: self-hosted
+    container:
+      image: buildpack-deps:jammy
+    defaults:
+      run:
+        working-directory: ./test
     steps:
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
       - uses: actions/checkout@v4
         with:
           submodules: true
       - name: Build test maker
         run: gcc -o test_maker test_maker.c
-        working-directory: ./test
 
-  test:
-    name: Run heading test
-    runs-on: self-hosted
-    needs: prepare
-    defaults:
-      run:
-        working-directory: ./test
-    steps:
       - name: Build object program
-        run: $BUN_INSTALL/bin/bun build hd.js --compile --outfile hd
+        run: bun build hd.js --compile --outfile hd
         working-directory: ./hd/javascript
       - name: Build host program
         run: ./test_maker .test/hd.test
