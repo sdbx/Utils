@@ -10,7 +10,7 @@ jobs:
     name: Run test
     runs-on: self-hosted
     container:
-      image: buildpack-deps:jammy
+      image: haskell:9
     defaults:
       run:
         working-directory: ./test
