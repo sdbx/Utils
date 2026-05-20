@@ -54,7 +54,7 @@ void free_str_arr(char **str_arr, int arr_len);
 
 int main(int argc, char *argv[]) {
    if (argc != 2)
-      raise_err("hhss: argc != 2.");
+      raise_err("usage: hhss <num>");
 
    FILE *hsr_dat = open_file(sentence_file, "r");
    FILE *usr_dat = open_file(user_file, "r");
