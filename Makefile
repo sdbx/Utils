@@ -65,14 +65,19 @@ all_objects =
 
 $(foreach program,$(programs),$(eval $(call program_template,$(program))))
 
+# hhss.c requires a special care since it needs INSTPATH
+inst_prefix := /usr/local
+datadir := $(inst_prefix)/share/hhss
+$(hhss_path)/hhss.o: $(hhss_path)/hhss.c
+	$(CC) $(CFLAGS) -DINSTPATH='"$(datadir)"' -o $@ -c $<
+
 ## Auxiliary Tasks
 .PHONY: install
 INSTALL := install
 INSTALL_PROGRAM := $(INSTALL)
 INSTALL_DATA := $(INSTALL) -m 644
-install_path := ./bin
-bindir := $(install_path)
-datadir := $(install_path)/data
+
+bindir := $(inst_prefix)/bin
 hhss_data := hsr usr
 program_installation_cmd := $(INSTALL_PROGRAM) ./$$i/c/$$i $(bindir)
 data_installation_cmd := $(INSTALL_DATA) ./hhss/$$i $(datadir)
@@ -88,7 +93,8 @@ done
 endef
 
 install:
-	test -d $(install_path) || (mkdir $(bindir) && mkdir $(datadir))
+	test -d $(bindir) || (mkdir $(bindir))
+	test -d $(datadir) || (mkdir $(datadir))
 	$(call installation_template,$(programs),$(program_installation_cmd))
 	$(call installation_template,$(hhss_data:%=%.dat),$(data_installation_cmd))
 
@@ -107,7 +113,8 @@ $(test_path)/test_maker: $(test_path)/test_maker.o
 
 .PHONY: uninstall
 uninstall:
-	rm -rf $(install_path)
+	rm -rf $(foreach program,$(programs),$(bindir)/$(program))
+	rm -rf $(datadir)
 
 .PHONY: clean
 clean:
@@ -129,11 +136,11 @@ help:
 	@echo "	make		builds every program."
 	@echo "	make "$(call cmd_color,program-names...)
 	@echo " 			builds mentioned program(s) only, e.g. make btn nsy"
-	@echo "	make "$(call cmd_color,install)"	copies the executables of each program into ./bin directory."
+	@echo "	make "$(call cmd_color,install)"	copies the executables of each program into $(bindir) directory."
 	@echo
 	@echo $(call cmd_group,2. CLEANING ACTIONS)
 	@echo "	make "$(call cmd_color,clean)"	deletes all object files and all executables."
-	@echo "	make "$(call cmd_color,uninstall)"	deletes everything under ./bin directory."
+	@echo "	make "$(call cmd_color,uninstall)"	deletes everything under $(bindir) directory."
 	@echo "	make "$(call cmd_color,cleanall)"	clean + uninstall + some files in ./test"
 	@echo
 	@echo $(call cmd_group,3. MISCELLANEOUS)
