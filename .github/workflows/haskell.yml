@@ -1,12 +1,16 @@
 name: Test for Haskell implementations
 on:
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
 
 jobs:
-  prepare:
-    name: Prepare test
+  test:
+    name: Run test
     runs-on: self-hosted
+    container:
+      image: ubuntu:22.04
     defaults:
       run:
         working-directory: ./test
@@ -17,14 +21,6 @@ jobs:
       - name: Build test maker
         run: gcc -o test_maker test_maker.c
 
-  test-btn:
-    name: Run buntang test
-    runs-on: self-hosted
-    needs: prepare
-    defaults:
-      run:
-        working-directory: ./test
-    steps:
       - name: Build object program
         run: ghc btn.hs
         working-directory: ./btn/haskell
@@ -34,14 +30,6 @@ jobs:
         run: ./test ../btn/haskell/btn
         timeout-minutes: 5
 
-  test-hd:
-    name: Run heading test
-    runs-on: self-hosted
-    needs: prepare
-    defaults:
-      run:
-        working-directory: ./test
-    steps:
       - name: Build object program
         run: ghc hd.hs
         working-directory: ./hd/haskell
@@ -51,14 +39,6 @@ jobs:
         run: ./test ../hd/haskell/hd
         timeout-minutes: 5
 
-  test-nsy:
-    name: Run noisy test
-    runs-on: self-hosted
-    needs: prepare
-    defaults:
-      run:
-        working-directory: ./test
-    steps:
       - name: Build object program
         run: ghc nsy.hs
         working-directory: ./nsy/haskell
