@@ -66,8 +66,8 @@ all_objects =
 $(foreach program,$(programs),$(eval $(call program_template,$(program))))
 
 ### THIS IS A VERY QUICK FIX AND NEEDS A LATER CARE ###
-install_path := $(CURDIR)/bin
-datadir := $(install_path)/data
+prefix := usr/local
+datadir := $(prefix)/share/hhss
 $(hhss_path)/hhss.o: $(hhss_path)/hhss.c
 	$(CC) $(CFLAGS) -DINSTPATH='"$(datadir)/"' -o $@ -c $<
 ### THIS IS A VERY QUICK FIX AND NEEDS A LATER CARE ###
@@ -78,7 +78,7 @@ INSTALL := install
 INSTALL_PROGRAM := $(INSTALL)
 INSTALL_DATA := $(INSTALL) -m 644
 
-bindir := $(install_path)
+bindir := $(prefix)/bin
 hhss_data := hsr usr
 program_installation_cmd := $(INSTALL_PROGRAM) ./$$i/c/$$i $(bindir)
 data_installation_cmd := $(INSTALL_DATA) ./hhss/$$i $(datadir)
