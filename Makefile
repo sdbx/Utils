@@ -66,8 +66,8 @@ all_objects =
 $(foreach program,$(programs),$(eval $(call program_template,$(program))))
 
 # hhss.c requires a special care since it needs INSTPATH
-prefix := /usr/local
-datadir := $(prefix)/share/hhss
+inst_prefix := /usr/local
+datadir := $(inst_prefix)/share/hhss
 $(hhss_path)/hhss.o: $(hhss_path)/hhss.c
 	$(CC) $(CFLAGS) -DINSTPATH='"$(datadir)"' -o $@ -c $<
 
@@ -77,7 +77,7 @@ INSTALL := install
 INSTALL_PROGRAM := $(INSTALL)
 INSTALL_DATA := $(INSTALL) -m 644
 
-bindir := $(prefix)/bin
+bindir := $(inst_prefix)/bin
 hhss_data := hsr usr
 program_installation_cmd := $(INSTALL_PROGRAM) ./$$i/c/$$i $(bindir)
 data_installation_cmd := $(INSTALL_DATA) ./hhss/$$i $(datadir)
