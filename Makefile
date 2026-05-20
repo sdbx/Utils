@@ -114,7 +114,7 @@ $(test_path)/test_maker: $(test_path)/test_maker.o
 
 .PHONY: uninstall
 uninstall:
-	rm -rf $(bindir)/$(programs)
+	rm -rf $(foreach program,$(programs),$(bindir)/$(program))
 	rm -rf $(datadir)
 
 .PHONY: clean
