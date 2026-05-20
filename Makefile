@@ -65,12 +65,11 @@ all_objects =
 
 $(foreach program,$(programs),$(eval $(call program_template,$(program))))
 
-### THIS IS A VERY QUICK FIX AND NEEDS A LATER CARE ###
+# hhss.c requires a special care since it needs INSTPATH
 prefix := /usr/local
 datadir := $(prefix)/share/hhss
 $(hhss_path)/hhss.o: $(hhss_path)/hhss.c
 	$(CC) $(CFLAGS) -DINSTPATH='"$(datadir)"' -o $@ -c $<
-### THIS IS A VERY QUICK FIX AND NEEDS A LATER CARE ###
 
 ## Auxiliary Tasks
 .PHONY: install
