@@ -136,11 +136,11 @@ help:
 	@echo "	make		builds every program."
 	@echo "	make "$(call cmd_color,program-names...)
 	@echo " 			builds mentioned program(s) only, e.g. make btn nsy"
-	@echo "	make "$(call cmd_color,install)"	copies the executables of each program into ./bin directory."
+	@echo "	make "$(call cmd_color,install)"	copies the executables of each program into $(bindir) directory."
 	@echo
 	@echo $(call cmd_group,2. CLEANING ACTIONS)
 	@echo "	make "$(call cmd_color,clean)"	deletes all object files and all executables."
-	@echo "	make "$(call cmd_color,uninstall)"	deletes everything under ./bin directory."
+	@echo "	make "$(call cmd_color,uninstall)"	deletes everything under $(bindir) directory."
 	@echo "	make "$(call cmd_color,cleanall)"	clean + uninstall + some files in ./test"
 	@echo
 	@echo $(call cmd_group,3. MISCELLANEOUS)
