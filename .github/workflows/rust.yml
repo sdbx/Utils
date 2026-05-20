@@ -10,7 +10,7 @@ jobs:
     name: Run test
     runs-on: self-hosted
     container:
-      image: ubuntu:22.04
+      image: buildpack-deps:jammy
     defaults:
       run:
         working-directory: ./test
