@@ -94,7 +94,8 @@ done
 endef
 
 install:
-	test -d $(install_path) || (mkdir $(bindir) && mkdir $(datadir))
+	test -d $(bindir) || (mkdir $(bindir))
+	test -d $(datadir) || (mkdir $(datadir))
 	$(call installation_template,$(programs),$(program_installation_cmd))
 	$(call installation_template,$(hhss_data:%=%.dat),$(data_installation_cmd))
 
@@ -113,7 +114,8 @@ $(test_path)/test_maker: $(test_path)/test_maker.o
 
 .PHONY: uninstall
 uninstall:
-	rm -rf $(install_path)
+	rm -rf $(bindir)/$(programs)
+	rm -rf $(datadir)
 
 .PHONY: clean
 clean:
