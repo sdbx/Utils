@@ -13,3 +13,11 @@ TEST
    "I hate programming in C so much.\nI'm getting headache.",
    { "Ihateprogr\namminginCs\nomuch.I'mg\nettinghead\nache.\n" }
 )
+
+TEST
+(
+   "no-newline",
+   "0",
+   "I hate programming in C so much.\nI'm getting headache.",
+   { "IhateprogramminginCsomuch.I'mgettingheadache." }
+)

@@ -7,6 +7,10 @@ def main(n):
         raise_err('nsy: EOF detected.')
     
     text = text.translate(str.maketrans('', '', string.whitespace))
+    if n == 0:
+        sys.stdout.write(text)
+        return
+
     for i in range(0, len(text), n):
         print(text[i : i + n])
 
@@ -22,7 +26,7 @@ if len(sys.argv) != 2:
         sep='\n')
 
 n = int(sys.argv[1])
-if n < 1 or n > 32:
+if n < 0 or n > 32:
     raise_err('nsy: argv[1] out of range.')
 
 main(n)

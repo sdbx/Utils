@@ -9,7 +9,8 @@ This program prints a long string having no white-space characters, given a text
 
 where
    N = the number of characters before a new-line character;
-       its range: 1 ~ 32,
+       if N = 0, no new-line character is inserted,
+       its range: 0 ~ 32,
    TEXT_FILE_NAME = the file name to be input-redirected.
 ```
 
