@@ -36,10 +36,14 @@
 #define MIN_USER_NUM    1
 #
 #define COMMENT         '#'
+#
+#ifndef INSTPATH
+#define INSTPATH   "../"    /* install path; given when built */
+#endif
 
 char *arg_num_sentence_to_print = "argv[1]";
-char *sentence_file = "hsr.dat";
-char *user_file = "usr.dat";
+char *sentence_file = INSTPATH "hsr.dat";
+char *user_file = INSTPATH "usr.dat";
 char *user_template = "${user}";
 
 void raise_err(char *err_msg, ...);
