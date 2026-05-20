@@ -16,8 +16,9 @@ jobs:
         working-directory: ./test
     steps:
       - name: Install Bun
-        run: curl -fsSL https://bun.sh/install | bash
-        working-directory: ./
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
       - uses: actions/checkout@v4
         with:
           submodules: true
@@ -25,7 +26,7 @@ jobs:
         run: gcc -o test_maker test_maker.c
 
       - name: Build object program
-        run: ~/bin/bun build hd.js --compile --outfile hd
+        run: bun build hd.js --compile --outfile hd
         working-directory: ./hd/javascript
       - name: Build host program
         run: ./test_maker .test/hd.test
