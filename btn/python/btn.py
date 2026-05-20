@@ -8,7 +8,7 @@ def main(n):
     
     text = text.translate(str.maketrans('', '', string.whitespace))
     if n == 0:
-        sys.stdout.write(text)
+        print(text, end='')
         return
 
     for i in range(0, len(text), n):
