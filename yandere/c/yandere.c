@@ -22,9 +22,9 @@ const yandere_t msgs = {
 };
 
 int main(void) {
-   signal(SIGINT , handle_sigint);
-   signal(SIGQUIT, handle_sigquit);
-   signal(SIGTERM, handle_sigterm);
+   (void) signal(SIGINT , handle_sigint);
+   (void) signal(SIGQUIT, handle_sigquit);
+   (void) signal(SIGTERM, handle_sigterm);
    trigger_loop(msgs.init);
    return 0;
 }
