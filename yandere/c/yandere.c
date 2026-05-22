@@ -14,7 +14,7 @@ static inline sighandler_t handle_sigint;
 static inline sighandler_t handle_sigquit;
 static inline sighandler_t handle_sigterm;
 
-const yandere_t msgs = {
+static const yandere_t msgs = {
    .init = "이제 내가 싫어진거야?",
    .sigint = "도망갈 수 있을 거라 생각하지 마",
    .sigquit = "킥킥, 고작 그런 수로 벗어날 수 있을 거라 생각했어?",
