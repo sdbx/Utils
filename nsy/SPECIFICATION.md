@@ -7,6 +7,7 @@ The purpose of this specification is to describe overall components which a conf
 - 24.06.10 :: Initial writing.
 - 24.06.13 :: Minor fix.
 - 24.06.18 :: Minor fix.
+- 26.05.22 :: Minor fix.
 
 ## Use Case
 
@@ -87,6 +88,6 @@ Since this delimiter doesn't disturb the readability, the implementation may cho
 
 ## Program Name
 
-The program name is determined by whether the language in which a conforming implementation is written is of compiled or of interpreted.
+The program name is determined by whether the language in which a conforming implementation is written gets compiled or interpreted.
 
 If a compiled langauge, then the conforming implementation must have its built executable file have the name `nsy`. Otherwise, the conforming implementation must have its source code file have the name `nsy` (including a corresponding extension, if needed).
