@@ -16,7 +16,7 @@ static inline sighandler_t handle_sigterm;
 
 static const yandere_t msgs = {
    .init = "이제 내가 싫어진거야?",
-   .sigint = "도망갈 수 있을 거라 생각하지 마",
+   .sigint = "\n\n도망갈 수 있을 거라 생각하지 마\n",
    .sigquit = "킥킥, 고작 그런 수로 벗어날 수 있을 거라 생각했어?",
    .sigterm = "어디가? 설마 도망가는건 아니지?"
 };
