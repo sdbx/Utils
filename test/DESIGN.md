@@ -6,6 +6,7 @@ The purpose of this document is to articulate the overall design of the `test` p
 
 - 24.06.11 :: Initial writing.
 - 24.06.14 :: Minor fix.
+- 26.05.22 :: Minor fix.
 
 ## Conceptual Design
 
@@ -94,7 +95,7 @@ A conforming implementation may take command line argument(s) in order to run.
 
 #### Program Name
 
-The program name is determined by whether the language in which a conforming implementation is written is of compiled or of interpreted.
+The program name is determined by whether the language in which a conforming implementation is written gets compiled or interpreted.
 
 If a compiled langauge, then the conforming implementation must have its built executable file have the name `test`. Otherwise, the conforming implementation must have its source code file have the name `test` (including a corresponding extension, if needed).
 
