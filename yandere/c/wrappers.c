@@ -34,6 +34,6 @@ extern void safe_vfprintf(FILE *stream, const char *format, va_list *ap) {
  * signal.h *
  ************/
 extern void safe_signal(int sig, sighandler_t handler) {
-   /* intentionally ignore SIG_ERR */
-   (void) signal(sig, handler);
+   if (signal(sig, handler) == SIG_ERR)
+      ERR("signal error");
 }
