@@ -1,7 +1,7 @@
 #include "fatal.h"
 
 extern void fatal(const char *errmsg, const char *funcname) {
-   safe_vfprintf(
+   safe_fprintf(
       stderr,
       PROGNAME ": fatal: %s in " Cemerald "%s" Creset "\n",
       errmsg, funcname
@@ -11,13 +11,18 @@ extern void fatal(const char *errmsg, const char *funcname) {
 
 extern void vfatal(const char *errmsg, const char *funcname, ...) {
    va_list ap;
-   int ret;
+
+   safe_fputs(stderr, PROGNAME ": fatal: ");
 
    va_start(ap, funcname);
-   safe_fputs(stderr, PROGNAME ": fatal: ");
-   safe_vfprintf(stderr, errmsg, ap);
+   safe_vfprintf(stderr, errmsg, &ap);
    va_end(ap);
-   ret = fprintf(stderr, " in " Cemerald "%s" Creset "\n", funcname);
-   if (ret < 0) ERR("fprintf error");
+
+   safe_fprintf(
+      stderr,
+      " in " Cemerald "%s" Creset "\n",
+      funcname
+   );
+
    exit(EXIT_FAILURE);
 }

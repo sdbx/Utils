@@ -16,7 +16,8 @@
  **************/
 void safe_putchar(char ch);
 void safe_fputs(FILE *stream, const char *line);
-void safe_vfprintf(FILE *stream, const char *format, ...);
+void safe_fprintf(FILE *stream, const char *format, ...);
+void safe_vfprintf(FILE *stream, const char *format, va_list *ap);
 void safe_signal(int sig, sighandler_t handler);
 
 #endif
