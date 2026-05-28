@@ -2,8 +2,8 @@
 
 int main(void) {
    seed();
-   install_sighandlers();
    event = Event_default;
+   install_sighandlers();
    for (;;) dispatch();
    return 0;
 }
