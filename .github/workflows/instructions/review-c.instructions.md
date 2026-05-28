@@ -22,4 +22,4 @@ Use the following instructions when reviewing C code in this project.
 - Check for integer overflow/underflow and risky signed/unsigned conversions in size, index, and length calculations.
 - Flag undefined behavior risks (for example: use-after-free, double free, out-of-bounds access, and uninitialized reads).
 
-- Finally, you may choose not to leave any comments if the code is already high quality and meets all of the criteria above.
+- Finally, you may choose not to leave any comments and approve the changes if the code is already high quality and meets all of the criteria above.
