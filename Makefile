@@ -1,3 +1,6 @@
+## Includes
+include defs.mk
+
 ## Settings
 SHELL := /bin/sh
 CC := gcc
@@ -15,11 +18,12 @@ define cstr
 endef
 name_str = $(call cstr,38;5;49;1,$1)
 build_completed_str = $(call cstr,48;5;222;30, [ BUILD COMPLETED ] )
-installation_done_str = $(call cstr,48;5;150;30, [ INSTALLATION DONE ] )
-warning_str = $(call cstr,48;5;88;37, [ WARNING ] )
+inst_done_str = $(call cstr,48;5;150;30, [ INSTALL DONE ] )
+warn_str = $(call cstr,48;5;88;37, [ WARNING ] )
 notice_str = $(call cstr,48;5;152;30, [ NOTICE ] )
 
 ## Compilations
+project := Utils
 programs := btn hd hhss nsy nsy2 yandere
 _programs := $(foreach program,$(programs),./$(program)/c/$(program))
 default_goal := __record__
@@ -78,25 +82,23 @@ INSTALL_PROGRAM := $(INSTALL)
 INSTALL_DATA := $(INSTALL) -m 644
 
 bindir := $(inst_prefix)/bin
+man1dir := $(inst_prefix)/share/man/man1
+man7dir := $(inst_prefix)/share/man/man7
+
 hhss_data := hsr usr
+
 program_installation_cmd := $(INSTALL_PROGRAM) ./$$i/c/$$i $(bindir)
 data_installation_cmd := $(INSTALL_DATA) ./hhss/$$i $(datadir)
-
-define installation_template
-for i in $1; do \
-	if $2; then \
-		echo $(installation_done_str) $(call name_str,$$i) has been installed successfully.; \
-	else \
-		echo $(warning_str) There was a failure on installing $(call name_str,$$i).; \
-	fi \
-done
-endef
 
 install:
 	test -d $(bindir) || (mkdir $(bindir))
 	test -d $(datadir) || (mkdir $(datadir))
+	test -d $(man1dir) || (mkdir $(man1dir))
+	test -d $(man7dir) || (mkdir $(man7dir))
 	$(call installation_template,$(programs),$(program_installation_cmd))
 	$(call installation_template,$(hhss_data:%=%.dat),$(data_installation_cmd))
+	$(call inst_man_t,$(programs),$(INSTALL) -m 644 $$i/$$i.1 $(man1dir),1)
+	$(call inst_man_t,$(project),$(INSTALL) -m 644 $$i.7 $(man7dir),7)
 
 .PHONY: test
 test_path := ./test
@@ -113,8 +115,10 @@ $(test_path)/test_maker: $(test_path)/test_maker.o
 
 .PHONY: uninstall
 uninstall:
-	rm -rf $(foreach program,$(programs),$(bindir)/$(program))
+	rm -f $(foreach program,$(programs),$(bindir)/$(program))
 	rm -rf $(datadir)
+	rm -f $(foreach program,$(programs),$(man1dir)/$(program).1)
+	rm -f $(man7dir)/$(project).7
 
 .PHONY: clean
 clean:
