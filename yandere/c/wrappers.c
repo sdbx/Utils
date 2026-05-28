@@ -3,11 +3,6 @@
 /***********
  * stdio.h *
  ***********/
-extern void safe_putchar(char ch) {
-   if (putchar(ch) == EOF)
-      ERR("putchar error");
-}
-
 extern void safe_fputs(FILE *stream, const char *line) {
    if (fputs(line, stream) == EOF)
       ERR("fputs error");
