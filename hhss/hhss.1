@@ -1,0 +1,50 @@
+.TH hhss 1 2026-05-28 "Utils Project" "UTILS PROJECT"
+.SH NAME
+hhss - prints arbitrary nonsenses
+.SH SYNOPSIS
+.nf
+\fBhhss\fR \fIN\fR
+.fi
+.PP
+※ \fIN\fR determines the number of nonsenses to print and it must be equal to or greater than \fB5\fR.
+.SH DESCRIPTION
+\fBhhss\fR prints random nonsenses on \fBstdout\fR. Each nonsense is separated by a line break character.
+.PP
+This program uses two databases: \fIhsr.dat\fR and \fIusr.dat\fR. These files are under \fI/usr/local/share/hhss\fR. \fIhsr.dat\fR is a collection of nonsensical sentences. One can add new nonsenses by modifying the file. Incidentally, \fIusr.dat\fR is a collection of \[dq]user names\[dq]. When \fBhhss\fR reads a string from \fIhsr.dat\fR which contains one or more \[dq]{user}\[dq] substrings, the program replaces the substring with a user name found in \fIusr.dat\fR. One can add more names in the file as well.
+.SH USAGE
+The main strength of this program comes from its printing nonsenses. One can use this program as a standalone, but it is also possible to use it with other programs in the \fBUtils\fR project.
+.SH EXAMPLE
+.B "＊ Use as a Standalone"
+.RS
+.sp
+$ hhss 5
+.sp
+.RE
+.B "＊ Use in Conjunction with Other Utils Programs"
+.RS
+.sp
+$ hhss 5 | nsy e | hd
+.sp
+.RE
+With this combination, one can easily disturb the atmosphere of the chat room in which one is.
+.SH COMMAND LINE ARGUMENTS
+.IP "[1] \fBN\fR"
+Represents the number of nonsensical sentences to print out. Must be at least 5 and can't exceed the total number of sentences in the \fIhsr.dat\fR.
+.SH FILES
+.I hsr.dat
+.RS
+A database contaning nonsenses. Located at \fI/usr/local/share/hhss\fR.
+.RE
+.I usr.dat
+.RS
+A database contaning user names. Located at the same place with \fIhsr.dat\fR.
+.RE
+.SH EXIT STATUS
+The current specification does not mention on the exit status. Thus, the exit status is implementation-defined as of now.
+.SH IMPLEMENTATIONS
+Currently, \fBhhss\fR has four implementations, which are all written in different languages.
+.SH CONTRIBUTORS
+Visit \fIhttps://github.com/sdbx/Utils/graphs/contributors\fR to see all the contributors!
+.SH UTILS PROJECT
+\fBhhss\fR is part of the \fBUtils\fR utility suite.
+For more information, please visit \fIhttps://github.com/sdbx/Utils\fR to browse the whole project.

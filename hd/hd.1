@@ -1,0 +1,40 @@
+.TH hd 1 2026-05-28 "Utils Project" "UTILS PROJECT"
+.SH NAME
+hd - makes <h1> headings
+.SH SYNOPSIS
+.nf
+\fBhd\fR < \fIFILE\fR
+.fi
+.PP
+※ \fBhd\fR takes its input from \fBstdin\fR and prints the output on \fBstdout\fR.
+.SH DESCRIPTION
+\fBhd\fR puts a string \[dq]# \[dq] in front of the input and prints the result. Therefore, it is treated as a heading sentence in the Markdown syntax.
+.SH USAGE
+Since \fBhd\fR treats each line as a separate line, one can input-redirect a text file, which consists of multiple lines, to this program.
+.PP
+Considering such a behavior, one can exploit this property by pipelining this program with other programs in the \fBUtils\fR project.
+.SH EXAMPLE
+.B "＊ Input a File"
+.RS
+.sp
+$ hd < nonsenses.txt
+.sp
+.RE
+.B "＊ Use in Conjunction with Other Utils Programs"
+.RS
+.sp
+$ hhss 5 | hd
+.sp
+.RE
+This combination is remarkable in that it is not only easy to use, but also very effective to get attention from other participants in the chat room in which one is.
+.SH COMMAND LINE ARGUMENTS
+The current \fBhd\fR specification prescribes that a conforming implementation does not take any command line arguments.
+.SH EXIT STATUS
+The current specification does not mention on the exit status. Thus, the exit status is implementation-defined as of now.
+.SH IMPLEMENTATIONS
+Currently, \fBhd\fR has five implementations, which are all written in different languages.
+.SH CONTRIBUTORS
+Visit \fIhttps://github.com/sdbx/Utils/graphs/contributors\fR to see all the contributors!
+.SH UTILS PROJECT
+\fBhd\fR is part of the \fBUtils\fR utility suite.
+For more information, please visit \fIhttps://github.com/sdbx/Utils\fR to browse the whole project.

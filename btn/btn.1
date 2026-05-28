@@ -1,0 +1,44 @@
+.TH btn 1 2026-05-28 "Utils Project" "UTILS PROJECT"
+.SH NAME
+btn - removes whitespaces and makes a line break per a specified number of characters
+.SH SYNOPSIS
+.nf
+\fBbtn\fR \fIN\fR
+\fBbtn\fR \fIN\fR < \fIFILE\fR
+.fi
+.PP
+※ \fIN\fR represents the number of characters before a line break character and must have a value between 1 and 32 (inclusive).
+.PP
+※ \fBbtn\fR uses \fBstdin\fR to take its input and writes the result on \fBstdout\fR.
+.SH DESCRIPTION
+\fBbtn\fR prints a long string having no white-space characters, given a text file from stdin. Thus a would-be attention seeker may find this program useful for his doing so-called buntangs, hence originated the program name \fBbtn\fR.
+.PP
+\[dq]Buntang\[dq] is a Korean word meaning disturbance or commotion; apparently it is used as a kind of the Internet slang nowadays to refer to such confusing misbehaviors themselves or the one who is exerting such dizziness-causing attitudes usually at online communities.
+.SH USAGE
+One can use \fBbtn\fR as a standalone program. However, it is when used in conjunction with other programs in the \fBUtils\fR project that \fBbtn\fR becomes so powerful.
+.SH EXAMPLE
+.B "＊ Use as a Standalone"
+.RS
+.sp
+$ btn 5 < nonsenses.txt
+.sp
+.RE
+.B "＊ Use in Conjunction with Other Utils Programs"
+.RS
+.sp
+$ hhss 5 | nsy e | btn 20
+.sp
+.RE
+This successive invocation of three programs--\fBhhss\fR, \fBnsy\fR, and \fBbtn\fR--gives a mind-blowing output which can be easily copied and pasted in the chating room in which one is.
+.SH COMMAND LINE ARGUMENTS
+.IP "[1] \fBN\fR"
+Determines the number of characters before a line break character. Must have a value on \fB[1, 32]\fR.
+.SH EXIT STATUS
+The current specification does not mention on the exit status. Thus, the exit status is implementation-defined as of now.
+.SH IMPLEMENTATIONS
+Currently, \fBbtn\fR has three implementations, which are all written in different languages.
+.SH CONTRIBUTORS
+Visit \fIhttps://github.com/sdbx/Utils/graphs/contributors\fR to see all the contributors!
+.SH UTILS PROJECT
+\fBbtn\fR is part of the \fBUtils\fR utility suite.
+For more information, please visit \fIhttps://github.com/sdbx/Utils\fR to browse the whole project.

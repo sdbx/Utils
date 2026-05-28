@@ -1,0 +1,28 @@
+.TH Utils 7 2026-05-29 "Utils Project" "UTILS PROJECT"
+.SH NAME
+Utils - a collection of command line tools focused on producing weird strings
+.SH LIST OF PROGRAMS
+.nf
+\fBbtn\fR - removes whitespaces and makes a line break per a specified number of characters
+\fBhd\fR - makes <h1> headings
+\fBhhss\fR - prints arbitrary nonsenses
+\fBnsy\fR - inserts a specified character between every character in a string
+\fBnsy2\fR - inserts a specified character between every word in a string
+\fByandere\fR - prints a yandere-like sentence ad infinitum
+.fi
+.SH DESCRIPTION
+This project provides command line tools all of which can assist the user to get the attention from other people by producing strings looking weird. Since the programs are implemented separately, the user can use the program as a standalone. However, these programs becomes more powerful when used together via pipeline.
+.SH BUILD
+Since each program has several implementations developed in different langauges, one can choose which to use. Meanwhile, the project provides a central \fIMakefile\fR which builds a C implementation of each program. The following are part of available recipes:
+.RS
+.sp
+.nf
+\fB$ make\fR - builds all programs (use C implementations)
+\fB$ make install\fR - installs executables under \fI/usr/local/bin\fR
+\fB$ make uninstall\fR - removes the programs
+\fB$ make help\fR - prints a guide
+.fi
+.sp
+.RE
+.SH CONTRIBUTION
+Interested in this project? then please visit \fIhttps://github.com/sdbx/Utils\fR. This project accepts pull requests.

@@ -1,0 +1,66 @@
+.TH nsy 1 2026-05-28 "Utils Project" "UTILS PROJECT"
+.SH NAME
+nsy - inserts a specified character between every character in a string
+.SH SYNOPSIS
+.nf
+\fBnsy\fR \fI<mark>\fR
+\fBnsy\fR \fI<mark>\fR < \fI<file>\fR
+.fi
+.PP
+※ \fBnsy\fR takes its input from \fBstdin\fR and prints the output on \fBstdout\fR.
+.SH DESCRIPTION
+\fBnsy\fR places a specified delimiter between every character in a given sentence. \fI<mark>\fR, the sole command line argument, determines which delimiter to use.
+.USAGE
+The most noticeable characteristic of this program is that the output it produces looks extremely \[dq]noisy\[dq], hence originates the program name. In this reason, if one copied and pasted the result of this program into the chat room in which one is, it would be very easy to grab attention from the participants.
+.PP
+The difference between the \fBnsy2\fR program is that \fBnsy\fR places a delimiter between two characters while \fBnsy2\fR places between two words.
+.PP
+Indeed, this program can be used as a standalone, but it becomes more effective when used in conjunction with other programs in the \fBUtils\fR project.
+.SH EXAMPLE
+.B "＊ Use as a Standalone"
+.RS
+.sp
+$ nsy q < nonsenses.txt
+.sp
+.RE
+.B "＊ Use in Conjunction with Other Utils Programs"
+.RS
+.sp
+$ hhss 5 | nsy q | btn 20
+.sp
+.RE
+.SH COMMAND LINE ARGUMENTS
+.IP "[1] \fB<mark>\fR"
+Determines which delimiter to use. The standard delimiters which the current specification mandates are as the following:
+.RS
+.sp
+.nf
+\fBe\fR - exclamation mark
+\fBq\fR - question mark
+\fBeu\fR - exclamation mark, upside down
+\fBqu\fR - question mark, upside down
+.fi
+.sp
+.RE
+.SH NOTES
+An implementation may provide non-standard delimiters. For example, the current C implementation supports:
+.RS
+.sp
+.nf
+\fBp\fR - period
+\fBel\fR - ellipsis
+\fBpl\fR - plus
+\fBc\fR - comma printed twice
+\fBh\fR - heart
+.fi
+.sp
+.RE
+.SH EXIT STATUS
+The current specification does not mention on the exit status. Thus, the exit status is implementation-defined as of now.
+.SH IMPLEMENTATIONS
+Currently, \fBnsy\fR has four implementations, which are all written in different languages.
+.SH CONTRIBUTORS
+Visit \fIhttps://github.com/sdbx/Utils/graphs/contributors\fR to see all the contributors!
+.SH UTILS PROJECT
+\fBnsy\fR is part of the \fBUtils\fR utility suite.
+For more information, please visit \fIhttps://github.com/sdbx/Utils\fR to browse the whole project.
