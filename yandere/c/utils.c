@@ -6,7 +6,7 @@ extern void seed(void) {
 
 extern int rand_range(int min, int max) {
    if (max <= 0)
-      VERR("max must be greater than 0, but given %n", max);
+      VERR("max must be greater than 0, but given %d", max);
    return min + rand() / (RAND_MAX / max + 1);
 }
 
