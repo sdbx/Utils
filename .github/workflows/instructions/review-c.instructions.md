@@ -1,3 +1,7 @@
+---
+applyTo: "*/c/*"
+---
+
 Here are the instructions for reviewing C code in this project.
 
 - Verify that the code follows `SPECIFICATION.md` and satisfies all functional requirements.
