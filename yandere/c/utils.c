@@ -11,27 +11,14 @@ extern int rand_range(int min, int max) {
 }
 
 extern int mblen_(char ch) {
-   int len, push, temp;
+   unsigned char c;
 
-   /* check if 0xxxxxxx */
-   if (0 <= ch)
-      return 1;
+   c = (unsigned char) ch;
 
-   /*
-    * handle 3 cases:
-    *    110xxxxx => return 2
-    *    1110xxxx => return 3
-    *    11110xxx => return 4
-    */
-   len = 0;
-   push = 7;
-   do {
-      temp = ch >> push;
-      temp &= 0x1;
-      if (temp == 0x1)
-         len++;
-      else break;
-   } while (--push);
+   if (c < 0x80) return 1;             /* 0xxxxxxx */
+   if ((c & 0xE0) == 0xC0) return 2;   /* 110xxxxx */
+   if ((c & 0xF0) == 0xE0) return 3;   /* 1110xxxx */
+   if ((c & 0xF8) == 0xF0) return 4;   /* 11110xxx */
 
-   return len;
+   return 0;
 }
