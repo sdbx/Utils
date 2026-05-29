@@ -1,0 +1,55 @@
+.TH nsy2 1 2026-05-28 "Utils Project" "UTILS PROJECT"
+.SH NAME
+nsy2 - inserts a specified character between every word in a string
+.SH SYNOPSIS
+.nf
+\fBnsy2\fR \fI<mark>\fR
+\fBnsy2\fR \fI<mark>\fR < \fI<file>\fR
+.fi
+.PP
+※ \fBnsy2\fR takes its input from \fBstdin\fR and prints the output on \fBstdout\fR.
+.SH DESCRIPTION
+\fBnsy2\fR places a specified delimiter between every word in a given sentence. \fI<mark>\fR, the sole command line argument, determines which delimiter to use.
+.SH USAGE
+The most noticeable characteristic of this program is that the output it produces looks quite \[dq]noisy\[dq]. In this reason, if one copied and pasted the result of this program into the chat room in which one is, it would be very easy to grab attention from the participants.
+.PP
+The difference between the \fBnsy\fR program is that \fBnsy2\fR places a delimiter between two words while \fBnsy\fR places between two characters.
+.PP
+Indeed, this program can be used as a standalone, but it becomes more effective when used in conjunction with other programs in the \fBUtils\fR project.
+.SH EXAMPLE
+.B "＊ Use as a Standalone"
+.RS
+.sp
+$ nsy2 q < nonsenses.txt
+.sp
+.RE
+.B "＊ Use in Conjunction with Other Utils Programs"
+.RS
+.sp
+$ hhss 5 | nsy2 q | btn 20
+.sp
+.RE
+.SH COMMAND LINE ARGUMENTS
+.IP "[1] \fB<mark>\fR"
+Determines which delimiter to use. The standard delimiters which the current specification mandates are as the following:
+.RS
+.sp
+.nf
+\fBe\fR - exclamation mark
+\fBq\fR - question mark
+\fBeu\fR - exclamation mark, upside down
+\fBqu\fR - question mark, upside down
+.fi
+.sp
+.RE
+.SH NOTES
+An implementation may provide non-standard delimiters. For example, the current C implementation supports \fBh\fR (heart).
+.SH EXIT STATUS
+The current specification does not mention on the exit status. Thus, the exit status is implementation-defined as of now.
+.SH IMPLEMENTATIONS
+Currently, \fBnsy2\fR has only one implementation.
+.SH CONTRIBUTORS
+Visit \fIhttps://github.com/sdbx/Utils/graphs/contributors\fR to see all the contributors!
+.SH UTILS PROJECT
+\fBnsy2\fR is part of the \fBUtils\fR utility suite.
+For more information, please visit \fIhttps://github.com/sdbx/Utils\fR to browse the whole project.
