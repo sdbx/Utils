@@ -1,5 +1,5 @@
 CC = gcc
-CCFLAGS = -O -Wall -W -pedantic
+CCFLAGS = -O -Wall -W -pedantic -g
 
 TARGET = yandere
 
