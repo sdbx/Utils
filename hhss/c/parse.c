@@ -110,13 +110,19 @@ static void tokhandle_delim(parse_state_t *state) {
       return;
    }
 
+   /*
+    * In this context, we have ${xxx} but we are not
+    * sure whether xxx is valid or not. If xxx is
+    * invalid, we are to treat every token, i.e.
+    * $, {, xxx, } as a character token.
+    */
    state->tok = array_get(state->tokstr, state->pos - 1);
    if (strchr(state->tok->run, ' ')) {
-      state->pos = prevpos;
       for (int i = prevpos; i <= state->pos; i++) {
          state->tok = array_get(state->tokstr, i);
          tokhandle_chars(state);
       }
+      return;
    }
 
    tokhandle_common(state, Symkind_repl);
