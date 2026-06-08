@@ -21,8 +21,8 @@ void fatal(
 );
 void vfatal(
    const char * restrict errmsg,
-   const char * restrict filename,
    const char * restrict funcname,
+   const char * restrict filename,
    ...
 );
 
