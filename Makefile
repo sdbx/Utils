@@ -6,7 +6,7 @@ include defs.mk
 .SUFFIXES:
 .SUFFIXES: .c .o .h
 
-.PHONY: all install uninstall clean cleanall help
+.PHONY: all test install uninstall clean cleanall help
 
 ## Default Goal ##
 all: $(TARGETS)
@@ -16,12 +16,12 @@ $(TARGETS):
 	@echo $(STR_BUILD_DONE) $(call STR_NAME,$@)
 
 ## Test Program ##
-$(TEST): $(DIR_TEST)/$(TEST_MAKER)
+$(TEST): $(TEST_MAKER)
 	cd $(DIR_TEST) && ./$(TEST_MAKER) $(DIR_TESTCASE)/$(testcase)
 	$(DIR_TEST)/$(TEST) $(DIR_BIN)/$(prog)
 
-$(DIR_TEST)/$(TEST_MAKER): $(DIR_TEST)/$(TEST_MAKER).o
-	$(CC) $^ $(CFLAGS) -o $@
+$(TEST_MAKER): $(DIR_TEST)/$(TEST_MAKER).o
+	$(CC) $^ $(CFLAGS) -o $(DIR_TEST)/$@
 
 ## Auxiliary Tasks ##
 install:
