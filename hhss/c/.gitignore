@@ -1,3 +1,4 @@
 hhss
 hhss.exe
-hhss.o
+*.o
+*.d

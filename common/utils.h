@@ -1,14 +1,10 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-/************
- * INCLUDES *
- ************/
-#include <time.h>
-#include <stdlib.h>
-#
-#include "fatal.h"
-#include "global.h"
+/**********
+ * MACROS *
+ **********/
+#define ESIZ(arr) (sizeof (arr)[0])
 
 /**************
  * PROTOTYPES *

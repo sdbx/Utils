@@ -1,5 +1,5 @@
 **/.vs
 .vscode/
 
-bin/
-__record__
+common/*.o
+common/*.d
