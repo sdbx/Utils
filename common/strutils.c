@@ -48,7 +48,7 @@ extern char **split(
 
       // store the buffer into the array
       if (siz == max)
-         arr = safe_realloc2x(arr, &max);
+         arr = safe_realloc2x_arr(arr, &max, ESIZ(arr));
       arr[siz++] = buf;
 
       // update the states

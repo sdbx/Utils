@@ -7,6 +7,7 @@
 #include <string.h>
 #include <stddef.h>
 #
+#include "utils.h"
 #include "wrappers.h"
 
 #endif
