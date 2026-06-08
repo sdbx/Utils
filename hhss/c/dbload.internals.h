@@ -7,6 +7,7 @@
 #include <stdio.h>
 #
 #include "global.h"
+#include "wrappers.h"
 #include "loadfile.h"
 #include "array.adt.h"
 
