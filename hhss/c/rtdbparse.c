@@ -70,7 +70,7 @@ extern void rtdbcheck(array_t *db) {
       if (!strcmp(sectname, "user")) {
          if (sectarr_siz >= threshold)
             continue;
-         VERR("at least %d user entires required but only %d",
+         VERR("at least %zu user entires required but only %zu",
             threshold, sectarr_siz
          );
       }
@@ -194,7 +194,7 @@ static void synerr(void) {
    safe_fprintf(stderr,
       Cbred "<syntax error>" Creset " %s\n"
       Cbwhite "note:" Creset " problematic since here\n"
-      "%4d|" Cbblue "%s" Creset "\n",
+      "%4zu|" Cbblue "%s" Creset "\n",
       reason,
       l->num, l->run
    );
