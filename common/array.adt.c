@@ -15,6 +15,7 @@ extern array_t *array_create(void) {
 extern void array_destroy(array_t *a) {
    for (size_t i = 0; i < a->len; i++)
       free(a->arr[i]);
+   free(a->arr);
    free(a);
 }
 
