@@ -8,8 +8,13 @@ extern array_t *dbload(const char *new, const char *old) {
 }
 
 static int canopen(const char *filename) {
-   FILE *fp = safe_fopen(filename, "r");
-   if (!fp) return 0;
-   safe_fclose(fp);
+   FILE *fp;
+
+   fp = fopen(filename, "r");
+   if (!fp)
+      return 0;
+
+   (void) fclose(fp);
+
    return 1;
 }
