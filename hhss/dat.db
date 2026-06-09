@@ -13,7 +13,7 @@ ${user|char}는 그런 말투 안써요
 과연 ${user|char}에 걸맞는 인물인지는 의문입니다만
 ${user|char}... 전혀 우마뾰이 하지 않아요
 귀여우면 ${user|char}라도 좋아해 주실 수 있나요?
-${user|char}를 좋아하는 건 ${user|char}뿐이냐
+${world|clang|object}를 좋아하는 건 ${user|char}뿐이냐
 ${user|char}라고 생각했던 ${user|char}와의 신혼생활이 너무 잘 풀리는 건에 대하여
 내가 ${user|char}이(가) 될 수 있을 리 없잖아, 무리무리! (무리가 아니었다?!)
 내 현실과 온라인 게임이 ${user|char|world|object|emotion}에 침식당하기 시작해서 위험해
