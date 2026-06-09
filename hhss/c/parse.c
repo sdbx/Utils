@@ -72,6 +72,7 @@ static void tokhandle_delim(parse_state_t *state) {
    prevpos = state->pos;
 
    if (state->tok->run[0] != '$') {
+      state->pos = prevpos;
       tokhandle_chars(state);
       return;
    }
@@ -80,11 +81,13 @@ static void tokhandle_delim(parse_state_t *state) {
       return;
 
    if (state->tok->kind != Tokkind_delim) {
+      state->pos = prevpos;
       tokhandle_chars(state);
       return;
    }
 
    if (state->tok->run[0] != '{') {
+      state->pos = prevpos;
       tokhandle_chars(state);
       return;
    }
@@ -93,6 +96,7 @@ static void tokhandle_delim(parse_state_t *state) {
       return;
 
    if (state->tok->kind != Tokkind_chars) {
+      state->pos = prevpos;
       tokhandle_chars(state);
       return;
    }
@@ -101,11 +105,13 @@ static void tokhandle_delim(parse_state_t *state) {
       return;
 
    if (state->tok->kind != Tokkind_delim) {
+      state->pos = prevpos;
       tokhandle_chars(state);
       return;
    }
 
    if (state->tok->run[0] != '}') {
+      state->pos = prevpos;
       tokhandle_chars(state);
       return;
    }
