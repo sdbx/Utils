@@ -20,41 +20,52 @@ extern char **split(
 
    // Prepare an array of strings
    siz = 0;
-   max = 2;
+   max = 4;
    arr = safe_malloc(max * sizeof arr[0]);
    ini = fin = src;
 
    for (;;) {
-      // find the location of the next mark
+      // Find the location of the next mark
       fin = strstr(fin, mark);
 
+      /* no mark found */
       if (!fin) {
          int rest = strlen(ini);
          buf = safe_malloc(rest + 1);
          strcpy(buf, ini);
       }
+      /* found */
       else {
          ptrdiff_t diff = fin - ini;
+
+         /* fin points to the mark found */
          if (!diff) {
+            /* store \0 */
             buf = safe_malloc(1);
             buf[0] = '\0';
+
+            /* skips the mark */
+            ini = fin = fin + marklen;
          }
+         /* there is a string before the mark found */
          else {
+            /* store the string */
             buf = safe_malloc(diff + 1);
             strncpy(buf, ini, diff);
             buf[diff] = '\0';
+
+            /* moves to the mark */
+            ini = fin;
          }
       }
 
-      // store the buffer into the array
+      // Store the buffer into the array
       if (siz == max)
          arr = safe_realloc2x_arr(arr, &max, ESIZ(arr));
       arr[siz++] = buf;
 
-      // update the states
-      if (!fin)
-         goto end;
-      ini = fin = fin + marklen;
+      // Escape if done
+      if (!fin) goto end;
    }
    end: *retsiz = siz;
 

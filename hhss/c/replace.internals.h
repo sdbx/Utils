@@ -18,10 +18,12 @@
 /**************
  * PROTOTYPES *
  **************/
+static array_t *parse_replace_string(const char *rs);
 static void rthandle_user(symbol_t *sym, array_t *sectarr);
 static void rthandle_else(symbol_t *sym, array_t *sectarr);
 static void rthandle_common(symbol_t *sym, array_t *sectarr, int idx);
-static void synerr(const char *rt);
+static void synerr_invalid(const char *rt);
+static void synerr_empty(void);
 
 /********************
  * STATIC VARIABLES *
