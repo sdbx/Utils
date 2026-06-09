@@ -186,6 +186,8 @@ static void skip_empty_lines(void) {
       spn = strspn(l->run, whitespaces);
       if (l->len == spn)
          continue;
+      if (l->run[spn] == '#')
+         continue;
       break;
    }
 }
