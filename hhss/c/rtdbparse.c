@@ -70,7 +70,7 @@ extern void rtdbcheck(array_t *db) {
       if (!strcmp(sectname, "user")) {
          if (sectarr_siz >= threshold)
             continue;
-         VERR("at least %zu user entires required but only %zu",
+         VERR("at least %zu user entries required but only %zu",
             threshold, sectarr_siz
          );
       }
