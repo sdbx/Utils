@@ -39,7 +39,7 @@ jobs:
 
       - name: Build
         run: |
-          make clean || true
+          make clean || true  # tolerate missing or no-op clean target
           make -j"$(nproc)"
 
       - name: Perform CodeQL Analysis
