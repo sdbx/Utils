@@ -10,8 +10,8 @@
  * TYPEDEFS *
  ************/
 typedef enum {
-   Symkind_text,
-   Symkind_repl
+   SymkindText,
+   SymkindRepl
 } symkind_t;
 
 typedef struct {

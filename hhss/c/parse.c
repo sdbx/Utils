@@ -56,7 +56,7 @@ static array_t *parse_tokstr(array_t *tokstr) {
 }
 
 static void tokhandle_chars(parse_state_t *state) {
-   tokhandle_common(state, Symkind_text);
+   tokhandle_common(state, SymkindText);
 }
 
 static void tokhandle_delim(parse_state_t *state) {
@@ -124,7 +124,7 @@ static void tokhandle_delim(parse_state_t *state) {
       return;
    }
 
-   tokhandle_common(state, Symkind_repl);
+   tokhandle_common(state, SymkindRepl);
 }
 
 static void tokhandle_common(parse_state_t *state, symkind_t kind) {

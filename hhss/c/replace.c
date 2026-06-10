@@ -18,7 +18,7 @@ extern void replace_templates(array_t *pts, array_t *rtdb) {
       for (size_t symidx = 0; symidx < ptlen; symidx++) {
          sym = array_get(pt, symidx);
 
-         if (sym->kind == Symkind_text)
+         if (sym->kind == SymkindText)
             continue;
 
          rts = parse_replace_string(sym->content);
