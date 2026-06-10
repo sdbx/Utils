@@ -27,23 +27,22 @@ extern int readln(FILE *fp, char **line, size_t *len) {
       ch = getc(fp);
       if (ch == EOF) {
          if (ferror(fp)) ERR(errmsg);
-         goto eol;
+         break;
       }
       if (ch == '\r') continue;
-      if (ch == '\n') goto eol;
+      if (ch == '\n') break;
 
       buf[pos++] = ch;
       if (pos == bufsiz)
          buf = safe_realloc2x(buf, &bufsiz);
    }
 
-   eol: {
-      if (bufsiz - pos == 1)
-         buf = safe_realloc2x(buf, &bufsiz);
-      buf[pos++] = '\n';
-      buf[pos] = '\0';
-      *line = buf;
-      *len = pos;
-      return 0;
-   }
+   if (bufsiz - pos == 1)
+      buf = safe_realloc2x(buf, &bufsiz);
+   buf[pos++] = '\n';
+   buf[pos] = '\0';
+   *line = buf;
+   *len = pos;
+
+   return 0;
 }
