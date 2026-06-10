@@ -21,7 +21,7 @@ extern char **split(
    // Prepare an array of strings
    siz = 0;
    max = 4;
-   arr = safe_malloc(max * sizeof arr[0]);
+   arr = safe_malloc(max * ESIZ(arr));
    ini = fin = src;
 
    do {
@@ -30,9 +30,9 @@ extern char **split(
 
       /* no mark found */
       if (!fin) {
-         int rest = strlen(ini);
-         buf = safe_malloc(rest + 1);
-         strncpy(buf, ini, rest);
+         size_t rest = strlen(ini) + 1;
+         buf = safe_malloc(rest);
+         memcpy(buf, ini, rest);
       }
       /* found */
       else {

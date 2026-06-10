@@ -5,6 +5,8 @@
  * INCLUDES *
  ************/
 #include <stddef.h>
+#
+#include "utils.h"
 
 /**************
  * PROTOTYPES *
