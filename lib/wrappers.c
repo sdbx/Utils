@@ -75,7 +75,7 @@ extern void safe_vfprintf(FILE *stream, const char *format, va_list *ap) {
 /************
  * signal.h *
  ************/
-extern void safe_signal(int sig, sighandler_t handler) {
+extern void safe_signal(int sig, sigprocessor_t handler) {
    if (signal(sig, handler) == SIG_ERR)
       ERR("signal error");
 }

@@ -10,8 +10,8 @@
 /**************
  * PROTOTYPES *
  **************/
-sighandler_t sighandle_sigint;
-sighandler_t sighandle_sigquit;
-sighandler_t sighandle_sigterm;
+sigprocessor_t sighandle_sigint;
+sigprocessor_t sighandle_sigquit;
+sigprocessor_t sighandle_sigterm;
 
 #endif

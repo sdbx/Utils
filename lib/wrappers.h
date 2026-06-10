@@ -10,7 +10,7 @@
 /************
  * TYPEDEFS *
  ************/
-typedef void sighandler_t(int sig);
+typedef void sigprocessor_t(int sig);
 
 /**************
  * PROTOTYPES *
@@ -24,6 +24,6 @@ void *safe_realloc2x_arr(void *arr, size_t *cnt, size_t esiz);
 void *safe_calloc(size_t n, size_t esiz);
 void safe_fprintf(FILE *stream, const char *format, ...);
 void safe_vfprintf(FILE *stream, const char *format, va_list *ap);
-void safe_signal(int sig, sighandler_t handler);
+void safe_signal(int sig, sigprocessor_t handler);
 
 #endif
