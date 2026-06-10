@@ -6,7 +6,8 @@ include defs.mk
 .SUFFIXES:
 .SUFFIXES: .c .o .h
 
-.PHONY: all test install uninstall clean cleanall help
+.PHONY: all $(TARGETS)
+.PHONY: test install uninstall clean cleanall help
 
 ## Default Goal ##
 all: $(TARGETS)
