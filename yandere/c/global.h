@@ -15,10 +15,10 @@
  * TYPEDEFS *
  ************/
 typedef enum {
-   Event_default,
-   Event_sigint,
-   Event_sigquit,
-   Event_sigterm
+   EventDefault,
+   EventSigint,
+   EventSigquit,
+   EventSigterm
 } event_t;
 
 /********************
