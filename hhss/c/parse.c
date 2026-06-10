@@ -37,27 +37,20 @@ extern void destroy_pts(array_t *pts) {
 
 static array_t *parse_tokstr(array_t *tokstr) {
    parse_state_t state;
-   bool done;
 
    state.len = array_size(tokstr);
    state.pos = 0;
    state.pt = array_create();
    state.tokstr = tokstr;
 
-   done = false;
-
-   while (!done) {
+   do {
       state.tok = array_get(tokstr, state.pos);
-
       switch (state.tok->kind) {
          case Tokkind_chars: tokhandle_chars(&state); break;
          case Tokkind_delim: tokhandle_delim(&state); break;
          default: ERR("control reaches default");
       }
-
-      if (state.pos == state.len)
-         done = true;
-   }
+   } while (state.pos != state.len);
 
    return state.pt;
 }
