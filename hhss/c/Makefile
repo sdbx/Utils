@@ -36,7 +36,7 @@ $(LIB_OBJS): %.o: $(DIR_LIB)/%.c
 
 ## Dependency ##
 -include $(OBJECTS:.o=.d)
--include $(LIB_OBJS:.c=.d)
+-include $(LIB_OBJS:.o=.d)
 
 ## Tasks ##
 clean:

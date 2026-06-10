@@ -33,8 +33,8 @@ $(LIB_OBJS): %.o: $(DIR_LIB)/%.c
 	$(CC) $< $(CPPFLAGS) $(CFLAGS) -c -o $@
 
 ## Dependency ##
--include $(OBJECTS:.c=.d)
--include $(LIB_OBJS:.c=.d)
+-include $(OBJECTS:.o=.d)
+-include $(LIB_OBJS:.o=.d)
 
 ## Tasks ##
 clean:
