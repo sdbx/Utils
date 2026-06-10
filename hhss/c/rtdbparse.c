@@ -180,16 +180,10 @@ static void next_line(void) {
 
 static void skip_empty_lines(void) {
    size_t spn;
-
-   for (;;) {
+   do {
       next_line();
       spn = strspn(l->run, whitespaces);
-      if (l->len == spn)
-         continue;
-      if (l->run[spn] == '#')
-         continue;
-      break;
-   }
+   } while (l->len == spn || l->run[spn] == '#');
 }
 
 static void synerr(void) {
