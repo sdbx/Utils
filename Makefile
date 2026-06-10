@@ -58,7 +58,7 @@ help:
 	@echo "	make "$(call STR_HELP_CMDHL,install)"	copies the executables of each program into $(DIR_BIN) directory."
 	@echo
 	@echo $(call STR_HELP_GROUP,2. CLEANING ACTIONS)
-	@echo "	make "$(call STR_HELP_CMDHL,clean)"	deletes all object files and all executables."
+	@echo "	make "$(call STR_HELP_CMDHL,clean)"	deletes all of the build artifacts."
 	@echo "	make "$(call STR_HELP_CMDHL,uninstall)"	deletes everything under $(DIR_BIN) directory."
 	@echo "	make "$(call STR_HELP_CMDHL,cleanall)"	clean + uninstall + some files in ./test"
 	@echo
