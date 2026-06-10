@@ -5,10 +5,6 @@
 ## Make ##
 SHELL := /bin/sh
 
-CC := gcc
-CFLAGS := -O -Wall -W -pedantic -g
-CPPFLAGS = -I $(DIR_LIB) -DPROGNAME='"$@"'
-
 INSTALL := install
 INSTALL_PROGRAM = $(INSTALL)
 INSTALL_DATA = $(INSTALL) -m 644
@@ -24,12 +20,6 @@ NSY2 := nsy2
 YANDERE := yandere
 
 TARGETS = $(BTN) $(HD) $(HHSS) $(NSY) $(NSY2) $(YANDERE)
-
-TEST := test
-TEST_MAKER := test_maker
-
-DIR_TEST := test
-DIR_TESTCASE := .test
 
 ## Install ##
 DIR_LIB := lib

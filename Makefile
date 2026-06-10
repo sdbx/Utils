@@ -17,12 +17,11 @@ $(TARGETS):
 	@echo $(STR_BUILD_DONE) $(call STR_NAME,$@)
 
 ## Test Program ##
-$(TEST): $(TEST_MAKER)
-	cd $(DIR_TEST) && ./$(TEST_MAKER) $(DIR_TESTCASE)/$(testcase)
-	$(DIR_TEST)/$(TEST) $(DIR_BIN)/$(prog)
-
-$(TEST_MAKER): $(DIR_TEST)/$(TEST_MAKER).o
-	$(CC) $^ $(CFLAGS) -o $(DIR_TEST)/$@
+test:
+	$(MAKE) --always-make --directory=$@ \
+		PROG=$(PROG) \
+		TESTCASE=$(TESTCASE) \
+		DIR_BIN=$(DIR_BIN)
 
 ## Auxiliary Tasks ##
 install:
@@ -65,6 +64,6 @@ help:
 	@echo
 	@echo $(call STR_HELP_GROUP,3. MISCELLANEOUS)
 	@echo "	make "$(call STR_HELP_CMDHL,test) \
-	$(call STR_HELP_ARGHL,prog)=\"the name of a program to be tested\" $(call STR_HELP_ARGHL,testcase)=\"the name of a testcase file\"
+	$(call STR_HELP_ARGHL,PROG)=\"the name of a program to be tested\" $(call STR_HELP_ARGHL,TESTCASE)=\"the name of a testcase file\"
 	@echo "			performs a test on the executable with the test file."
 	@echo "	make "$(call STR_HELP_CMDHL,help)"	prints this long manual on the screen that you are reading now."
