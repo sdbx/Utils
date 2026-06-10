@@ -67,7 +67,7 @@ extern void rtdbcheck(array_t *db) {
       sectname = m->sect;
       sectarr_siz = array_size(sectarr);
 
-      if (!strcmp(sectname, "user")) {
+      if (STREQL(sectname, "user")) {
          if (sectarr_siz >= threshold)
             continue;
          VERR("at least %zu user entries required but only %zu",

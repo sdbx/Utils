@@ -34,7 +34,7 @@ extern void replace_templates(array_t *pts, array_t *rtdb) {
          if (!sectarr)
             synerr_invalid(rt);
 
-         if (!strcmp(rt, "user"))
+         if (STREQL(rt, "user"))
             rthandle_user(sym, sectarr);
          else
             rthandle_else(sym, sectarr);
