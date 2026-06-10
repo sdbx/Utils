@@ -1,5 +1,5 @@
 **/.vs
 .vscode/
 
-common/*.o
-common/*.d
+lib/*.o
+lib/*.d

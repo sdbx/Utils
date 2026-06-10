@@ -4,14 +4,14 @@ TARGET := yandere
 CC := gcc
 CFLAGS := -O -Wall -W -pedantic -g
 CPPFLAGS = \
-	-I $(DIR_COMMON) \
+	-I $(DIR_LIB) \
 	-DPROGNAME='"$(TARGET)"'
 
 SOURCES = $(wildcard *.c)
-SOURCES += $(wildcard $(DIR_COMMON)/*.c)
+SOURCES += $(wildcard $(DIR_LIB)/*.c)
 OBJECTS = $(patsubst %.c,%.o,$(SOURCES))
 
-DIR_COMMON := ../../common
+DIR_LIB := ../../lib
 
 ## Targets ##
 .PHONY: all clean

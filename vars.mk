@@ -7,7 +7,7 @@ SHELL := /bin/sh
 
 CC := gcc
 CFLAGS := -O -Wall -W -pedantic -g
-CPPFLAGS = -I $(DIR_COMMON) -DPROGNAME='"$@"'
+CPPFLAGS = -I $(DIR_LIB) -DPROGNAME='"$@"'
 
 INSTALL := install
 INSTALL_PROGRAM = $(INSTALL)
@@ -32,7 +32,7 @@ DIR_TEST := test
 DIR_TESTCASE := .test
 
 ## Install ##
-DIR_COMMON := common
+DIR_LIB := lib
 DIR_INSTALL := /usr/local
 DIR_BIN = $(DIR_INSTALL)/bin
 DIR_DATA = $(DIR_INSTALL)/share

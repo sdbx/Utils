@@ -4,16 +4,16 @@ TARGET := hhss
 CC := gcc
 CFLAGS := -O -Wall -W -pedantic -g
 CPPFLAGS = \
-	-I $(DIR_COMMON) \
+	-I $(DIR_LIB) \
 	-DINSTPATH='"$(DIR_DATA)/$(TARGET)"' \
 	-DPROGNAME='"$(TARGET)"'
 
 SOURCES = $(wildcard *.c)
-SOURCES += $(wildcard $(DIR_COMMON)/*.c)
+SOURCES += $(wildcard $(DIR_LIB)/*.c)
 OBJECTS = $(patsubst %.c,%.o,$(SOURCES))
 
 DIR_DATA := ../..
-DIR_COMMON := ../../common
+DIR_LIB := ../../lib
 
 ## Targets ##
 .PHONY: all clean
