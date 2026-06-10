@@ -13,14 +13,11 @@ extern array_t *dtdbparse(array_t *linestr) {
    for (size_t i = 0; i < siz; i++) {
       l = array_get(linestr, i);
 
-      switch (l->run[0]) {
-         case '#'  : /* fall-through */
-         case '\n' : continue;
-         default   : break;
-      }
+      if (l->run[0] == '#' ) continue;
+      if (l->run[0] == '\n') continue;
 
       buf = safe_malloc(l->len + 1);
-      strcpy(buf, l->run);
+      strncpy(buf, l->run, l->len);
 
       temp.len = l->len;
       temp.num = l->num;
