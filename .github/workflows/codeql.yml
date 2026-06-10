@@ -29,6 +29,9 @@ jobs:
       security-events: write
 
     steps:
+      - name: Configure Git safe directory
+        run: git config --global --add safe.directory '*'
+
       - name: Checkout
         uses: actions/checkout@v6
 
