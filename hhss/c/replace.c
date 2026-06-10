@@ -120,7 +120,7 @@ static void synerr_invalid(const char *rt) {
 
 static void synerr_empty(void) {
    safe_fprintf(stderr,
-      Cbred "<syntax error>" Creset " empty replace template detected"
+      Cbred "<syntax error>" Creset " empty replace template detected\n"
    );
    exit(EXIT_FAILURE);
 }
