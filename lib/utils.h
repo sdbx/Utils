@@ -1,6 +1,11 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+/************
+ * INCLUDES *
+ ************/
+#include <string.h>
+
 /**********
  * MACROS *
  **********/
