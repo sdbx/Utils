@@ -24,7 +24,7 @@ extern char **split(
    arr = safe_malloc(max * sizeof arr[0]);
    ini = fin = src;
 
-   for (;;) {
+   do {
       // Find the location of the next mark
       fin = strstr(fin, mark);
 
@@ -32,7 +32,7 @@ extern char **split(
       if (!fin) {
          int rest = strlen(ini);
          buf = safe_malloc(rest + 1);
-         strcpy(buf, ini);
+         strncpy(buf, ini, rest);
       }
       /* found */
       else {
@@ -64,10 +64,8 @@ extern char **split(
          arr = safe_realloc2x_arr(arr, &max, ESIZ(arr));
       arr[siz++] = buf;
 
-      // Escape if done
-      if (!fin) goto end;
-   }
-   end: *retsiz = siz;
+   } while (fin);
 
+   *retsiz = siz;
    return arr;
 }
