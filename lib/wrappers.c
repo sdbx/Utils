@@ -37,17 +37,30 @@ extern void *safe_calloc(size_t n, size_t esiz) {
    return ret;
 }
 
-extern void *safe_realloc2x(void *ptr, size_t *siz) {
-   ptr = realloc(ptr, (*siz *= 2));
-   if (!ptr) ERR(realloc_errmsg);
-   return ptr;
+extern void *safe_realloc2x(void *orig, size_t *siz) {
+   size_t dsiz;
+   void *ret;
+
+   dsiz = (*siz) * 2;
+   ret = realloc(orig, dsiz);
+   if (!ret)
+      ERR(realloc_errmsg);
+
+   *siz = dsiz;
+   return ret;
 }
 
-extern void *safe_realloc2x_arr(void *arr, size_t *cnt, size_t esiz) {
-   (*cnt) *= 2;
-   arr = realloc(arr, (*cnt) * esiz);
-   if (!arr) ERR(realloc_errmsg);
-   return arr;
+extern void *safe_realloc2x_arr(void *orig_arr, size_t *cnt, size_t esiz) {
+   size_t dcnt;
+   void *ret;
+
+   dcnt = (*cnt) * 2;
+   ret = realloc(orig_arr, dcnt * esiz);
+   if (!ret)
+      ERR(realloc_errmsg);
+
+   *cnt = dcnt;
+   return ret;
 }
 
 /************
