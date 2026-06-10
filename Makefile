@@ -7,7 +7,7 @@ include defs.mk
 .SUFFIXES: .c .o .h
 
 .PHONY: all $(TARGETS)
-.PHONY: test install uninstall clean cleanall help
+.PHONY: $(TEST) install uninstall clean cleanall help
 
 ## Default Goal ##
 all: $(TARGETS)
@@ -17,8 +17,8 @@ $(TARGETS):
 	@echo $(STR_BUILD_DONE) $(call STR_NAME,$@)
 
 ## Test Program ##
-test:
-	$(MAKE) --always-make --directory=$@ \
+$(TEST):
+	$(MAKE) --always-make --directory=$(TEST) \
 		PROG=$(PROG) \
 		TESTCASE=$(TESTCASE) \
 		DIR_BIN=$(DIR_BIN)
@@ -46,7 +46,7 @@ clean:
 	rm -f $(foreach target,$(TARGETS),$(target)/c/$(target))
 
 cleanall: uninstall clean
-	rm -f $(foreach file,$(TEST) $(TEST_MAKER),$(DIR_TEST)/$(file))
+	$(MAKE) --directory=$(TEST) clean
 
 help:
 	@echo The below are the list of available commands from this Makefile.

@@ -21,6 +21,8 @@ YANDERE := yandere
 
 TARGETS = $(BTN) $(HD) $(HHSS) $(NSY) $(NSY2) $(YANDERE)
 
+TEST := test
+
 ## Install ##
 DIR_LIB := lib
 DIR_INSTALL := /usr/local
