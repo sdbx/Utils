@@ -80,13 +80,10 @@ static void rthandle_user(symbol_t *sym, array_t *sectarr) {
       goto common;
    }
 
-   for (;;) {
+   do {
       r = rand_range(0, siz);
-      if (r == pre_user)
-         continue;
-      pre_user = r;
-      break;
-   }
+   } while (r == pre_user);
+   pre_user = r;
 
    common:
    rthandle_common(sym, sectarr, r);
