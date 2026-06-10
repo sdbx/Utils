@@ -2,14 +2,17 @@
 TARGET := yandere
 
 CC := gcc
-CFLAGS := -O -Wall -W -pedantic -g
+CFLAGS := -O -Wall -W -pedantic
+CFLAGS += -g
+CFLAGS += -MMD -MP
 CPPFLAGS = \
 	-I $(DIR_LIB) \
 	-DPROGNAME='"$(TARGET)"'
 
 SOURCES = $(wildcard *.c)
-SOURCES += $(wildcard $(DIR_LIB)/*.c)
-OBJECTS = $(patsubst %.c,%.o,$(SOURCES))
+LIB_SRCS = $(wildcard $(DIR_LIB)/*.c)
+OBJECTS = $(SOURCES:.c=.o)
+LIB_OBJS = $(notdir $(LIB_SRCS:.c=.o))
 
 DIR_LIB := ../../lib
 
@@ -20,22 +23,18 @@ DIR_LIB := ../../lib
 all: $(TARGET)
 
 ## Build ##
-$(TARGET): $(OBJECTS)
-	$(CC) $(notdir $^) $(CFLAGS) -o $@
+$(TARGET): $(OBJECTS) $(LIB_OBJS)
+	$(CC) $^ $(CFLAGS) -o $@
 
-%.o: %.c
-	$(CC) $< $(CPPFLAGS) $(CFLAGS) -c -o $(notdir $@)
+$(OBJECTS): %.o: %.c
+	$(CC) $< $(CPPFLAGS) $(CFLAGS) -c -o $@
+
+$(LIB_OBJS): %.o: $(DIR_LIB)/%.c
+	$(CC) $< $(CPPFLAGS) $(CFLAGS) -c -o $@
 
 ## Dependency ##
-%.d: %.c
-	@set -e; rm -f $@; \
-	 $(CC) -M $(CPPFLAGS) $< > $@.$$$$; \
-	 sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
-	 rm -f $@.$$$$
-
 -include $(SOURCES:.c=.d)
-
-# Note: for more information, consult the "4.14 Generating Prerequisites Automatically" section in the GNU Make manual.
+-include $(LIB_SRCS:.c=.d)
 
 ## Tasks ##
 clean:
