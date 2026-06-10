@@ -132,7 +132,7 @@ static void tokhandle_common(parse_state_t *state, symkind_t kind) {
    char *buf;
 
    buf = safe_malloc(state->tok->len + 1);
-   strcpy(buf, state->tok->run);
+   strncpy(buf, state->tok->run, state->tok->len);
 
    sym.kind = kind;
    sym.content = buf;
