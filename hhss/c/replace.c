@@ -8,7 +8,7 @@ extern void replace_templates(array_t *pts, array_t *rtdb) {
    char *rt;
    int v;
 
-   pre_user = 0;
+   pre_user = -1;
    ptslen = array_size(pts);
 
    for (size_t ptidx = 0; ptidx < ptslen; ptidx++) {
