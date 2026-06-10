@@ -46,8 +46,8 @@ static array_t *parse_tokstr(array_t *tokstr) {
    do {
       state.tok = array_get(tokstr, state.pos);
       switch (state.tok->kind) {
-         case Tokkind_chars: tokhandle_chars(&state); break;
-         case Tokkind_delim: tokhandle_delim(&state); break;
+         case TokkindChars: tokhandle_chars(&state); break;
+         case TokkindDelim: tokhandle_delim(&state); break;
          default: ERR("control reaches default");
       }
    } while (state.pos != state.len);
@@ -73,7 +73,7 @@ static void tokhandle_delim(parse_state_t *state) {
    if (!nexttok(state))
       return;
 
-   if (state->tok->kind != Tokkind_delim) {
+   if (state->tok->kind != TokkindDelim) {
       state->pos = prevpos;
       tokhandle_chars(state);
       return;
@@ -88,7 +88,7 @@ static void tokhandle_delim(parse_state_t *state) {
    if (!nexttok(state))
       return;
 
-   if (state->tok->kind != Tokkind_chars) {
+   if (state->tok->kind != TokkindChars) {
       state->pos = prevpos;
       tokhandle_chars(state);
       return;
@@ -97,7 +97,7 @@ static void tokhandle_delim(parse_state_t *state) {
    if (!nexttok(state))
       return;
 
-   if (state->tok->kind != Tokkind_delim) {
+   if (state->tok->kind != TokkindDelim) {
       state->pos = prevpos;
       tokhandle_chars(state);
       return;

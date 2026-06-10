@@ -10,8 +10,8 @@
  * TYPEDEFS *
  ************/
 typedef enum {
-   Tokkind_chars,
-   Tokkind_delim
+   TokkindChars,
+   TokkindDelim
 } tokkind_t;
 
 typedef struct {

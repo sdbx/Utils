@@ -49,7 +49,7 @@ static void tokenize(void) {
       buf[pos] = '\0';
       run = safe_malloc(pos + 1);
       strcpy(run, buf);
-      tok.kind = Tokkind_chars;
+      tok.kind = TokkindChars;
       tok.run = run;
       tok.len = pos;
       array_append(tokstr, &tok, sizeof tok);
@@ -60,7 +60,7 @@ static void tokenize(void) {
       run = safe_malloc(2);
       run[0] = ch;
       run[1] = '\0';
-      tok.kind = Tokkind_delim;
+      tok.kind = TokkindDelim;
       tok.run = run;
       tok.len = 1;
       array_append(tokstr, &tok, sizeof tok);
