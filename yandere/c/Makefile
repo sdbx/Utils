@@ -21,10 +21,10 @@ all: $(TARGET)
 
 ## Build ##
 $(TARGET): $(OBJECTS)
-	$(CC) $^ $(CFLAGS) -o $@
+	$(CC) $(notdir $^) $(CFLAGS) -o $@
 
 %.o: %.c
-	$(CC) $< $(CPPFLAGS) $(CFLAGS) -c -o $@
+	$(CC) $< $(CPPFLAGS) $(CFLAGS) -c -o $(notdir $@)
 
 ## Dependency ##
 %.d: %.c
