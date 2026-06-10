@@ -35,6 +35,7 @@ ${user|char}의 2분 약속!
 ${char|clang}쨩 귀여워
 ${clang|object|char}로 세계정복!!
 ${clang}을 할때마다 ${char}은 ${emotion}을 느낀다
+${char}은 내 아내임
 
 ##################
 # Normal Strings #
