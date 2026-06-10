@@ -33,7 +33,7 @@ $(TARGET): $(OBJECTS)
 	 sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
 	 rm -f $@.$$$$
 
-include $(SOURCES:.c=.d)
+-include $(SOURCES:.c=.d)
 
 # Note: for more information, consult the "4.14 Generating Prerequisites Automatically" section in the GNU Make manual.
 
