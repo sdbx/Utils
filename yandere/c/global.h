@@ -9,19 +9,16 @@
 /**********
  * MACROS *
  **********/
-#define PROGNAME "yandere"
 #define BUFMAX 128
 
 /************
  * TYPEDEFS *
  ************/
-typedef void sighandler_t(int sig);
-
 typedef enum {
-   Event_default,
-   Event_sigint,
-   Event_sigquit,
-   Event_sigterm
+   EventDefault,
+   EventSigint,
+   EventSigquit,
+   EventSigterm
 } event_t;
 
 /********************

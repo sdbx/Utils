@@ -1,5 +1,5 @@
 **/.vs
 .vscode/
 
-bin/
-__record__
+lib/*.o
+lib/*.d

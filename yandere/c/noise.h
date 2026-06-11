@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #
 #include "utils.h"
+#include "global.h"
 #include "wrappers.h"
 
 /**************

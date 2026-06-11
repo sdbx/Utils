@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "utils.internals.h"
 
 extern void seed(void) {
    srand(time(NULL));

@@ -4,6 +4,7 @@
 /************
  * INCLUDES *
  ************/
+#include "fatal.h"
 #include "utils.h"
 #include "global.h"
 #include "wrappers.h"

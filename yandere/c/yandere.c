@@ -2,7 +2,7 @@
 
 int main(void) {
    seed();
-   event = Event_default;
+   event = EventDefault;
    install_sighandlers();
    for (;;) dispatch();
    return 0;
@@ -16,10 +16,10 @@ static void install_sighandlers(void) {
 
 static void dispatch(void) {
    switch (event) {
-      case Event_default: evthandle_default(); break;
-      case Event_sigint : evthandle_sigint (); break;
-      case Event_sigquit: evthandle_sigquit(); break;
-      case Event_sigterm: evthandle_sigterm(); break;
+      case EventDefault: evthandle_default(); break;
+      case EventSigint : evthandle_sigint (); break;
+      case EventSigquit: evthandle_sigquit(); break;
+      case EventSigterm: evthandle_sigterm(); break;
       default: ERR("control reaches default");
    }
 }

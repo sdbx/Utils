@@ -4,11 +4,14 @@
 /************
  * INCLUDES *
  ************/
-#include <time.h>
-#include <stdlib.h>
+#include <string.h>
+
+/**********
+ * MACROS *
+ **********/
+#define ESIZ(arr) (sizeof (arr)[0])
 #
-#include "fatal.h"
-#include "global.h"
+#define STREQL(s1,s2) (!(strcmp((s1),(s2))))
 
 /**************
  * PROTOTYPES *

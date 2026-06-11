@@ -1,21 +1,21 @@
 #include "evthandlers.h"
 
 extern void evthandle_default(void) {
-   noise(msgs[Event_default]);
+   noise(msgs[EventDefault]);
    printf("%s ", buf);
 }
 
 extern void evthandle_sigint(void) {
-   printf("\n\n%s\n\n", msgs[Event_sigint]);
+   printf("\n\n%s\n\n", msgs[EventSigint]);
    exit(EXIT_FAILURE); /* intended */
 }
 
 extern void evthandle_sigquit(void) {
-   noise(msgs[Event_sigquit]);
+   noise(msgs[EventSigquit]);
    printf("%s ", buf);
 }
 
 extern void evthandle_sigterm(void) {
-   noise(msgs[Event_sigterm]);
+   noise(msgs[EventSigterm]);
    printf("%s ", buf);
 }
