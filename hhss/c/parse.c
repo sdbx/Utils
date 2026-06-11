@@ -131,7 +131,7 @@ static void tokhandle_common(parse_state_t *state, symkind_t kind) {
    symbol_t sym;
    char *buf;
 
-   /* copy the whole string */
+   /* copy the whole string including \0 */
    buf = safe_malloc(state->tok->len + 1);
    memcpy(buf, state->tok->run, state->tok->len + 1);
 

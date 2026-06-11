@@ -30,9 +30,10 @@ extern char **split(
 
       /* no mark found */
       if (!fin) {
-         size_t rest = strlen(ini) + 1;
-         buf = safe_malloc(rest);
-         memcpy(buf, ini, rest);
+         /* copy the rest of the string including \0 */
+         size_t rest = strlen(ini);
+         buf = safe_malloc(rest + 1);
+         memcpy(buf, ini, rest + 1);
       }
       /* found */
       else {

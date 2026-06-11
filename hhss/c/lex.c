@@ -48,7 +48,7 @@ static void tokenize(void) {
    if (pos != 0) {
       buf[pos] = '\0';
       run = safe_malloc(pos + 1);
-      memcpy(run, buf, pos + 1);
+      memcpy(run, buf, pos + 1);  /* \0 copied */
       tok.kind = TokkindChars;
       tok.run = run;
       tok.len = pos;
