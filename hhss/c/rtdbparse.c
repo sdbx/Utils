@@ -14,27 +14,21 @@ extern array_t *rtdbparse(array_t *linestr) {
    idx = -1;
    table = array_create();
 
-   if (!setjmp(env))
-      goto parse;
-   else
-      goto escape;
+   if (!setjmp(env)) {
+      /* backward compatibility for usr.dat */
+      if (!seek_section()) {
+         sectarr = add_mapper(table, "user");
+         while (parse_value(sectarr));
+      }
 
-   parse:
-   /* backward compatibility for usr.dat */
-   if (!seek_section()) {
-      sectarr = add_mapper(table, "user");
-      while (parse_value(sectarr));
+      for (;;) {
+         sectname = parse_section();
+         sectarr = rtdbquery(table, sectname);
+         if (!sectarr)
+            sectarr = add_mapper(table, sectname);
+         while (parse_value(sectarr));
+      }
    }
-
-   for (;;) {
-      sectname = parse_section();
-      sectarr = rtdbquery(table, sectname);
-      if (!sectarr)
-         sectarr = add_mapper(table, sectname);
-      while (parse_value(sectarr));
-   }
-
-   escape:
    return table;
 }
 
@@ -45,7 +39,7 @@ extern array_t *rtdbquery(array_t *table, const char *sectname) {
    table_len = array_size(table);
    for (i = 0; i < table_len; i++) {
       mapper = array_get(table, i);
-      if (strcmp(mapper->sect, sectname))
+      if (!STREQL(mapper->sect, sectname))
          continue;
       return mapper->addr;
    }

@@ -64,17 +64,7 @@ static void tokhandle_delim(parse_state_t *state) {
    /* Archive the original position for later rewind */
    size_t initpos = state->pos;
 
-   goto lookahead;
-
-   /* Whenever lookahead fails, control reaches here */
-fallback:
-   state->pos = initpos;
-   state->tok = array_get(state->tokstr, state->pos);
-   tokhandle_chars(state);
-   return;  /* EARLY RETURN */
-
    /* Find ${x} pattern */
-lookahead:
    if (state->tok->run[0] != '$')
       goto fallback;  /* this token is not $ */
 
@@ -111,6 +101,14 @@ lookahead:
 
    // Note that state->pos points to }. Thus, state->pos
    // is to be advanced correctly in the do-while loop.
+   return;
+
+   /* Whenever lookahead fails, control reaches here */
+fallback:
+   state->pos = initpos;
+   state->tok = array_get(state->tokstr, state->pos);
+   tokhandle_chars(state);
+   return;  /* EARLY RETURN */
 }
 
 static void store_token(parse_state_t *state, symkind_t kind) {
