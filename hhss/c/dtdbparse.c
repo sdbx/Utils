@@ -16,8 +16,9 @@ extern array_t *dtdbparse(array_t *linestr) {
       if (l->run[0] == '#' ) continue;
       if (l->run[0] == '\n') continue;
 
+      /* copy the whole line + \0 */
       buf = safe_malloc(l->len + 1);
-      strncpy(buf, l->run, l->len);
+      memcpy(buf, l->run, l->len + 1);
 
       temp.len = l->len;
       temp.num = l->num;

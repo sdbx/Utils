@@ -98,11 +98,14 @@ extern void destroy_rtdb(array_t *rtdb) {
 
 static array_t *add_mapper(array_t *table, const char *sectname) {
    array_t *sectarr;
-   char *buf;
    mapper_t mapper;
+   char *buf;
+   size_t bufsiz;
 
-   buf = safe_malloc(strlen(sectname) + 1);
-   strcpy(buf, sectname);
+   /* copy sectname which is a null-terminated string */
+   bufsiz = strlen(sectname);
+   buf = safe_malloc(bufsiz + 1);
+   memcpy(buf, sectname, bufsiz + 1);
 
    sectarr = array_create();
 

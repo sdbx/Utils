@@ -99,11 +99,15 @@ static void rthandle_else(symbol_t *sym, array_t *sectarr) {
 
 static void rthandle_common(symbol_t *sym, array_t *sectarr, int idx) {
    char *val;
+   size_t siz;
 
    val = array_get(sectarr, idx);
    free(sym->content);
-   sym->content = safe_malloc(strlen(val) + 1);
-   strcpy(sym->content, val);
+
+   /* copy the whole string + \0 */
+   siz = strlen(val);
+   sym->content = safe_malloc(siz + 1);
+   memcpy(sym->content, val, siz + 1);
 }
 
 static void synerr_invalid(const char *rt) {

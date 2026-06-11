@@ -52,7 +52,7 @@ extern char **split(
          else {
             /* store the string */
             buf = safe_malloc(diff + 1);
-            strncpy(buf, ini, diff);
+            memcpy(buf, ini, diff + 1);
             buf[diff] = '\0';
 
             /* moves to the mark */
