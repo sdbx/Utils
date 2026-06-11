@@ -52,7 +52,7 @@ extern void debug_tokstr(array_t *tokstr) {
       printf("tokstr[%zu]\n", k);
       printf("  .kind = [%d]\n", tok->kind);
       printf("  .run = [%s]\n", tok->run);
-      printf("  .len = [%d]\n", tok->len);
+      printf("  .len = [%zu]\n", tok->len);
    }
 
    printf("\n");
@@ -78,7 +78,7 @@ extern void debug_tokstrs(array_t *tokstrs) {
          printf("  tokstrs[%zu][%zu]\n", i, k);
          printf("    .kind = [%d]\n", tok->kind);
          printf("    .run = [%s]\n", tok->run);
-         printf("    .len = [%d]\n", tok->len);
+         printf("    .len = [%zu]\n", tok->len);
       }
    }
 }

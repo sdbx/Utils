@@ -16,7 +16,7 @@ typedef enum {
 
 typedef struct {
    char *run;
-   int len;
+   size_t len;
    tokkind_t kind;
 } token_t;
 
