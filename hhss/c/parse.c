@@ -3,12 +3,12 @@
 
 extern array_t *parse(array_t *tokstrs) {
    array_t *pts, *tokstr, *pt;
-   int len;
+   size_t len;
 
    pts = array_create();
    len = array_size(tokstrs);
 
-   for (int i = 0; i < len; i++) {
+   for (size_t i = 0; i < len; i++) {
       tokstr = *((array_t **) array_get(tokstrs, i));
       pt = parse_tokstr(tokstr);
       array_append(pts, &pt, sizeof pt);
@@ -18,15 +18,15 @@ extern array_t *parse(array_t *tokstrs) {
 }
 
 extern void destroy_pts(array_t *pts) {
-   int siz = array_size(pts);
-   int ptsiz;
+   size_t siz = array_size(pts);
+   size_t ptsiz;
    array_t *pt;
    symbol_t *sym;
 
-   for (int i = 0; i < siz; i++) {
+   for (size_t i = 0; i < siz; i++) {
       pt = *((array_t **) array_get(pts, i));
       ptsiz = array_size(pt);
-      for (int k = 0; k < ptsiz; k++) {
+      for (size_t k = 0; k < ptsiz; k++) {
          sym = array_get(pt, k);
          free(sym->content);
       }
@@ -50,84 +50,70 @@ static array_t *parse_tokstr(array_t *tokstr) {
          case TokkindDelim: tokhandle_delim(&state); break;
          default: ERR("control reaches default");
       }
+      state.pos++;
    } while (state.pos != state.len);
 
    return state.pt;
 }
 
 static void tokhandle_chars(parse_state_t *state) {
-   tokhandle_common(state, SymkindText);
+   store_token(state, SymkindText);
 }
 
 static void tokhandle_delim(parse_state_t *state) {
-   int prevpos;
+   /* Archive the original position for later rewind */
+   size_t initpos = state->pos;
 
-   prevpos = state->pos;
+   goto lookahead;
 
-   if (state->tok->run[0] != '$') {
-      state->pos = prevpos;
-      tokhandle_chars(state);
-      return;
-   }
+   /* Whenever lookahead fails, control reaches here */
+fallback:
+   state->pos = initpos;
+   state->tok = array_get(state->tokstr, state->pos);
+   tokhandle_chars(state);
+   return;  /* EARLY RETURN */
 
-   if (!nexttok(state))
-      return;
-
-   if (state->tok->kind != TokkindDelim) {
-      state->pos = prevpos;
-      tokhandle_chars(state);
-      return;
-   }
-
-   if (state->tok->run[0] != '{') {
-      state->pos = prevpos;
-      tokhandle_chars(state);
-      return;
-   }
+   /* Find ${x} pattern */
+lookahead:
+   if (state->tok->run[0] != '$')
+      goto fallback;  /* this token is not $ */
 
    if (!nexttok(state))
-      return;
+      goto fallback;  /* $ was the last token */
 
-   if (state->tok->kind != TokkindChars) {
-      state->pos = prevpos;
-      tokhandle_chars(state);
-      return;
-   }
+   if (state->tok->kind != TokkindDelim)
+      goto fallback;  /* this token is not a delimiter */
+
+   if (state->tok->run[0] != '{')
+      goto fallback;  /* this token is not { */
 
    if (!nexttok(state))
-      return;
+      goto fallback;  /* { was the last token */
 
-   if (state->tok->kind != TokkindDelim) {
-      state->pos = prevpos;
-      tokhandle_chars(state);
-      return;
-   }
+   if (state->tok->kind != TokkindChars)
+      goto fallback;  /* this token is not a plain token */
 
-   if (state->tok->run[0] != '}') {
-      state->pos = prevpos;
-      tokhandle_chars(state);
-      return;
-   }
+   if (strchr(state->tok->run, ' '))
+      goto fallback;  /* this token does not have a valid replace string */
 
-   /*
-    * In this context, we have ${xxx} but we are not
-    * sure whether xxx is valid or not. If xxx is
-    * invalid, we are to treat every token, i.e.
-    * $, {, xxx, } as a character token.
-    */
+   if (!nexttok(state))
+      goto fallback;  /* this token was the last token */
+
+   if (state->tok->kind != TokkindDelim)
+      goto fallback;  /* this token is not a delimiter */
+
+   if (state->tok->run[0] != '}')
+      goto fallback;  /* this token is not } */
+
+   /* Finally, we have a valid ${x} */
    state->tok = array_get(state->tokstr, state->pos - 1);
-   if (strchr(state->tok->run, ' ')) {
-      for (int i = prevpos; i <= state->pos; i++) {
-         state->tok = array_get(state->tokstr, i);
-         tokhandle_chars(state);
-      }
-      return;
-   }
+   store_token(state, SymkindRepl);
 
-   tokhandle_common(state, SymkindRepl);
+   // Note that state->pos points to }. Thus, state->pos
+   // is to be advanced correctly in the do-while loop.
 }
 
-static void tokhandle_common(parse_state_t *state, symkind_t kind) {
+static void store_token(parse_state_t *state, symkind_t kind) {
    symbol_t sym;
    char *buf;
 
@@ -139,8 +125,6 @@ static void tokhandle_common(parse_state_t *state, symkind_t kind) {
    sym.content = buf;
 
    array_append(state->pt, &sym, sizeof sym);
-
-   state->pos++;
 }
 
 static int nexttok(parse_state_t *state) {
