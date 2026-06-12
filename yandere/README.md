@@ -5,7 +5,7 @@ This program prints a yandere-like string to stdout, *ad infinitum*.
 ## Usage
 
 ```
-./yandere
+yandere
 ```
 
 ## Implementations
@@ -13,7 +13,7 @@ This program prints a yandere-like string to stdout, *ad infinitum*.
 ### C
 
 ```
-gcc -o yandere yandere.c
+make
 ```
 
 ### Haskell
