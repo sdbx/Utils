@@ -7,7 +7,7 @@ P.S. hhss is an incorrect initialism for hweng-seol-su-seol, which means gibberi
 ## Usage
 
 ```
-./hhss NUM_SENTENCES
+hhss NUM_SENTENCES
 
 where
    NUM_SENTENCES = the number of sentences to print out.
