@@ -5,7 +5,7 @@ This program generates a "noisy" sentence by including an exclamation/question m
 ## Usage
 
 ```
-./nsy MARK_KIND < TEXT_FILE_NAME
+nsy MARK_KIND < TEXT_FILE_NAME
 
 where
    MARK_KIND = e | q   (exclamation or question)
