@@ -1,2 +1,5 @@
 nsy2
-nsy2.o
+nsy2.exe
+
+*.o
+*.d
