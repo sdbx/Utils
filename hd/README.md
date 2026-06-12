@@ -5,7 +5,10 @@ This program adds the string `"# "` to the beginning of the stdin and prints it,
 ## Usage
 
 ```
-./hd TEXT
+hd < TEXT_FILE_NAME
+
+where
+   TEXT_FILE_NAME = the file name to be input-redirected.
 ```
 
 ## Implementations
@@ -15,7 +18,7 @@ This program adds the string `"# "` to the beginning of the stdin and prints it,
 This implementation does not support trim.
 
 ```sh
-clang hd.c -o hd
+make
 ```
 
 ### C++
