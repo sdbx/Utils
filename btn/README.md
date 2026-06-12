@@ -5,7 +5,7 @@ This program prints a long string having no white-space characters, given a text
 ## Usage
 
 ```
-./btn N < TEXT_FILE_NAME
+btn N < TEXT_FILE_NAME
 
 where
    N = the number of characters before a new-line character;
