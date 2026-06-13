@@ -1,3 +1,4 @@
 test
 test_maker
-test_maker.o
+
+*.o
