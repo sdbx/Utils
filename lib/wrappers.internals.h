@@ -9,4 +9,10 @@
 #
 #include "fatal.h"
 
+/********************
+ * STATIC VARIABLES *
+ ********************/
+static const char *realloc_errmsg = "realloc error";
+static const char *vfprintf_errmsg = "vfprintf error";
+
 #endif

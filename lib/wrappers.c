@@ -23,8 +23,6 @@ extern void safe_fputs(FILE *stream, const char *line) {
 /************
  * stdlib.h *
  ************/
-static const char *realloc_errmsg = "realloc error";
-
 extern void *safe_malloc(size_t siz) {
    void *ret = malloc(siz);
    if (!ret) ERR("malloc error");
@@ -66,8 +64,6 @@ extern void *safe_realloc2x_arr(void *orig_arr, size_t *cnt, size_t esiz) {
 /************
  * stdarg.h *
  ************/
-static const char *vfprintf_errmsg = "vfprintf error";
-
 extern void safe_fprintf(FILE *stream, const char *format, ...) {
    va_list ap;
    int ret;

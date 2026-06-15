@@ -1,10 +1,6 @@
 #include "rtdbparse.h"
 #include "rtdbparse.internals.h"
 
-#include <setjmp.h>
-
-static jmp_buf env;
-
 extern array_t *rtdbparse(array_t *linestr) {
    array_t *table, *sectarr;
    char *sectname;
