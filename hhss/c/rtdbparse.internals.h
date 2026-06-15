@@ -4,6 +4,7 @@
 /************
  * INCLUDES *
  ************/
+#include <setjmp.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
@@ -39,6 +40,8 @@ static void synerr(void);
 /********************
  * STATIC VARIABLES *
  ********************/
+static jmp_buf env;
+
 static const char *whitespaces = " \a\b\t\n\v\f\r";
 
 static array_t *ls;

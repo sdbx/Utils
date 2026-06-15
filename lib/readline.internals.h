@@ -12,4 +12,9 @@
  **********/
 #define READLINE_UNIT 64
 
+/********************
+ * STATIC VARIABLES *
+ ********************/
+static const char *errmsg = "unable to read";
+
 #endif
