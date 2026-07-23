@@ -5,7 +5,7 @@ This program adds the string `"# "` to the beginning of the stdin and prints it,
 ## Usage
 
 ```
-hd < TEXT_FILE_NAME
+./hd < TEXT_FILE_NAME
 
 where
    TEXT_FILE_NAME = the file name to be input-redirected.

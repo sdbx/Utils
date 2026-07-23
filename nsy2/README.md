@@ -1,11 +1,11 @@
 ## Introduction
 
-This program generates a "noisy" sentence by including an exclamation/question mark between each words.
+This program generates a "noisy" sentence by including an exclamation/question mark between each word.
 
 ## Usage
 
 ```
-nsy2 MARK_KIND < TEXT_FILE_NAME
+./nsy2 MARK_KIND < TEXT_FILE_NAME
 
 where
    MARK_KIND = e | q   (exclamation or question)
