@@ -40,4 +40,4 @@ $(LIB_OBJS): %.o: $(DIR_LIB)/%.c
 
 ## Tasks ##
 clean:
-	rm -f $(TARGET) *.o *.d
+	rm -f $(TARGET) $(TARGET).exe *.o *.d
