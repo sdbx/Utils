@@ -1,5 +1,7 @@
 btn
 btn.exe
-btn.o
+
+*.o
+*.d
 
 .dat

@@ -1,5 +1,7 @@
 nsy
 nsy.exe
-nsy.o
+
+*.o
+*.d
 
 .dat
