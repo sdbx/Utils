@@ -28,7 +28,7 @@ extern int rand_range(int min, int max) {
       rv;
 
    /* like there are 5 numbers in [1,5] since 5 - 1 + 1 = 5,
-      max - min + 1 means the count of the numbers in [max, min] */
+      max - min + 1 means the count of the numbers in [min, max] */
    /* since max - min <= RAND_MAX <= INT_MAX, it's fine to add 1 */
    nbucket = 1U + max - min;
    /* since rand() returns [0,RAND_MAX], the number of total
