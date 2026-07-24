@@ -5,10 +5,40 @@ extern void seed(void) {
    srand(time(NULL));
 }
 
+/* Refer to https://c-faq.com/lib/randrange.html */
 extern int rand_range(int min, int max) {
-   if (max <= 0)
-      VERR("max must be greater than 0, but given %d", max);
-   return min + rand() / (RAND_MAX / max + 1);
+   if (min >= max)
+      ERR("min should be less than max.");
+
+   unsigned long nbucket;  /* number of buckets */
+   unsigned int bucket_siz, threshold, rv;
+
+   /* since range is long, it's safe if max and min
+      were INT_MAX and INT_MIN, respectively */
+   nbucket = 1UL + max - min;
+   /* since rand() returns [0,RAND_MAX], the number of total
+      possible return values is RAND_MAX + 1 */
+   /* specify 'u' in order to treat it as a unsigned int value */
+   bucket_siz = (RAND_MAX + 1UL) / nbucket;
+   threshold = bucket_siz * nbucket;
+
+   do rv = rand();
+   while (rv >= threshold);
+
+   return min + (int) (rv / bucket_siz);
+
+   /* An example simulation.
+      Suppose RAND_MAX = 10, nbucket = 3.
+      Since bucket_siz = (10 + 1) / 3 = 3,
+      threshold = 3 * 3 = 9.
+      Since RAND_MAX is 10, rand() returns [0,10].
+      If rand returns 9 or 10, re-roll.
+      If rand returns 0 ~ 8, then
+         rv = 0,1,2 => rv / 3 = 0
+         rv = 3,4,5 => rv / 3 = 1
+         rv = 6,7,8 => rv / 3 = 2
+      Thus, all numbers (min ~ max) have an equal
+      possibility to appear. */
 }
 
 extern int mblen_(char ch) {

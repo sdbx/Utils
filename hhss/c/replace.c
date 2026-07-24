@@ -27,7 +27,7 @@ extern void replace_templates(array_t *pts, array_t *rtdb) {
          if (rtslen == 0)
             synerr_empty();
 
-         v = rand_range(0, rtslen);
+         v = rand_range(0, rtslen - 1);
          rt = *((char **) array_get(rts, v));
 
          sectarr = rtdbquery(rtdb, rt);
@@ -80,9 +80,8 @@ static void rthandle_user(symbol_t *sym, array_t *sectarr) {
       goto common;
    }
 
-   do {
-      r = rand_range(0, siz);
-   } while (r == pre_user);
+   do r = rand_range(0, siz - 1);
+   while (r == pre_user);
    pre_user = r;
 
    common:
@@ -93,7 +92,7 @@ static void rthandle_else(symbol_t *sym, array_t *sectarr) {
    int r, siz;
 
    siz = array_size(sectarr);
-   r = rand_range(0, siz);
+   r = rand_range(0, siz - 1);
    rthandle_common(sym, sectarr, r);
 }
 

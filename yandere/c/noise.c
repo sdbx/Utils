@@ -6,13 +6,13 @@ extern void noise(const char *msg) {
    bool overflow;
 
    for (i = k = 0; msg[i] != '\0'; /* empty */) {
-      rv = rand_range(0, 6);
+      rv = rand_range(0, 5);
       chlen = mblen_(msg[i]);
       overflow = (k + chlen) >= (BUFMAX - 1);
 
       if (overflow) break;
       if (rv == 0) {   /* 1/6 chance */
-         buf[k++] = *("#?@" + rand_range(0, 3));
+         buf[k++] = *("#?@" + rand_range(0, 2));
          i += chlen;
       }
       else for (int m = 0; m < chlen; m++)
