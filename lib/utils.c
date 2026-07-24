@@ -7,8 +7,11 @@ extern void seed(void) {
 
 /* Refer to https://c-faq.com/lib/randrange.html */
 extern int rand_range(int min, int max) {
-   if (min >= max)
+   if (min > max)
       ERR("min should be less than max.");
+
+   if (min == max)
+      return min;
 
    unsigned long nbucket;  /* number of buckets */
    unsigned int bucket_siz, threshold, rv;
