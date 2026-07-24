@@ -7,16 +7,18 @@ extern array_t *prelex(array_t *db, int datcnt) {
    int lastpos, rv;
 
    ret = array_create();
-   lastpos = array_size(db);
+   lastpos = array_size(db) - 1;  /* last elem idx = len - 1 */
 
+   datcnt--;  /* the last pick won't swap */
+   /* pick datcnt - 1 times */
    for (int k = 0; k < datcnt; k++) {
-      rv = rand_range(0, lastpos - 1);  /* [0, lp - 1] */
+      rv = rand_range(0, lastpos);  /* [0, lp] */
 
       curr = array_get(db, rv);
-      last = array_get(db, lastpos - 1);
+      last = array_get(db, lastpos);
 
       // swap
-      array_set(db, lastpos - 1, curr);
+      array_set(db, lastpos, curr);
       array_set(db, rv, last);
 
       array_append(ret, curr->run, curr->len + 1);
@@ -24,6 +26,9 @@ extern array_t *prelex(array_t *db, int datcnt) {
       // in order to prevent duplication
       lastpos--;
    }
+   rv = rand_range(0, lastpos);  /* the last pick */
+   curr = array_get(db, rv);
+   array_append(ret, curr->run, curr->len + 1);
 
    return ret;
 }
