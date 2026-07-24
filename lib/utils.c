@@ -8,21 +8,34 @@ extern void seed(void) {
 /* Refer to https://c-faq.com/lib/randrange.html */
 extern int rand_range(int min, int max) {
    if (min > max)
-      ERR("min should be less than max.");
+      VERR("min must be less than or equal to max,"
+         " but given min=%d, max=%d", min, max);
+
+   /* implicit integer promotion happens */
+   /* INT_MAX - INT_MIN == UINT_MAX */
+   if ((unsigned int) max - min > RAND_MAX)
+      VERR("range too large to handle!"
+         " max - min must <= %d (RAND_MAX),"
+         " but given min=%d, max=%d", min, max);
 
    if (min == max)
       return min;
 
-   unsigned long nbucket;  /* number of buckets */
-   unsigned int bucket_siz, threshold, rv;
+   unsigned int
+      nbucket,  /* number of buckets */
+      bucket_siz,
+      threshold,
+      rv;
 
-   /* since range is long, it's safe if max and min
-      were INT_MAX and INT_MIN, respectively */
-   nbucket = 1UL + max - min;
+   /* like there are 5 numbers in [1,5] since 5 - 1 + 1 = 5,
+      max - min + 1 means the count of the numbers in [max, min] */
+   /* since max - min <= RAND_MAX <= INT_MAX, it's fine to add 1 */
+   nbucket = 1U + max - min;
    /* since rand() returns [0,RAND_MAX], the number of total
-      possible return values is RAND_MAX + 1 */
-   /* specify 'u' in order to treat it as a unsigned int value */
-   bucket_siz = (RAND_MAX + 1UL) / nbucket;
+      possible return values is RAND_MAX - 0 + 1 */
+   /* specify 'U' in order to treat it as a unsigned int value */
+   /* integer promotion also happens */
+   bucket_siz = (RAND_MAX + 1U) / nbucket;
    threshold = bucket_siz * nbucket;
 
    do rv = rand();
@@ -30,9 +43,9 @@ extern int rand_range(int min, int max) {
 
    return min + (int) (rv / bucket_siz);
 
-   /* An example simulation.
+   /* EXAMPLE CASE
       Suppose RAND_MAX = 10, nbucket = 3.
-      Since bucket_siz = (10 + 1) / 3 = 3,
+      Since bucket_siz = (10 + 1) / 3 = 3 (fractional part discarded),
       threshold = 3 * 3 = 9.
       Since RAND_MAX is 10, rand() returns [0,10].
       If rand returns 9 or 10, re-roll.
@@ -40,7 +53,7 @@ extern int rand_range(int min, int max) {
          rv = 0,1,2 => rv / 3 = 0
          rv = 3,4,5 => rv / 3 = 1
          rv = 6,7,8 => rv / 3 = 2
-      Thus, all numbers (min ~ max) have an equal
+      Thus, all numbers in [min, max] have an equal
       possibility to appear. */
 }
 
