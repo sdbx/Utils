@@ -15,7 +15,7 @@ extern int rand_range(int min, int max) {
    /* INT_MAX - INT_MIN == UINT_MAX */
    if ((unsigned int) max - min > RAND_MAX)
       VERR("range too large to handle!"
-         " max - min must <= %d (RAND_MAX),"
+         " max - min must be <= %d (RAND_MAX),"
          " but given min=%d, max=%d", min, max);
 
    if (min == max)
