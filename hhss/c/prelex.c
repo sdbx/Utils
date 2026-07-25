@@ -10,7 +10,7 @@ extern array_t *prelex(array_t *db, int datcnt) {
    lastpos = array_size(db);
 
    for (int k = 0; k < datcnt; k++) {
-      rv = rand_range(0, lastpos);  /* [0, lp) */
+      rv = rand_range(0, lastpos - 1);  /* [0, lp - 1] */
 
       curr = array_get(db, rv);
       last = array_get(db, lastpos - 1);
