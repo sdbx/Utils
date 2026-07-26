@@ -44,7 +44,7 @@ extern array_t *rtdbquery(array_t *table, const char *sectname) {
 
 extern array_t *rtdbquerybyidx(array_t *table, size_t idx, const char **sectname) {
    mapper_t *mapper = array_get(table, idx);
-   *sectname = mapper->sect;
+   if (sectname) *sectname = mapper->sect;
    return mapper->addr;
 }
 
