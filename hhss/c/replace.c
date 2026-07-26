@@ -6,6 +6,7 @@ extern void replace_templates(array_t *pts, array_t *rtdb) {
    symbol_t *sym;
    size_t ptslen, ptlen, rtslen;
    char *rt;
+   const char *sectname;
    int v;
 
    pre_user = -1;
@@ -18,26 +19,37 @@ extern void replace_templates(array_t *pts, array_t *rtdb) {
       for (size_t symidx = 0; symidx < ptlen; symidx++) {
          sym = array_get(pt, symidx);
 
-         if (sym->kind == SymkindText)
-            continue;
+         if (sym->kind != SymkindRepl)
+            continue;  /* only handle replace templates */
 
          rts = parse_replace_string(sym->content);
          rtslen = array_size(rts);
 
-         if (rtslen == 0)
+         if (!rtslen)
             synerr_empty();
 
          v = rand_range(0, rtslen - 1);
          rt = *((char **) array_get(rts, v));
 
-         sectarr = rtdbquery(rtdb, rt);
-         if (!sectarr)
-            synerr_invalid(rt);
+         if (STREQL(rt, SECTNAME_WILDCARD)) {  /* wildcard template? */
+            v = rand_range(0, array_size(rtdb) - 1);
+            sectarr = rtdbquerybyidx(rtdb, v, &sectname);
 
-         if (STREQL(rt, "user"))
-            rthandle_user(sym, sectarr);
-         else
-            rthandle_else(sym, sectarr);
+            if (STREQL(sectname, SECTNAME_USER))
+               rthandle_user(sym, sectarr);
+            else
+               rthandle_else(sym, sectarr);
+         }
+         else {
+            sectarr = rtdbquery(rtdb, rt);
+            if (!sectarr)
+               synerr_invalid(rt);
+
+            if (STREQL(rt, SECTNAME_USER))
+               rthandle_user(sym, sectarr);
+            else
+               rthandle_else(sym, sectarr);
+         }
 
          /* cleanup rts */
          for (size_t i = 0; i < rtslen; i++) {

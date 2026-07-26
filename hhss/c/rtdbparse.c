@@ -13,7 +13,7 @@ extern array_t *rtdbparse(array_t *linestr) {
    if (!setjmp(env)) {
       /* backward compatibility for usr.dat */
       if (!seek_section()) {
-         sectarr = add_mapper(table, "user");
+         sectarr = add_mapper(table, SECTNAME_USER);
          while (parse_value(sectarr));
       }
 
@@ -42,6 +42,12 @@ extern array_t *rtdbquery(array_t *table, const char *sectname) {
    return NULL;
 }
 
+extern array_t *rtdbquerybyidx(array_t *table, size_t idx, const char **sectname) {
+   mapper_t *mapper = array_get(table, idx);
+   if (sectname) *sectname = mapper->sect;
+   return mapper->addr;
+}
+
 extern void rtdbcheck(array_t *db) {
    mapper_t *m;
    array_t *sectarr;
@@ -57,7 +63,7 @@ extern void rtdbcheck(array_t *db) {
       sectname = m->sect;
       sectarr_siz = array_size(sectarr);
 
-      if (STREQL(sectname, "user")) {
+      if (STREQL(sectname, SECTNAME_USER)) {
          if (sectarr_siz >= threshold)
             continue;
          VERR("at least %zu user entries required but only %zu",
@@ -116,6 +122,8 @@ static int seek_section(void) {
 }
 
 static char *parse_section(void) {
+   char *ret;
+
    find_rearpos();
 
    if (l->run[rearpos] != ']') {
@@ -128,8 +136,15 @@ static char *parse_section(void) {
       synerr();
    }
 
+   ret = l->run + frontpos;
    l->run[rearpos] = '\0';
-   return l->run + frontpos;
+
+   if (STREQL(ret, SECTNAME_WILDCARD)) {
+      reason = "section name can't be *";
+      synerr();
+   }
+
+   return ret;
 }
 
 static int parse_value(array_t *sectarr) {

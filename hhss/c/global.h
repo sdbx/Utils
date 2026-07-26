@@ -20,5 +20,8 @@
 #define OLD_RPTP_DB_NAME "/usr.dat"
 #define OLD_DATA_DB_PATH INSTPATH OLD_DATA_DB_NAME
 #define OLD_RPTP_DB_PATH INSTPATH OLD_RPTP_DB_NAME
+#
+#define SECTNAME_WILDCARD "*"
+#define SECTNAME_USER     "user"
 
 #endif

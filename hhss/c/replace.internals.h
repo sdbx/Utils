@@ -9,6 +9,7 @@
 #include "utils.h"
 #include "parse.h"
 #include "fatal.h"
+#include "global.h"
 #include "strutils.h"
 #include "wrappers.h"
 #include "rtdbparse.h"
