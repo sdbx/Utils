@@ -29,6 +29,12 @@ extern void parse_argv(
    actx->argv = argv;
    actx->idx = 0;
    actx->eoe = false;
+   actx->err = (argerr_t) {
+      .errhandle = argp_errhandle_default,
+      .reason = "none",
+      .ctx = NULL,
+      .ctx_siz = 0
+   };
    actx->errcnt = 0;
    actx->errcnt_max = 10;
    actx->table = table;
