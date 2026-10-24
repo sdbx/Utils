@@ -7,11 +7,11 @@ extern array_t *dtdbparse(array_t *linestr) {
    size_t siz;
    char *buf;
 
-   res = array_create();
+   res = array_create(NULL);
    siz = array_size(linestr);
 
    for (size_t i = 0; i < siz; i++) {
-      l = array_get(linestr, i);
+      l = array_peek(linestr, i);
 
       if (l->run[0] == '#' ) continue;
       if (l->run[0] == '\n') continue;
@@ -48,7 +48,7 @@ extern void destroy_dtdb(array_t *dtdb) {
    line_t *l;
 
    for (int i = 0; i < siz; i++) {
-      l = array_get(dtdb, i);
+      l = array_peek(dtdb, i);
       free(l->run);
    }
 

@@ -1,0 +1,80 @@
+#include "argp_drivers.h"
+#include "argp_drivers.internals.h"
+
+static bool drive_help(argtok_t *tok, argerr_t *err) {
+   (void) tok, (void) err;
+   cfg.help = true;
+   return true;
+}
+
+static bool drive_message(argtok_t *tok, argerr_t *err) {
+   (void) err;
+   cfg.msg = strdup(tok->value);
+   return true;
+}
+
+static bool drive_language(argtok_t *tok, argerr_t *err) {
+   typedef struct {
+      const char *lang;
+      langopt_enum_t enum_val;
+   } mapper_t;
+
+   static const mapper_t accept_set[] = {
+      { "en", LangoptEnumEn },
+      { "ko", LangoptEnumKo }
+   };
+   static const size_t accept_set_len = ARRLEN(accept_set);
+
+   const mapper_t *map;
+
+   for (size_t i = 0; i < accept_set_len; i++) {
+      map = &accept_set[i];
+      if (!strcmp(tok->value, map->lang)) {
+         cfg.lang = map->enum_val;
+         return true;
+      }
+   }
+
+   /* error path */
+   err->errhandle = errhandle_unrecognized_value;
+   return false;
+}
+
+static bool drive_azusa_chan_kawaii(argtok_t *tok, argerr_t *err) {
+   (void) tok, (void) err;
+   cfg.azusa_kawaii = true;
+   return true;
+}
+
+static void errhandle_unrecognized_value(argtok_t *tok, const char *reason, void *ctx) {
+   find_alikes_ret_t ret;
+   errhandle_unrecognized_value_ctx_t *ectx;
+
+   (void) reason;
+   ectx = ctx;
+
+   ret = find_alikes(
+      tok->value,
+      ectx->targets,
+      ectx->targets_len,
+      ectx->target_siz
+   );
+
+   safe_vprintf(
+      "%s: unrecognized value " Cbwhite "'%s'" Creset ".",
+      tok->field, tok->value
+   );
+   safe_vprintf(" Do you mean ");
+   if (ret.nmemb == 1) {
+      safe_vprintf(Cbgreen "'%s'" Creset "?\n", ret.alikes[0]);
+   }
+   else {
+      safe_vprintf("one of the following?\n\t" Cbgreen);
+      for (size_t i = 0; i < ret.nmemb; i++) {
+         safe_vprintf("%s  ", ret.alikes[i]);
+      }
+      safe_vprintf(Creset "\n");
+   }
+
+   free(ret.alikes);
+}

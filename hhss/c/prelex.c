@@ -6,14 +6,14 @@ extern array_t *prelex(array_t *db, int datcnt) {
    line_t *curr, *last;
    int lastpos, rv;
 
-   ret = array_create();
+   ret = array_create(NULL);
    lastpos = array_size(db);
 
    for (int k = 0; k < datcnt; k++) {
       rv = rand_range(0, lastpos - 1);  /* [0, lp - 1] */
 
-      curr = array_get(db, rv);
-      last = array_get(db, lastpos - 1);
+      curr = array_peek(db, rv);
+      last = array_peek(db, lastpos - 1);
 
       // swap
       array_set(db, lastpos - 1, curr);

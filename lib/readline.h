@@ -1,14 +1,10 @@
 #ifndef READLINE_H
 #define READLINE_H
 
-/************
- * INCLUDES *
- ************/
 #include <stdio.h>
 
-/**************
- * PROTOTYPES *
- **************/
+#define READLINE_UNIT   64
+
 int readln(FILE *fp, char **line, size_t *len);
 
 #endif

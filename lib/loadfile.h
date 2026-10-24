@@ -1,14 +1,8 @@
 #ifndef LOADFILE_H
 #define LOADFILE_H
 
-/************
- * INCLUDES *
- ************/
 #include "array.adt.h"
 
-/************
- * TYPEDEFS *
- ************/
 typedef struct line {
    char *run;
    size_t len, num;
@@ -16,10 +10,9 @@ typedef struct line {
 
 array_t *loadfile(
    const char *filename,
-   int * restrict lc,
-   int * restrict cc
+   size_t * restrict lc,
+   size_t * restrict wc
 );
-
 void unloadfl(array_t *lines);
 
 #endif
