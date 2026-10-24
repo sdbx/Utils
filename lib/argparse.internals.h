@@ -11,6 +11,7 @@
 #include "wrappers.h"
 #include "strutils.h"
 #include "array.adt.h"
+#include "arena.adt.h"
 #include "colorcodes.h"
 
 typedef struct {
@@ -20,6 +21,7 @@ typedef struct {
 } errinfo_t;
 
 typedef struct {
+   arena_t *arena;
    int argc;
    const char **argv;
    const char *arg;
