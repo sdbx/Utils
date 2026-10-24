@@ -8,7 +8,7 @@ extern array_t *rtdbparse(array_t *linestr) {
    ls = linestr;
    len = array_size(ls);
    idx = -1;
-   table = array_create();
+   table = array_create(NULL);
 
    if (!setjmp(env)) {
       /* backward compatibility for usr.dat */
@@ -34,7 +34,7 @@ extern array_t *rtdbquery(array_t *table, const char *sectname) {
 
    table_len = array_size(table);
    for (i = 0; i < table_len; i++) {
-      mapper = array_get(table, i);
+      mapper = array_peek(table, i);
       if (!STREQL(mapper->sect, sectname))
          continue;
       return mapper->addr;
@@ -52,7 +52,7 @@ extern void rtdbcheck(array_t *db) {
    threshold = MIN_USER_COUNT;
 
    for (size_t i = 0; i < dbsiz; i++) {
-      m = array_get(db, i);
+      m = array_peek(db, i);
       sectarr = m->addr;
       sectname = m->sect;
       sectarr_siz = array_size(sectarr);
@@ -78,7 +78,7 @@ extern void destroy_rtdb(array_t *rtdb) {
 
    rtdbsiz = array_size(rtdb);
    for (int i = 0; i < rtdbsiz; i++) {
-      m = array_get(rtdb, i);
+      m = array_peek(rtdb, i);
       free(m->sect);
       array_destroy(m->addr);
    }
@@ -97,7 +97,7 @@ static array_t *add_mapper(array_t *table, const char *sectname) {
    buf = safe_malloc(bufsiz + 1);
    memcpy(buf, sectname, bufsiz + 1);
 
-   sectarr = array_create();
+   sectarr = array_create(NULL);
 
    mapper.sect = buf;
    mapper.addr = sectarr;
@@ -168,7 +168,7 @@ static void find_rearpos(void) {
 
 static void next_line(void) {
    if (++idx == len) longjmp(env, 1);
-   l = array_get(ls, idx);
+   l = array_peek(ls, idx);
 }
 
 static void skip_empty_lines(void) {
@@ -184,6 +184,7 @@ static void synerr(void) {
       Cbred "<syntax error>" Creset " %s\n"
       Cbwhite "note:" Creset " problematic since here\n"
       "%4zu|" Cbblue "%s" Creset "\n",
+      3,
       reason,
       l->num, l->run
    );

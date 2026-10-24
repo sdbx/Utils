@@ -3,7 +3,7 @@
 int main(int argc, char *argv[]) {
    validate(argc);
    prepare(argv);
-   array_foreach(pts, iterate);
+   array_foreach(pts, iterate, NULL);
    cleanup();
    return 0;
 }
@@ -32,14 +32,14 @@ static void prepare(char *argv[]) {
    replace_templates(pts, rtdb);
 }
 
-static void iterate(void *item, int idx) {
-   (void) idx;
-   array_foreach(*((array_t **) item), print_pt);
+static void iterate(void *item, size_t idx, void *ctx) {
+   (void) idx, (void) ctx;
+   array_foreach(*((array_t **) item), print_pt, NULL);
 }
 
-static void print_pt(void *item, int idx) {
+static void print_pt(void *item, size_t idx, void *ctx) {
    symbol_t *sym = item;
-   (void) idx;
+   (void) idx, (void) ctx;
    safe_fputs(stdout, sym->content);
 }
 
@@ -48,7 +48,5 @@ static void cleanup(void) {
    destroy_tokstrs(tokstrs);
    destroy_charstrs(charstrs);
    destroy_rtdb(rtdb);
-   unloadfl(rtdb_linestr);
    destroy_dtdb(dtdb);
-   unloadfl(dtdb_linestr);
 }
