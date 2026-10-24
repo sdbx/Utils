@@ -464,3 +464,38 @@ cleanup:
 
    return ret;
 }
+
+extern int mblen_(char ch) {
+   unsigned char c;
+
+   c = (unsigned char) ch;
+
+   if (c < 0x80) return 1;             /* 0xxxxxxx */
+   if ((c & 0xE0) == 0xC0) return 2;   /* 110xxxxx */
+   if ((c & 0xF0) == 0xE0) return 3;   /* 1110xxxx */
+   if ((c & 0xF8) == 0xF0) return 4;   /* 11110xxx */
+
+   return 0;
+}
+
+extern size_t mbstrlen(const char *src) {
+   size_t total = 0;
+   size_t idx = 0;
+   size_t src_len = strlen(src);
+   int mbch_len;
+
+   if (src_len == 0) {
+      return 0;
+   }
+
+   while (idx < src_len) {
+      mbch_len = mblen_(src[idx]);  /* returns 0 ~ 4 */
+      if (mbch_len == 0) {
+         return 0;  /* something wrong */
+      }
+      idx += mbch_len;
+      total++;
+   }
+
+   return total;
+}
