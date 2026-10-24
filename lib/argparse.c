@@ -592,16 +592,13 @@ static void errhandle_unrecognized(argtok_t *tok, const char *reason, void *ctx)
       safe_vprintf("%s: %s\n", tok->field, err_short);
    }
    else /* long flag */ {
-      safe_vprintf(
-         "%s: %s. Do you mean one of the following?" Cbgreen,
-         tok->field, err_long
-      );
+      safe_vprintf("%s: %s. Do you mean ", tok->field, err_long);
       /* at least one exists */
       if (array_size(candidates) == 1) {
-         safe_vprintf(" --%s" Creset "?\n", array_peek(candidates, 0));
+         safe_vprintf(Cbgreen "--%s" Creset "?\n", array_peek(candidates, 0));
       }
       else {
-         safe_vprintf("\n\t");
+         safe_vprintf("one of the following?\n\t" Cbgreen);
          for (size_t i = 0; i < array_size(candidates); i++) {
             safe_vprintf("%s  ", array_peek(candidates, i));
          }
