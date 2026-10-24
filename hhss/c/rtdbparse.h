@@ -4,7 +4,7 @@
 /************
  * INCLUDES *
  ************/
-#include "utils.h"
+#include "common.h"
 #include "array.adt.h"
 
 /**************

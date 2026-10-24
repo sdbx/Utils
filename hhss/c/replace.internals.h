@@ -6,9 +6,9 @@
  ************/
 #include <stdlib.h>
 #
-#include "utils.h"
 #include "parse.h"
 #include "fatal.h"
+#include "common.h"
 #include "strutils.h"
 #include "wrappers.h"
 #include "rtdbparse.h"

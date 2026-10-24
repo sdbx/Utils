@@ -6,7 +6,7 @@
  ************/
 #include <stdlib.h>
 #
-#include "utils.h"
+#include "common.h"
 #include "loadfile.h"
 #include "wrappers.h"
 
