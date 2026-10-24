@@ -6,41 +6,47 @@ extern int readln(FILE *fp, char **line, size_t *len) {
    size_t pos, bufsiz;
    char *buf;
 
-   // First, tests whether there is nothing to read
-   ch = getc(fp);
+   /* First of all, checks whether there is nothing to read */
+   ch = safe_fgetc(fp);
+
    if (ch == EOF) {
-      if (ferror(fp)) ERR(errmsg);
       *line = NULL;
-      *len = 0;
+      if (len != NULL) *len = 0;
       return 1;
    }
    else ungetc(ch, fp);
 
-   // Reads the file
    bufsiz = READLINE_UNIT;
    buf = safe_malloc(bufsiz);
    pos = 0;
 
+   /* Reads the file, one line at a time */
    for (;;) {
-      ch = getc(fp);
-      if (ch == EOF) {
-         if (ferror(fp)) ERR(errmsg);
-         break;
-      }
-      if (ch == '\r') continue;
-      if (ch == '\n') break;
+      ch = safe_fgetc(fp);
 
-      buf[pos++] = ch;
-      if (pos == bufsiz)
+      if (ch == EOF || ch == '\n')
+         break;
+      if (ch == '\r')
+         continue;
+
+      buf[pos] = ch;
+
+      if (bufsiz - pos == 1) {
          buf = safe_realloc2x(buf, &bufsiz);
+      }
+
+      pos++;
    }
 
-   if (bufsiz - pos == 1)
+   /* Stores \n\0 at the end */
+   if (bufsiz - pos == 1) {
       buf = safe_realloc2x(buf, &bufsiz);
+   }
+
    buf[pos++] = '\n';
    buf[pos] = '\0';
-   *line = buf;
-   *len = pos;
 
+   *line = buf;
+   if (len != NULL) *len = pos;
    return 0;
 }
