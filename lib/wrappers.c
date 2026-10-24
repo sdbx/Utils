@@ -119,7 +119,7 @@ extern void safe_fwrite(
       return;  /* in this case, fwrite returns 0 */
    }
    if (fwrite(src, siz, cnt, dest) < cnt) {
-      fatal("fwrite error");
+      ERR("fwrite error");
    }
 }
 
