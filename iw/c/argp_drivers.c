@@ -36,7 +36,15 @@ static bool drive_language(argtok_t *tok, argerr_t *err) {
    }
 
    /* error path */
+   static const errhandle_unrecognized_value_ctx_t ctx = {
+      .targets = (const void **) &accept_set,
+      .targets_len = accept_set_len,
+      .target_siz = ESIZ(accept_set)
+   };
+
    err->errhandle = errhandle_unrecognized_value;
+   err->ctx = &ctx;
+   err->ctx_siz = sizeof ctx;
    return false;
 }
 
