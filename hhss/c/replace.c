@@ -113,15 +113,14 @@ static void synerr_invalid(const char *rt) {
    safe_fprintf(stderr,
       Cbred "<syntax error>" Creset " invalid replace template "
       Cemerald "%s" Creset "\n",
-      1, rt
+      rt
    );
    exit(EXIT_FAILURE);
 }
 
 static void synerr_empty(void) {
    safe_fprintf(stderr,
-      Cbred "<syntax error>" Creset " empty replace template detected\n",
-      0
+      Cbred "<syntax error>" Creset " empty replace template detected\n"
    );
    exit(EXIT_FAILURE);
 }

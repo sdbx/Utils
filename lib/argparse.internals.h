@@ -35,8 +35,7 @@ typedef struct {
    argerr_t err;
    array_t *err_infos;
    jmp_buf env;
-   /* Needs to keep its value after longjmp */
-   volatile size_t errcnt;
+   size_t errcnt;
 } argp_ctx_t;
 
 typedef struct a {

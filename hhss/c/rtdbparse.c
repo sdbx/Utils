@@ -184,7 +184,6 @@ static void synerr(void) {
       Cbred "<syntax error>" Creset " %s\n"
       Cbwhite "note:" Creset " problematic since here\n"
       "%4zu|" Cbblue "%s" Creset "\n",
-      3,
       reason,
       l->num, l->run
    );

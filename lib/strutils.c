@@ -155,7 +155,7 @@ extern void trim(char *src) {
 
    /* Searches for a non-whitespace character from the back */
    for (fin = src + len; fin > src; fin--)
-      if (!isspace(fin[-1]))
+      if (!isspace((unsigned char) fin[-1]))
          break;
 
    /* Removes the trailing whitespaces */
@@ -192,7 +192,7 @@ extern void normalize(char *src) {
    size_t sz = strlen(src);
 
    for (size_t i = 0; i < sz; i++) {
-      if (isspace(src[i])) {
+      if (isspace((unsigned char) src[i])) {
          src[i] = ' ';
       }
    }
@@ -388,6 +388,13 @@ extern find_alikes_ret_t find_alikes(
    size_t targets_len,
    size_t target_siz
 ) {
+   if (targets_len == 0) {
+      return (find_alikes_ret_t) {
+         .alikes = NULL,
+         .nmemb = 0
+      };
+   }
+
    size_t *dists = safe_malloc(targets_len * sizeof (size_t));
 
    /* Note. targets should be like:

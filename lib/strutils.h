@@ -74,7 +74,8 @@ find_alikes_ret_t find_alikes(
 
 /* Inline Functions */
 inline char lastch(const char *line) {
-   return line[strlen(line) - 1];
+   size_t len = strlen(line);
+   return (len != 0) ? line[len - 1] : '\0';
 }
 
 #endif

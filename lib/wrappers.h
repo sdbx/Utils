@@ -100,7 +100,7 @@ void safe_fgetpos(FILE *fp, fpos_t *pos);
  */
 void safe_fsetpos(FILE *fp, fpos_t *pos);
 
-void safe_fprintf(FILE *fp, const char *fmt, int n, ...);
+void safe_fprintf(FILE *fp, const char *fmt, ...);
 void safe_fscanf(FILE *fp, const char *fmt, int n, ...);
 
 void safe_signal(int sig, sigprocessor_t handler);

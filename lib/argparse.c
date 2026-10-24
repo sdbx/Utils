@@ -15,46 +15,56 @@ extern void parse_argv(
    size_t table_len,
    array_t *sourcefiles
 ) {
-   argp_ctx_t actx = {
-      .argc = argc,
-      .argv = argv,
-      .toks = array_create(destruct_argtok),
-      .idx = 0,
-      .eoe = false,
-      .errcnt = 0,
-      .errcnt_max = 10,
-      .table = table,
-      .table_len = table_len,
-      .sourcefiles = sourcefiles,
-      .err_infos = array_create(destruct_errinfo)
-   };
-   int ret;
+   argp_ctx_t *actx;
 
-   /* Note: errcnt is declared volatile in order to prevent
-      its value from being restored to the snapshotted value
-      after longjmp */
-   ret = setjmp(actx.env);
-   if (ret != 0) {
+   if ((actx = malloc(sizeof *actx)) == NULL)
+      goto OOM1;
+   if ((actx->arena = arena_create()) == NULL)
+      goto OOM2;
+   if ((actx->toks = array_create(destruct_argtok)) == NULL)
+      goto OOM3;
+   if ((actx->err_infos = array_create(destruct_errinfo)) == NULL)
+      goto OOM4;
+   actx->argc = argc;
+   actx->argv = argv;
+   actx->idx = 0;
+   actx->eoe = false;
+   actx->errcnt = 0;
+   actx->errcnt_max = 10;
+   actx->table = table;
+   actx->table_len = table_len;
+   actx->sourcefiles = sourcefiles;
+
+   if (setjmp(actx->env) != 0) {
       goto report_error;
    }
 
-   validate_schemas(&actx);
-   tokenize_argv(&actx);
-   parse_argtoks(&actx);
+   validate_schemas(actx);
+   tokenize_argv(actx);
+   parse_argtoks(actx);
 
-   // showargtoks(&actx, true);
+   // showargtoks(actx, true);
 
 report_error:
-   if (actx.errcnt > 0) {
-      report_errors(&actx);
+   if (actx->errcnt > 0) {
+      report_errors(actx);
       exit(EXIT_FAILURE);  // fixme: this is technically a resource leak
    }
+
+cleanup:
    // since this wouldn't be invoked;
-   array_destroy(actx.err_infos);
-   array_destroy(actx.toks);
    // rewrite the logic and do not use setjmp / longjmp
    // the idea is: collect all resources even with a error path
    // the same thing applies to parse.c / lex.c
+   array_destroy(actx->err_infos);
+OOM4:
+   array_destroy(actx->toks);
+OOM3:
+   arena_destroy(actx->arena);
+OOM2:
+   free(actx);
+OOM1:
+   return;
 }
 
 extern void usage(
@@ -131,6 +141,12 @@ static void validate_schemas(argp_ctx_t *actx) {
    for (i = 0; i < actx->table_len; i++) {
       /* all flags must have its long name */
       subject = &actx->table[i];
+      if (subject->lname == NULL) {
+         /* the preceding validation doesn't mean that
+            the flags do have their long names -- so
+            this check is necessary */
+         continue;
+      }
       for (j = i + 1; j < actx->table_len; j++) {
          against = &actx->table[j];
          if (against->lname == NULL)
@@ -184,11 +200,11 @@ static void parse_argtoks(argp_ctx_t *actx) {
    argtok_t *tok;
    bool preproc_result, parse_result;
 
+   /* Note: toks has at least one element since argc > 1 supposed */
    /* Did not use gettok() on purpose; since it advances actx->idx,
       causing an unmatch between current token and its index */
    tok = actx->tok = array_peek(actx->toks, 0);
 
-   /* Note: toks has at least one element since argc > 1 supposed */
    while (actx->idx < actx->toks_len) {
       /* end of option? */
       if (tok->kind == ArgtokOptionEnd) {
@@ -462,8 +478,15 @@ static bool preprocess_longflag(argp_ctx_t *actx) {
          actx->err.errhandle = argp_errhandle_default;
          actx->err.reason = "doesn't require a value but given one";
          regerr(actx, tok);
+         return false;
       }
-      /* whether error or not, return true */
+      if (tok->has_eq) {
+         actx->err.errhandle = argp_errhandle_default;
+         actx->err.reason = "'=' is used with a non-value-taking option";
+         regerr(actx, tok);
+         return false;
+      }
+      /* a valid non-value-taking option */
       return true;
    }
 
