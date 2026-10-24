@@ -48,5 +48,7 @@ static void cleanup(void) {
    destroy_tokstrs(tokstrs);
    destroy_charstrs(charstrs);
    destroy_rtdb(rtdb);
+   array_destroy(rtdb_linestr);
    destroy_dtdb(dtdb);
+   array_destroy(dtdb_linestr);
 }
