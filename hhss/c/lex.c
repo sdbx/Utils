@@ -11,10 +11,10 @@ extern array_t *lex(array_t *charstrs) {
    pos = 0;
 
    len = array_size(charstrs);
-   tokstrs = array_create();
+   tokstrs = array_create(NULL);
 
    for (size_t i = 0; i < len; i++) {
-      charstr = array_get(charstrs, i);
+      charstr = array_peek(charstrs, i);
       lex_line(charstr);
       array_append(tokstrs, &tokstr, sizeof tokstr);
    }
@@ -24,7 +24,7 @@ extern array_t *lex(array_t *charstrs) {
 }
 
 static array_t *lex_line(const char *line) {
-   tokstr = array_create();
+   tokstr = array_create(NULL);
 
    for (;;) {
       ch = *line++;
@@ -80,10 +80,10 @@ extern void destroy_tokstrs(array_t *tokstrs) {
    token_t *tok;
 
    for (int i = 0; i < tokstrs_siz; i++) {
-      tokstr = *((array_t **) array_get(tokstrs, i));
+      tokstr = *((array_t **) array_peek(tokstrs, i));
       tokstr_siz = array_size(tokstr);
       for (int k = 0; k < tokstr_siz; k++) {
-         tok = array_get(tokstr, k);
+         tok = array_peek(tokstr, k);
          free(tok->run);
       }
       array_destroy(tokstr);

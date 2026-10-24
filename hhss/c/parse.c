@@ -5,11 +5,11 @@ extern array_t *parse(array_t *tokstrs) {
    array_t *pts, *tokstr, *pt;
    size_t len;
 
-   pts = array_create();
+   pts = array_create(NULL);
    len = array_size(tokstrs);
 
    for (size_t i = 0; i < len; i++) {
-      tokstr = *((array_t **) array_get(tokstrs, i));
+      tokstr = *((array_t **) array_peek(tokstrs, i));
       pt = parse_tokstr(tokstr);
       array_append(pts, &pt, sizeof pt);
    }
@@ -24,10 +24,10 @@ extern void destroy_pts(array_t *pts) {
    symbol_t *sym;
 
    for (size_t i = 0; i < siz; i++) {
-      pt = *((array_t **) array_get(pts, i));
+      pt = *((array_t **) array_peek(pts, i));
       ptsiz = array_size(pt);
       for (size_t k = 0; k < ptsiz; k++) {
-         sym = array_get(pt, k);
+         sym = array_peek(pt, k);
          free(sym->content);
       }
       array_destroy(pt);
@@ -40,11 +40,11 @@ static array_t *parse_tokstr(array_t *tokstr) {
 
    state.len = array_size(tokstr);
    state.pos = 0;
-   state.pt = array_create();
+   state.pt = array_create(NULL);
    state.tokstr = tokstr;
 
    do {
-      state.tok = array_get(tokstr, state.pos);
+      state.tok = array_peek(tokstr, state.pos);
       switch (state.tok->kind) {
          case TokkindChars: tokhandle_chars(&state); break;
          case TokkindDelim: tokhandle_delim(&state); break;
@@ -96,7 +96,7 @@ static void tokhandle_delim(parse_state_t *state) {
       goto fallback;  /* this token is not } */
 
    /* Finally, we have a valid ${x} */
-   state->tok = array_get(state->tokstr, state->pos - 1);
+   state->tok = array_peek(state->tokstr, state->pos - 1);
    store_token(state, SymkindRepl);
 
    // Note that state->pos points to }. Thus, state->pos
@@ -106,7 +106,7 @@ static void tokhandle_delim(parse_state_t *state) {
    /* Whenever lookahead fails, control reaches here */
 fallback:
    state->pos = initpos;
-   state->tok = array_get(state->tokstr, state->pos);
+   state->tok = array_peek(state->tokstr, state->pos);
    tokhandle_chars(state);
    return;  /* EARLY RETURN */
 }
@@ -129,6 +129,6 @@ static int nexttok(parse_state_t *state) {
    state->pos++;
    if (state->pos == state->len)
       return 0;
-   state->tok = array_get(state->tokstr, state->pos);
+   state->tok = array_peek(state->tokstr, state->pos);
    return 1;
 }
