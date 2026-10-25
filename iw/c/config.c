@@ -64,17 +64,34 @@ static config_statcode_t check_msg(config_t *cfg) {
 }
 
 static config_statcode_t print_manpage(void) {
-   static const char *manpage_dir = DIR_MANPAGE;
+#if !defined(_WIN32) && (defined(__unix__) || defined(__unix))
+   typedef enum { ShellNotAvail, ShellOk } system_rv_t;
+   typedef enum { ManOk, ManFailed } man_exitstat_t;
+
+   if (system(NULL) == ShellNotAvail) {
+      return print_manual_fallback();
+   }
+
+   if (system("man " DIR_MANPAGE) == ManFailed) {
+      return print_manual_fallback();
+   }
+   return ConfigStatcodeNormalExit;
+#else
+   return print_manual_fallback();
+#endif
+}
+
+static config_statcode_t print_manual_fallback(void) {
+   config_statcode_t ret = ConfigStatcodeNormalExit;
    FILE *fp;
    int ch;
-   config_statcode_t ret = ConfigStatcodeNormalExit;
 
-   fp = fopen(manpage_dir, "r");
+   fp = fopen(DIR_MANPAGE_TXT, "r");
    if (fp == NULL) {
       fprintf(
          stderr,
          ENPREFIX "couldn't open the manpage from %s\n",
-         manpage_dir
+         DIR_MANPAGE_TXT
       );
       ret = ConfigStatcodeNoManpage;
       goto cleanup;

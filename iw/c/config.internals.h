@@ -13,6 +13,7 @@ static config_statcode_t check_help(config_t *cfg);
 static config_statcode_t check_msg(config_t *cfg);
 
 static config_statcode_t print_manpage(void);
+static config_statcode_t print_manual_fallback(void);
 
 /*==================*
  | EXTERN VARIABLES |
