@@ -341,7 +341,7 @@ extern int levenshtein_distance(const char *s, const char *t) {
       of s and t, which is 255 */
    static const size_t size_limit = 255;
 
-   if (sl == size_limit || tl == size_limit) {
+   if (sl >= size_limit || tl >= size_limit) {
       return -1;
    }
 
@@ -398,7 +398,7 @@ extern find_alikes_ret_t find_alikes(
    };
 
    if (targets_len == 0) {
-      goto cleanup;
+      return ret;  /* early exit */
    }
 
    size_t *dists = safe_malloc(targets_len * sizeof (size_t));
@@ -419,7 +419,7 @@ extern find_alikes_ret_t find_alikes(
       dists[i] = levenshtein_distance(
          src, GETSTR(i)
       );
-      if (dists[i] == NULL) {
+      if (dists[i] == -1) {
          goto cleanup;
       }
    }
