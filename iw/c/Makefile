@@ -8,6 +8,7 @@ CFLAGS += -MMD -MP
 CPPFLAGS = \
 	-I $(DIR_LIB) \
 	-DPROGNAME='"$(TARGET)"'
+	-DDIR_DATA='"$(DIR_DATA)"'
 
 SOURCES = $(wildcard *.c)
 LIB_SRCS = $(wildcard $(DIR_LIB)/*.c)
