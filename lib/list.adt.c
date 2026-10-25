@@ -244,7 +244,7 @@ extern size_t list_indexof(list_t *list, void *data) {
    node_t *node = list->head;
    size_t i;
 
-   for (i = 0; i < list->size; i++) {
+   for (i = 0; i < list->size; i++, node = node->next) {
       if (node->data == data) {
          break;
       }
