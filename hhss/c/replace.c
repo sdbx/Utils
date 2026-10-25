@@ -12,11 +12,11 @@ extern void replace_templates(array_t *pts, array_t *rtdb) {
    ptslen = array_size(pts);
 
    for (size_t ptidx = 0; ptidx < ptslen; ptidx++) {
-      pt = *((array_t **) array_get(pts, ptidx));
+      pt = *((array_t **) array_peek(pts, ptidx));
       ptlen = array_size(pt);
 
       for (size_t symidx = 0; symidx < ptlen; symidx++) {
-         sym = array_get(pt, symidx);
+         sym = array_peek(pt, symidx);
 
          if (sym->kind == SymkindText)
             continue;
@@ -28,7 +28,7 @@ extern void replace_templates(array_t *pts, array_t *rtdb) {
             synerr_empty();
 
          v = rand_range(0, rtslen - 1);
-         rt = *((char **) array_get(rts, v));
+         rt = *((char **) array_peek(rts, v));
 
          sectarr = rtdbquery(rtdb, rt);
          if (!sectarr)
@@ -41,7 +41,7 @@ extern void replace_templates(array_t *pts, array_t *rtdb) {
 
          /* cleanup rts */
          for (size_t i = 0; i < rtslen; i++) {
-            rt = *((char **) array_get(rts, i));
+            rt = *((char **) array_peek(rts, i));
             free(rt);
          }
          array_destroy(rts);
@@ -56,7 +56,7 @@ static array_t *parse_replace_string(const char *rs) {
    array_t *ret;
 
    raw = split(rs, delim, &rawsiz);
-   ret = array_create();
+   ret = array_create(NULL);
 
    for (size_t i = 0; i < rawsiz; i++) {
       if (raw[i][0] == '\0') {
@@ -100,7 +100,7 @@ static void rthandle_common(symbol_t *sym, array_t *sectarr, int idx) {
    char *val;
    size_t siz;
 
-   val = array_get(sectarr, idx);
+   val = array_peek(sectarr, idx);
    free(sym->content);
 
    /* copy the whole string + \0 */

@@ -5,7 +5,7 @@
  * INCLUDES *
  ************/
 #include "fatal.h"
-#include "utils.h"
+#include "common.h"
 #include "global.h"
 #include "wrappers.h"
 #include "sighandlers.h"

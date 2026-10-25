@@ -15,13 +15,13 @@ extern void debug_rtdb(array_t *rtdb) {
    siz = array_size(rtdb);
 
    for (i = 0; i < siz; i++) {
-      m = array_get(rtdb, i);
+      m = array_peek(rtdb, i);
       printf("rtdb[%zu]\n", i);
       printf(".sectname = [%s]\n", m->sect);
       printf(".sectarr\n");
       siz2 = array_size(m->addr);
       for (k = 0; k < siz2; k++) {
-         s = array_get(m->addr, k);
+         s = array_peek(m->addr, k);
          printf("  [%zu] = [%s]\n", k, s);
       }
    }
@@ -35,7 +35,7 @@ extern void debug_charstrs(array_t *charstrs) {
    printf("charstrs.len = %zu\n", siz);
 
    for (i = 0; i < siz; i++) {
-      s = array_get(charstrs, i);
+      s = array_peek(charstrs, i);
       printf("charstrs[%zu] = [%s]\n", i, s);
    }
 }
@@ -48,7 +48,7 @@ extern void debug_tokstr(array_t *tokstr) {
    printf("tokstr.len = %zu\n", siz);
 
    for (k = 0; k < siz; k++) {
-      tok = array_get(tokstr, k);
+      tok = array_peek(tokstr, k);
       printf("tokstr[%zu]\n", k);
       printf("  .kind = [%d]\n", tok->kind);
       printf("  .run = [%s]\n", tok->run);
@@ -68,13 +68,13 @@ extern void debug_tokstrs(array_t *tokstrs) {
    printf("tokstrs.len = %zu\n", siz);
 
    for (i = 0; i < siz; i++) {
-      tokstr = *((array_t **) array_get(tokstrs, i));
+      tokstr = *((array_t **) array_peek(tokstrs, i));
       siz2 = array_size(tokstr);
       printf("tokstrs[%zu]\n", i);
       printf("tokstrs[%zu].len = %zu\n", i, siz2);
 
       for (k = 0; k < siz2; k++) {
-         tok = array_get(tokstr, k);
+         tok = array_peek(tokstr, k);
          printf("  tokstrs[%zu][%zu]\n", i, k);
          printf("    .kind = [%d]\n", tok->kind);
          printf("    .run = [%s]\n", tok->run);
@@ -93,13 +93,13 @@ extern void debug_pts(array_t *pts) {
    printf("pts.len = %zu\n", siz);
 
    for (i = 0; i < siz; i++) {
-      pt = *((array_t **) array_get(pts, i));
+      pt = *((array_t **) array_peek(pts, i));
       siz2 = array_size(pt);
       printf("pts[%zu]\n", i);
       printf("pts[%zu].len = %zu\n", i, siz2);
 
       for (k = 0; k < siz2; k++) {
-         sym = array_get(pt, k);
+         sym = array_peek(pt, k);
          printf("  pts[%zu][%zu]\n", i, k);
          printf("    .kind = [%d]\n", sym->kind);
          printf("    .run = [%s]\n", sym->content);

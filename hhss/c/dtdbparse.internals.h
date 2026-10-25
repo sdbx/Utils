@@ -5,6 +5,7 @@
  * INCLUDES *
  ************/
 #include <stdlib.h>
+#include <string.h>
 #
 #include "fatal.h"
 #include "global.h"
