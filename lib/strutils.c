@@ -283,6 +283,10 @@ extern bool is_rnum(const char *rnum) {
    place_t *p;
    const char *dat;
 
+   if (rnum[0] == '\0') {
+      return false;
+   }
+
    for (i = 0; i < ps_len; i++) {
       p = ps + i;
       for (k = 0; k < 9; k++) {
@@ -295,7 +299,7 @@ extern bool is_rnum(const char *rnum) {
       }
    }
 
-   return !strlen(rnum);
+   return (rnum[0] == '\0');
 }
 
 extern unsigned int interpret_romnum(const char *romnum) {
