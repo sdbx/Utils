@@ -65,16 +65,14 @@ static config_statcode_t check_msg(config_t *cfg) {
 
 static config_statcode_t print_manpage(void) {
 #if !defined(_WIN32) && (defined(__unix__) || defined(__unix))
-   typedef enum { ShellNotAvail, ShellOk } system_rv_t;
-   typedef enum { ManOk, ManFailed } man_exitstat_t;
-
-   if (system(NULL) == ShellNotAvail) {
+   if (system(NULL)) {
       return print_manual_fallback();
    }
 
-   if (system("man " DIR_MANPAGE) == ManFailed) {
+   if (system("man " DIR_MANPAGE)) {
       return print_manual_fallback();
    }
+
    return ConfigStatcodeNormalExit;
 #else
    return print_manual_fallback();
