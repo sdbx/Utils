@@ -1,11 +1,11 @@
-nsy(1)                                              UTILS PROJECT                                              nsy(1)
+iw(1)                                               UTILS PROJECT                                               iw(1)
 
 NAME
        iw - a helper program to make a message like an installation wizard to stdout
 
 SYNOPSIS
-       nsy (-m | --message) string
-       nsy (-h | --help)
+       iw (-m | --message) string
+       iw (-h | --help)
 
 DESCRIPTION
 USAGE
@@ -18,7 +18,7 @@ CONTRIBUTORS
        Visit https://github.com/sdbx/Utils/graphs/contributors to see all the contributors!
 
 UTILS PROJECT
-       nsy  is  part of the Utils utility suite.  For more information, please visit https://github.com/sdbx/Utils to
+       iw  is  part  of the Utils utility suite.  For more information, please visit https://github.com/sdbx/Utils to
        browse the whole project.
 
-Utils Project                                         2026-10-24                                               nsy(1)
+Utils Project                                         2026-10-26                                                iw(1)
