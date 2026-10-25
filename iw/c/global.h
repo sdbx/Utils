@@ -4,4 +4,9 @@
 #define EXECNAME "iw"
 #define ENPREFIX EXECNAME ": "
 
+#ifdef DIR_DATA
+#define DIR_MANPAGE DIR_DATA "/man/man1"
+#else
+#define DIR_MANPAGE "/usr/local/share/man/man1/iw.1"
+
 #endif

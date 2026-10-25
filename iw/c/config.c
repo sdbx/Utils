@@ -64,7 +64,7 @@ static config_statcode_t check_msg(config_t *cfg) {
 }
 
 static config_statcode_t print_manpage(void) {
-   static const char *manpage_dir = "/usr/local/share/man/man1/iw.1";
+   static const char *manpage_dir = DIR_MANPAGE;
    FILE *fp;
    int ch;
    config_statcode_t ret = ConfigStatcodeNormalExit;
