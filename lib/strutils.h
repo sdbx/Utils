@@ -64,7 +64,7 @@ bool is_rnum(const char *rnum);
 
 unsigned int interpret_romnum(const char *romnum);
 
-size_t levenshtein_distance(const char *s, const char *t);
+int levenshtein_distance(const char *s, const char *t);
 find_alikes_ret_t find_alikes(
    const char *src,
    const void **targets,
