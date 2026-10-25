@@ -24,6 +24,7 @@ extern arena_t *arena_create(void) {
    arena = safe_malloc(sizeof *arena);
    arena->regions = list_create(destruct_region);
    arena->current = NULL;
+   arena->align = sizeof (void *);  /* assumes not 0 */
 
    return arena;
 }
@@ -65,6 +66,9 @@ extern void *arena_calloc(arena_t *arena, size_t nmemb, size_t siz) {
    if (nmemb == 0 || siz == 0) {
       return NULL;
    }
+   if (nmemb > SIZE_MAX / siz) {
+      return NULL;
+   }
 
    ret = arena_malloc(arena, nmemb * siz);
 
@@ -91,7 +95,10 @@ extern void *arena_realloc2x_arr(
 
    /* Doubles the nmemb */
    old_nmemb = *nmemb;
-   new_nmemb = old_nmemb * 2;  // fixme: overflow check
+   if (old_nmemb > SIZE_MAX / 2 || esiz > SIZE_MAX / (old_nmemb * 2)) {
+      return NULL;
+   }
+   new_nmemb = old_nmemb * 2;
    *nmemb = new_nmemb;
 
    old_siz = old_nmemb * esiz;
@@ -130,12 +137,23 @@ static void destruct_region(void *item, size_t idx) {
 }
 
 static bool need_new_region(arena_t *arena, size_t req_siz) {
+   size_t rem;
+
    if (list_size(arena->regions) == 0) {
       return true;
    }
-   if (arena->current->pos + req_siz > arena->current->cap) {
+
+   rem = arena->current->pos % arena->align;
+   arena->current->pos += rem;
+
+   if (arena->current->cap < arena->current->pos) {
       return true;
    }
+
+   if (req_siz > arena->current->cap - arena->current->pos) {
+      return true;
+   }
+
    return false;
 }
 

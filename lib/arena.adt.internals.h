@@ -21,6 +21,7 @@ typedef struct {
 struct arena {
    list_t *regions;
    arena_region_t *current;
+   size_t align;
 };
 
 static void destruct_region(void *item, size_t idx);
