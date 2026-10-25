@@ -140,9 +140,12 @@ static bool need_new_region(arena_t *arena, size_t req_siz) {
       return true;
    }
 
+   /* 0 <= rem < align */
    rem = arena->current->pos % arena->align;
-   arena->current->pos -= rem;
-   arena->current->pos += arena->align;
+   if (rem != 0) {
+      arena->current->pos -= rem;
+      arena->current->pos += arena->align;
+   }
 
    if (arena->current->cap <= arena->current->pos) {
       return true;
