@@ -119,9 +119,6 @@ extern void *arena_realloc2x_arr(
          return arena->current->last_alloc;
       }
    }
-   else {
-      add_new_region(arena, new_siz);
-   }
 
    ret = arena_malloc(arena, new_siz);
    memcpy(ret, ptr, old_siz);
