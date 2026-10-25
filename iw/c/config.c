@@ -8,6 +8,7 @@ extern void init_config(config_t *cfg) {
 }
 
 extern void destroy_config(config_t *cfg) {
+   array_destroy(cfg->sourcefiles);
    free(cfg->msg);
 }
 
