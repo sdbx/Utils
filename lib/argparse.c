@@ -145,7 +145,6 @@ static void validate_schemas(argp_ctx_t *actx) {
 
    /* duplication check for long flags */
    for (i = 0; i < actx->table_len; i++) {
-      /* all flags must have its long name */
       subject = &actx->table[i];
       if (subject->lname == NULL) {
          /* the preceding validation doesn't mean that
