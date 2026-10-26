@@ -495,7 +495,7 @@ extern size_t mbstrlen(const char *src) {
    }
 
    while (idx < src_len) {
-      mbch_len = mblen_(src[idx]);  /* expects 1 ~ 4 */
+      mbch_len = mblen_(&src[idx]);  /* expects 1 ~ 4 */
       if (mbch_len < 1) {
          return 0;  /* something wrong */
       }
