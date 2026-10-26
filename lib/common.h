@@ -20,7 +20,6 @@ size_t min(size_t a, size_t b);
 size_t min3(size_t a, size_t b, size_t c);
 void seed(void);
 int rand_range(int min, int max);
-int mblen_(char ch);
 
 inline uint32_t endrev32(uint32_t v) {
    return v << 24

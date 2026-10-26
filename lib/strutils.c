@@ -420,12 +420,13 @@ extern find_alikes_ret_t find_alikes(
 
    /* Evaluates distances */
    for (size_t i = 0; i < targets_len; i++) {
-      dists[i] = levenshtein_distance(
+      int ld_ret = levenshtein_distance(
          src, GETSTR(i)
       );
-      if (dists[i] == -1) {
+      if (ld_ret == -1) {
          goto cleanup;
       }
+      dists[i] = (size_t) ld_ret;  /* safe, as 0 <= ld_ret <= 255 */
    }
 
    size_t min = dists[0];
@@ -463,4 +464,66 @@ cleanup:
    #undef GETSTR
 
    return ret;
+}
+
+extern int mblen_(const char *src) {
+   size_t len;
+   unsigned char c;
+
+   c = src[0];
+
+   if (c == '\0')
+      return 0;
+
+   if (c < 0x80) len = 1;                  /* 0xxxxxxx */
+   else if ((c & 0xE0) == 0xC0) len = 2;   /* 110xxxxx */
+   else if ((c & 0xF0) == 0xE0) len = 3;   /* 1110xxxx */
+   else if ((c & 0xF8) == 0xF0) len = 4;   /* 11110xxx */
+   else return -1;
+
+   return valid_mbch(src, len) ? (int) len : -2;
+}
+
+extern size_t mbstrlen(const char *src) {
+   size_t total = 0;
+   size_t idx = 0;
+   size_t src_len = strlen(src);
+   int mbch_len;
+
+   if (src_len == 0) {
+      return 0;
+   }
+
+   while (idx < src_len) {
+      mbch_len = mblen_(&src[idx]);  /* expects 1 ~ 4 */
+      if (mbch_len < 1) {
+         return 0;  /* something wrong */
+      }
+      idx += mbch_len;
+      total++;
+   }
+
+   return total;
+}
+
+static bool valid_mbch(const char *src, size_t mblen) {
+   unsigned char c;
+
+   c = src[0];
+
+   if (mblen == 1) {
+      if (c < 0x80) {
+         return true;
+      }
+   }
+
+   for (size_t i = 1; i < mblen; i++) {
+      c = src[i];
+      if ((c & 0xC0) == 0x80) {
+         continue;
+      }
+      return false;
+   }
+
+   return true;
 }

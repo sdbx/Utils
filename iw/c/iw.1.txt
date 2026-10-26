@@ -1,0 +1,24 @@
+iw(1)                                               UTILS PROJECT                                               iw(1)
+
+NAME
+       iw - a helper program to make a message like an installation wizard to stdout
+
+SYNOPSIS
+       iw (-m | --message) string
+       iw (-h | --help)
+
+DESCRIPTION
+USAGE
+EXAMPLE
+COMMAND LINE ARGUMENTS
+NOTES
+EXIT STATUS
+IMPLEMENTATIONS
+CONTRIBUTORS
+       Visit https://github.com/sdbx/Utils/graphs/contributors to see all the contributors!
+
+UTILS PROJECT
+       iw  is  part  of the Utils utility suite.  For more information, please visit https://github.com/sdbx/Utils to
+       browse the whole project.
+
+Utils Project                                         2026-10-26                                                iw(1)

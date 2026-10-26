@@ -72,6 +72,9 @@ find_alikes_ret_t find_alikes(
    size_t target_siz
 );
 
+int mblen_(const char *src);
+size_t mbstrlen(const char *src);
+
 /* Inline Functions */
 inline char lastch(const char *line) {
    size_t len = strlen(line);
