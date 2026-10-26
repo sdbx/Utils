@@ -7,7 +7,7 @@ CFLAGS += -g --std=c2x
 CFLAGS += -MMD -MP
 CPPFLAGS = \
 	-I $(DIR_LIB) \
-	-DPROGNAME='"$(TARGET)"'
+	-DPROGNAME='"$(TARGET)"' \
 	-DDIR_DATA='"$(DIR_DATA)"'
 
 SOURCES = $(wildcard *.c)
