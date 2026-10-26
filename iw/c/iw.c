@@ -55,8 +55,8 @@ static void exec_wizard(config_t *cfg) {
    langopt_enum_t lang = cfg->lang;
 
    switch (cfg->lang) {
-      case LangoptEnumEn: exec_wizard_en(msg, lang); break;
-      case LangoptEnumKo: exec_wizard_ko(msg, lang); break;
+      case LangoptEnumEn: exec_wizard_en(msg); break;
+      case LangoptEnumKo: exec_wizard_ko(msg); break;
       default: ;  /* control never reaches default */
    }
 }
@@ -75,8 +75,8 @@ static void print_title(const char *msg, langopt_enum_t lang) {
    printf("### %s %s ###\n\n", msg, lang_str);
 }
 
-static void exec_wizard_en(const char *msg, langopt_enum_t lang) {
-   print_title(msg, lang);
+static void exec_wizard_en(const char *msg) {
+   print_title(msg, LangoptEnumEn);
    printf(
       "The Install Wizard will install %s in your system.\n"
       "\n",
@@ -115,8 +115,8 @@ static void exec_wizard_en(const char *msg, langopt_enum_t lang) {
    );
 }
 
-static void exec_wizard_ko(const char *msg, langopt_enum_t lang) {
-   print_title(msg, lang);
+static void exec_wizard_ko(const char *msg) {
+   print_title(msg, LangoptEnumKo);
    printf(
       "설치 마법사가 %s(을)를 사용자의 컴퓨터에 설치하\n"
       "려고 합니다.\n"
