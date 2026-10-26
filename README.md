@@ -15,6 +15,9 @@
 It's easy to have **Utils** in your system:
 
 ```bash
+# build all the programs above
+$ make
+
 # install all the programs under /usr/local/bin
 $ make install
 
