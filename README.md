@@ -2,13 +2,13 @@
 
 **Utils** - a collection of command line tools focused on producing weird strings
 
-- `btn` - removes whitespaces and makes a line break per a specified number of characters
-- `nsy` - inserts a specified character between every character in a string
-- `nsy2` - inserts a specified character between every word in a string
-- `hhss` - prints arbitrary nonsenses
-- `hd` - makes \<h1\> headings
-- `yandere` - prints a yandere-like sentence ad infinitum
-- `iw` - a helper program to make a message like an installation wizard to stdout
+- **btn** - removes whitespaces and makes a line break per a specified number of characters
+- **nsy** - inserts a specified character between every character in a string
+- **nsy2** - inserts a specified character between every word in a string
+- **hhss** - prints arbitrary nonsenses
+- **hd** - makes `<h1>` headings
+- **yandere** - prints a yandere-like sentence *ad infinitum*
+- **iw** - a helper program to make a message like an installation wizard to stdout
 
 ## Installation
 
@@ -46,12 +46,12 @@ Each program has its specification, which is a document that describes the behav
 
 As of now, the above programs have been implemented in various languages. It might be helpful to visit each program's README.md file to be informed of how to build such implementations.
 
-### I would like to fix/modify the current implementations
+### To fix the current implementations
 
 In this case, if you would like to, you are able to check whether the fixed/modified version of a program still conforms the specification with `test`. Please refer to `./test/README.md` for further information.
 
 Currently, three programs have their respective testcase files: `btn`, `nsy`, and `hd`. These files can be found under `./test/.test` directory.
 
-### I would like to add an implementation
+### To add a new implementation
 
 If you should be inclined to add an implementation to whatever programs, it is highly recommended for you to read the specification for the program in advance of the actual development of the program.
