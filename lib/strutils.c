@@ -481,7 +481,7 @@ extern int mblen_(const char *src) {
    else if ((c & 0xF8) == 0xF0) len = 4;   /* 11110xxx */
    else return -1;
 
-   return valid_mbch(src, len) ? len : -2;
+   return valid_mbch(src, len) ? (int) len : -2;
 }
 
 extern size_t mbstrlen(const char *src) {
