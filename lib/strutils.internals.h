@@ -10,6 +10,8 @@
 
 typedef const char *place_t[9];
 
+static bool valid_mbch(const char *src, size_t mblen);
+
 static const char *whitespaces = " \n\r\t\a\b\v\f";
 
 static place_t ps[] = {  /* The order is intended */

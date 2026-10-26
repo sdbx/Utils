@@ -72,7 +72,7 @@ find_alikes_ret_t find_alikes(
    size_t target_siz
 );
 
-int mblen_(char ch);
+int mblen_(const char *src);
 size_t mbstrlen(const char *src);
 
 /* Inline Functions */

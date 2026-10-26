@@ -7,7 +7,7 @@ extern void noise(const char *msg) {
 
    for (i = k = 0; msg[i] != '\0'; /* empty */) {
       rv = rand_range(0, 5);
-      chlen = mblen_(msg[i]);
+      if ((chlen = mblen_(&msg[i])) < 1) return;
       overflow = (k + chlen) >= (BUFMAX - 1);
 
       if (overflow) break;

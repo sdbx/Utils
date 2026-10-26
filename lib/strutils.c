@@ -465,17 +465,22 @@ cleanup:
    return ret;
 }
 
-extern int mblen_(char ch) {
+extern int mblen_(const char *src) {
+   size_t len;
    unsigned char c;
 
-   c = (unsigned char) ch;
+   c = src[0];
 
-   if (c < 0x80) return 1;             /* 0xxxxxxx */
-   if ((c & 0xE0) == 0xC0) return 2;   /* 110xxxxx */
-   if ((c & 0xF0) == 0xE0) return 3;   /* 1110xxxx */
-   if ((c & 0xF8) == 0xF0) return 4;   /* 11110xxx */
+   if (c == '\0')
+      return 0;
 
-   return 0;
+   if (c < 0x80) len = 1;                  /* 0xxxxxxx */
+   else if ((c & 0xE0) == 0xC0) len = 2;   /* 110xxxxx */
+   else if ((c & 0xF0) == 0xE0) len = 3;   /* 1110xxxx */
+   else if ((c & 0xF8) == 0xF0) len = 4;   /* 11110xxx */
+   else return -1;
+
+   return valid_mbch(src, len) ? len : -2;
 }
 
 extern size_t mbstrlen(const char *src) {
@@ -489,8 +494,8 @@ extern size_t mbstrlen(const char *src) {
    }
 
    while (idx < src_len) {
-      mbch_len = mblen_(src[idx]);  /* returns 0 ~ 4 */
-      if (mbch_len == 0) {
+      mbch_len = mblen_(src[idx]);  /* expects 1 ~ 4 */
+      if (mbch_len < 1) {
          return 0;  /* something wrong */
       }
       idx += mbch_len;
@@ -498,4 +503,26 @@ extern size_t mbstrlen(const char *src) {
    }
 
    return total;
+}
+
+static bool valid_mbch(const char *src, size_t mblen) {
+   unsigned char c;
+
+   c = src[0];
+
+   if (mblen == 1) {
+      if (c < 0x80) {
+         return true;
+      }
+   }
+
+   for (size_t i = 1; i < mblen; i++) {
+      c = src[i];
+      if ((c & 0xC0) == 0x80) {
+         continue;
+      }
+      return false;
+   }
+
+   return true;
 }
