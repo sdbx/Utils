@@ -420,12 +420,13 @@ extern find_alikes_ret_t find_alikes(
 
    /* Evaluates distances */
    for (size_t i = 0; i < targets_len; i++) {
-      dists[i] = levenshtein_distance(
+      int ld_ret = levenshtein_distance(
          src, GETSTR(i)
       );
-      if (dists[i] == -1) {
+      if (ld_ret == -1) {
          goto cleanup;
       }
+      dists[i] = (size_t) ld_ret;  /* safe, as 0 <= ld_ret <= 255 */
    }
 
    size_t min = dists[0];
