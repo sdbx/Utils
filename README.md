@@ -44,14 +44,12 @@ In general, contributions are achieved via Pull Requests. Above all things, if a
 
 Each program has its specification, which is a document that describes the behavior of a conforming implementation and that instructs how the program should be implemented. You can find the respective specifications in their folders.
 
-As of now, the above programs have been implemented in various languages. It might be helpful to visit each program's README.md file to be informed of how to build such implementations.
+### Fixing the current implementations
 
-### To fix the current implementations
-
-In this case, if you would like to, you are able to check whether the fixed/modified version of a program still conforms the specification with `test`. Please refer to `./test/README.md` for further information.
+After your fix, you are able to check whether the modified program still conforms its specification with `test`. Please refer to `./test/README.md` for further information.
 
 Currently, three programs have their respective testcase files: `btn`, `nsy`, and `hd`. These files can be found under `./test/.test` directory.
 
-### To add a new implementation
+### Adding a new implementation
 
-If you should be inclined to add an implementation to whatever programs, it is highly recommended for you to read the specification for the program in advance of the actual development of the program.
+Before beginning the development, it is highly recommended for you to read the specification for the program.
