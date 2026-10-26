@@ -24,7 +24,7 @@ $(TEST):
 		DIR_BIN=$(DIR_BIN)
 
 ## Auxiliary Tasks ##
-install:
+install: all
 	test -d $(DIR_BIN) || mkdir -p $(DIR_BIN)
 	test -d $(DIR_DATA)/$(HHSS) || mkdir -p $(DIR_DATA)/$(HHSS)
 	test -d $(DIR_MAN1) || mkdir -p $(DIR_MAN1)
