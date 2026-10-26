@@ -65,7 +65,7 @@ static config_statcode_t check_msg(config_t *cfg) {
 
 static config_statcode_t print_manpage(void) {
 #if !defined(_WIN32) && (defined(__unix__) || defined(__unix))
-   if (system(NULL)) {
+   if (!system(NULL)) {
       return print_manual_fallback();
    }
 
