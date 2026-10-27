@@ -52,7 +52,6 @@ static void checkif_argc1(
 
 static void exec_wizard(config_t *cfg) {
    const char *msg = cfg->msg;
-   langopt_enum_t lang = cfg->lang;
 
    switch (cfg->lang) {
       case LangoptEnumEn: exec_wizard_en(msg); break;
