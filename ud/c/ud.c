@@ -34,6 +34,7 @@ int main(int argc, const char *argv[]) {
          ;  /* control never reaches default */
    }
 
+   seed();
    work(&cfg);
 
 cleanup:
