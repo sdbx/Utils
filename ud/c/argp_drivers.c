@@ -9,7 +9,37 @@ static bool drive_help(argtok_t *tok, argerr_t *err) {
 
 static bool drive_msg(argtok_t *tok, argerr_t *err) {
    (void) err;
-   cfg.msg = strdup(tok->value);
+   /* +1 for \0 */
+   array_append(cfg.msgs, tok->value, strlen(tok->value) + 1);
+   return true;
+}
+
+static bool drive_iter(argtok_t *tok, argerr_t *err) {
+   char *i;
+   unsigned long ret;
+
+   errno = 0;
+   ret = strtoul(tok->value, &i, 10);
+
+   err->errhandle = argp_errhandle_default;
+   if (errno == ERANGE) {
+      err->reason = "out of range";
+      return false;
+   }
+   if (i == tok->value) {
+      err->reason = "conversion not performed";
+      return false;
+   }
+   if (*i != '\0') {
+      err->reason = "invalid trailing characters";
+      return false;
+   }
+   if (ret > SIZE_MAX) {
+      err->reason = "iteration out of range";
+      return false;
+   }
+
+   cfg.iter = ret;
    return true;
 }
 

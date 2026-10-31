@@ -3,13 +3,14 @@
 
 extern void init_config(config_t *cfg) {
    cfg->srcs = array_create(NULL);
-   cfg->msg = NULL;
+   cfg->msgs = array_create(NULL);
+   cfg->iter = 8;
    cfg->lang = LangoptEnumEn;
 }
 
 extern void destroy_config(config_t *cfg) {
    array_destroy(cfg->srcs);
-   free(cfg->msg);
+   array_destroy(cfg->msgs);
 }
 
 extern config_statcode_t apply_config(config_t *cfg) {
@@ -25,26 +26,20 @@ cleanup:  /* nothing to clean up, just return */
 }
 
 static config_statcode_t check_help(config_t *cfg) {
-   config_statcode_t ret = ConfigStatcodeOk;
-
    if (cfg->help == false) {
-      return ret;
+      return ConfigStatcodeOk;
    }
 
    return print_manpage();
 }
 
 static config_statcode_t check_msg(config_t *cfg) {
-   config_statcode_t ret = ConfigStatcodeOk;
-
-   if (cfg->msg != NULL) {
-      return ret;
+   if (array_size(cfg->msgs) > 0) {
+      return ConfigStatcodeOk;
    }
 
    fprintf(stderr, ENPREFIX "--msg is a required flag. Terminating.\n");
-   ret = ConfigStatcodeNoMsg;
-
-   return ret;
+   return ConfigStatcodeNoMsg;
 }
 
 static config_statcode_t print_manpage(void) {
@@ -64,7 +59,6 @@ static config_statcode_t print_manpage(void) {
 }
 
 static config_statcode_t print_manual_fallback(void) {
-   config_statcode_t ret = ConfigStatcodeNormalExit;
    FILE *fp;
    int ch;
 
@@ -75,16 +69,16 @@ static config_statcode_t print_manual_fallback(void) {
          ENPREFIX "couldn't open the manpage from %s\n",
          DIR_MANPAGE_TXT
       );
-      ret = ConfigStatcodeNoManpage;
-      goto cleanup;
+      return ConfigStatcodeNoManpage;
    }
 
-   while ((ch = safe_fgetc(fp)) != EOF) {
-      safe_fputc(stdout, ch);
+   while ((ch = fgetc(fp)) != EOF) {
+      fputc(ch, stdout);
    }
 
-   safe_fclose(fp);
+   if (fclose(fp) == EOF) {
+      return ConfigStatcodeErr;
+   }
 
-cleanup:
-   return ret;
+   return ConfigStatcodeNormalExit;
 }

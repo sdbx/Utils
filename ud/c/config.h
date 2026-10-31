@@ -13,13 +13,15 @@ typedef enum {
 typedef struct config {
    array_t *srcs;
    bool help;
-   char *msg;
+   array_t *msgs;
+   size_t iter;
    langopt_enum_t lang;
 } config_t;
 
 typedef enum {
    ConfigStatcodeOk,
    ConfigStatcodeNormalExit,
+   ConfigStatcodeErr,
    ConfigStatcodeNoMsg,
    ConfigStatcodeNoManpage
 } config_statcode_t;

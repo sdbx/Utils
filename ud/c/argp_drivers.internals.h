@@ -1,6 +1,9 @@
 #ifndef ARGP_DRIVERS_INTERNALS_H
 #define ARGP_DRIVERS_INTERNALS_H
 
+#include <errno.h>
+#include <limits.h>
+
 #include "common.h"
 #include "config.h"
 #include "wrappers.h"
@@ -16,6 +19,7 @@ typedef struct {
 
 static opt_driver_t drive_help;
 static opt_driver_t drive_msg;
+static opt_driver_t drive_iter;
 static opt_driver_t drive_lang;
 
 static opt_errhandler_t errhandle_unrecognized_value;
@@ -38,6 +42,14 @@ optmd_t optmds[] = {
       .drive = drive_msg,
       .reqv = true,
       .help = "specify the message to print out",
+      .unique = false
+   },
+   {
+      .sname = 'i',
+      .lname = "iteration",
+      .drive = drive_iter,
+      .reqv = true,
+      .help = "specify the number of iteration",
       .unique = true
    },
    {
