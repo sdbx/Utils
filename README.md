@@ -9,6 +9,7 @@
 - **hd** - makes `<h1>` headings
 - **yandere** - prints a yandere-like sentence *ad infinitum*
 - **iw** - a helper program to make a message like an installation wizard to stdout
+- **ud** - a fake updater
 
 ## Installation
 
