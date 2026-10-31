@@ -18,10 +18,16 @@ static bool drive_iter(argtok_t *tok, argerr_t *err) {
    char *i;
    unsigned long ret;
 
+   err->errhandle = argp_errhandle_default;
+
+   if (tok->value[strspn(tok->value, " \t\n\r\v\f")] == '-') {
+      err->reason = "iteration must not be negative";
+      return false;
+   }
+
    errno = 0;
    ret = strtoul(tok->value, &i, 10);
 
-   err->errhandle = argp_errhandle_default;
    if (errno == ERANGE) {
       err->reason = "out of range";
       return false;
