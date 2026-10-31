@@ -46,7 +46,7 @@ optmd_t optmds[] = {
    },
    {
       .sname = 'i',
-      .lname = "iteration",
+      .lname = "iterate",
       .drive = drive_iter,
       .reqv = true,
       .help = "specify the number of iteration",
