@@ -19,8 +19,9 @@ NSY := nsy
 NSY2 := nsy2
 YANDERE := yandere
 IW := iw
+UD := ud
 
-TARGETS = $(BTN) $(HD) $(HHSS) $(NSY) $(NSY2) $(YANDERE) $(IW)
+TARGETS = $(BTN) $(HD) $(HHSS) $(NSY) $(NSY2) $(YANDERE) $(IW) $(UD)
 
 TEST := test
 
